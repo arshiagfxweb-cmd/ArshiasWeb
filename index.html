@@ -260,7 +260,7 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         
-        /* Corner ribbon - CAN BE TOGGLED */
+        /* Corner ribbon */
         .corner-ribbon {
             position: absolute;
             top: 0; right: 0;
@@ -287,7 +287,7 @@
             letter-spacing: 1px;
         }
         
-        /* Coming soon text at bottom */
+        /* Coming soon text */
         .coming-soon-text {
             font-size: 2.5rem;
             font-weight: 700;
@@ -326,7 +326,7 @@
         .order-item.contacted { border-left: 3px solid #fbbf24; }
         .order-item.completed { border-left: 3px solid #22c55e; }
 
-        /* Admin section styling */
+        /* Admin section */
         .admin-section {
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 16px;
@@ -415,6 +415,45 @@
 
         input:checked + .toggle-slider:before {
             transform: translateX(24px);
+        }
+
+        /* Service editor */
+        .service-edit-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .service-edit-item input {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .service-edit-item input[name="serviceName"] {
+            flex: 1;
+        }
+
+        .service-edit-item input[name="servicePrice"] {
+            width: 70px;
+            text-align: center;
+        }
+
+        .service-edit-item button {
+            background: rgba(220, 38, 38, 0.2);
+            border: none;
+            color: #ef4444;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -726,90 +765,90 @@
                 <p class="text-gray-400 max-w-xl mx-auto">Professional GFX at competitive prices. All prices in AUD.</p>
             </div>
             
-            <!-- Services Grid -->
+            <!-- Services Grid - HARDCODED (WILL ALWAYS SHOW) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 <!-- Logo -->
-                <div class="glass-card p-8 reveal">
+                <div class="glass-card p-8 reveal" id="service-logo">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">LOGO</h3>
                     <div class="text-4xl font-bold text-red-600 mb-4">
-                        <span class="price" data-aud="20">$20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                        $<span class="service-price" data-service="logo">20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                     </div>
                     <ul class="space-y-2 text-gray-400 text-sm mb-6">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High-quality design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Source files included</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="selectService('Logo', 20)" class="btn-secondary w-full">SELECT</button>
+                    <button onclick="selectService('Logo', 20)" class="btn-secondary w-full service-btn" data-service="logo">SELECT</button>
                 </div>
                 
                 <!-- PFP -->
-                <div class="glass-card p-8 reveal">
+                <div class="glass-card p-8 reveal" id="service-pfp">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">PFP</h3>
                     <div class="text-4xl font-bold text-red-600 mb-4">
-                        <span class="price" data-aud="15">$15</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                        $<span class="service-price" data-service="pfp">15</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                     </div>
                     <ul class="space-y-2 text-gray-400 text-sm mb-6">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Profile picture design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Multiple sizes</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="selectService('PFP', 15)" class="btn-secondary w-full">SELECT</button>
+                    <button onclick="selectService('PFP', 15)" class="btn-secondary w-full service-btn" data-service="pfp">SELECT</button>
                 </div>
                 
                 <!-- Banner -->
-                <div class="glass-card p-8 reveal">
+                <div class="glass-card p-8 reveal" id="service-banner">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">BANNER</h3>
                     <div class="text-4xl font-bold text-red-600 mb-4">
-                        <span class="price" data-aud="30">$30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                        $<span class="service-price" data-service="banner">30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                     </div>
                     <ul class="space-y-2 text-gray-400 text-sm mb-6">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Social media banner</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> YouTube/Twitter optimized</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="selectService('Banner', 30)" class="btn-secondary w-full">SELECT</button>
+                    <button onclick="selectService('Banner', 30)" class="btn-secondary w-full service-btn" data-service="banner">SELECT</button>
                 </div>
                 
                 <!-- Banner + PFP -->
-                <div class="glass-card p-8 reveal">
+                <div class="glass-card p-8 reveal" id="service-banner-pfp">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">BANNER + PFP</h3>
                     <div class="text-4xl font-bold text-red-600 mb-4">
-                        <span class="price" data-aud="40">$40</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                        $<span class="service-price" data-service="banner_pfp">40</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                     </div>
                     <ul class="space-y-2 text-gray-400 text-sm mb-6">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Matching set design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Brand consistency</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="selectService('Banner + PFP', 40)" class="btn-secondary w-full">SELECT</button>
+                    <button onclick="selectService('Banner + PFP', 40)" class="btn-secondary w-full service-btn" data-service="banner_pfp">SELECT</button>
                 </div>
                 
                 <!-- Poster -->
-                <div class="glass-card p-8 reveal">
+                <div class="glass-card p-8 reveal" id="service-poster">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">POSTER</h3>
                     <div class="text-4xl font-bold text-red-600 mb-4">
-                        <span class="price" data-aud="30">$30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                        $<span class="service-price" data-service="poster">30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                     </div>
                     <ul class="space-y-2 text-gray-400 text-sm mb-6">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Event/announcement poster</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High resolution</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="selectService('Poster', 30)" class="btn-secondary w-full">SELECT</button>
+                    <button onclick="selectService('Poster', 30)" class="btn-secondary w-full service-btn" data-service="poster">SELECT</button>
                 </div>
                 
                 <!-- Thumbnails -->
-                <div class="glass-card p-8 reveal">
+                <div class="glass-card p-8 reveal" id="service-thumbnails">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">THUMBNAILS</h3>
                     <div class="text-4xl font-bold text-red-600 mb-4">
-                        <span class="price" data-aud="20">$20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                        $<span class="service-price" data-service="thumbnails">20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                     </div>
                     <ul class="space-y-2 text-gray-400 text-sm mb-6">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> YouTube thumbnail</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High CTR design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="selectService('Thumbnails', 20)" class="btn-secondary w-full">SELECT</button>
+                    <button onclick="selectService('Thumbnails', 20)" class="btn-secondary w-full service-btn" data-service="thumbnails">SELECT</button>
                 </div>
             </div>
             
@@ -824,7 +863,7 @@
                         <div class="absolute top-6 right-6 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">SAVE $20</div>
                         <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">COMPLETE BRAND</h3>
                         <div class="text-4xl font-bold text-red-600 mb-4">
-                            <span class="price" data-aud="45">$45</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
+                            $<span class="service-price" data-service="bundle">45</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                         </div>
                         <p class="text-gray-400 mb-4">Banner + PFP + Logo</p>
                         <ul class="space-y-2 text-gray-400 text-sm mb-6">
@@ -833,7 +872,7 @@
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Priority delivery</li>
                         </ul>
-                        <button onclick="selectService('Complete Brand Bundle', 45)" class="btn-primary w-full">SELECT BUNDLE</button>
+                        <button onclick="selectService('Complete Brand Bundle', 45)" class="btn-primary w-full service-btn" data-service="bundle">SELECT BUNDLE</button>
                     </div>
                     
                     <!-- ALL IN ONE ASSET PACK - Fully Editable -->
@@ -897,7 +936,7 @@
                         <option value="Poster">Poster - $30 AUD</option>
                         <option value="Thumbnails">Thumbnails - $20 AUD</option>
                         <option value="Complete Brand Bundle">Complete Brand Bundle - $45 AUD</option>
-                        <option value="All-in-One Asset Pack">All-in-One Asset Pack</option>
+                        <option value="All-in-One Asset Pack" id="assetPackOption">All-in-One Asset Pack - TBA</option>
                     </select>
                 </div>
                 
@@ -1005,15 +1044,43 @@
                     <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm">ADD ITEM</button>
                 </div>
                 
-                <!-- Edit Services -->
+                <!-- Edit Services Prices -->
                 <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Edit Services</h4>
-                    <div id="adminServicesList" class="space-y-2 max-h-60 overflow-y-auto">
-                        <!-- Populated by JS -->
+                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Edit Service Prices</h4>
+                    <div class="space-y-2">
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">Logo:</span>
+                            <input type="number" id="admin-price-logo" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">PFP:</span>
+                            <input type="number" id="admin-price-pfp" value="15" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">Banner:</span>
+                            <input type="number" id="admin-price-banner" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">Banner+PFP:</span>
+                            <input type="number" id="admin-price-banner-pfp" value="40" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">Poster:</span>
+                            <input type="number" id="admin-price-poster" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">Thumbnails:</span>
+                            <input type="number" id="admin-price-thumbnails" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="service-edit-item">
+                            <span class="text-sm text-gray-400 w-24">Bundle:</span>
+                            <input type="number" id="admin-price-bundle" value="45" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
+                        </div>
                     </div>
+                    <button onclick="updateServicePrices()" class="btn-secondary w-full text-sm mt-3">UPDATE PRICES</button>
                 </div>
                 
-                <!-- ASSET PACK EDITOR - NEW FULLY FEATURED SECTION -->
+                <!-- ASSET PACK EDITOR -->
                 <div class="admin-section bg-red-500/5 border border-red-500/20 rounded-lg p-4">
                     <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-red-400">Asset Pack Editor</h4>
                     
@@ -1021,7 +1088,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-sm text-gray-300">Show Corner Ribbon</span>
                         <label class="toggle-switch">
-                            <input type="checkbox" id="editShowRibbon" onchange="updateAssetPackPreview()">
+                            <input type="checkbox" id="editShowRibbon" checked onchange="updateAssetPackPreview()">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
@@ -1117,35 +1184,24 @@
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
         const currencySymbols = { AUD: '$', USD: '$', EUR: '€', GBP: '£', CAD: '$', JPY: '¥', NZD: '$', SGD: '$' };
         
-        // Services data for admin editing
-        let servicesData = [
-            { name: 'Logo', price: 20 },
-            { name: 'PFP', price: 15 },
-            { name: 'Banner', price: 30 },
-            { name: 'Banner + PFP', price: 40 },
-            { name: 'Poster', price: 30 },
-            { name: 'Thumbnails', price: 20 }
-        ];
-        
-        // Asset Pack Data - NEW FULLY EDITABLE STRUCTURE
+        // Asset Pack Data
         let assetPackData = {
             showRibbon: true,
             ribbonText: 'COMING SOON',
             title: 'ALL-IN-ONE ASSET PACK',
-            price: '', // empty = TBA
+            price: '',
             description: 'Complete GFX Asset Collection',
             features: ['Commercial License', '50+ Thumbnails', 'Stream Overlays', 'Transition Pack'],
-            status: 'coming_soon' // 'coming_soon' or 'available'
+            status: 'coming_soon'
         };
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Loaded - Initializing...');
             initCursor();
             initAudio();
             initScrollReveal();
             initFormValidation();
-            renderAdminServices();
+            initAssetPackEditor();
             loadDataFromDatabase();
         });
         
@@ -1241,23 +1297,6 @@
             }
         }
         
-        // Render admin services list
-        function renderAdminServices() {
-            const container = document.getElementById('adminServicesList');
-            if (!container) return;
-            
-            container.innerHTML = servicesData.map((s, i) => `
-                <div class="flex items-center gap-2 bg-white/5 p-2 rounded text-sm">
-                    <input type="text" value="${s.name}" class="bg-transparent flex-1 text-white" onchange="updateServiceName(${i}, this.value)">
-                    <span class="text-gray-500">$</span>
-                    <input type="number" value="${s.price}" class="bg-transparent w-16 text-white" onchange="updateServicePrice(${i}, this.value)">
-                </div>
-            `).join('');
-        }
-        
-        function updateServiceName(i, v) { servicesData[i].name = v; }
-        function updateServicePrice(i, v) { servicesData[i].price = parseInt(v) || 0; }
-        
         // Currency
         function toggleCurrency() {
             const d = document.getElementById('currencyDropdown');
@@ -1276,9 +1315,12 @@
             if (currEl) currEl.textContent = c;
             if (dropEl) dropEl.classList.add('opacity-0', 'invisible');
             
-            document.querySelectorAll('.price').forEach(p => {
-                const aud = parseInt(p.dataset.aud);
-                p.textContent = currencySymbols[c] + Math.round(aud * exchangeRates[c]);
+            // Update all prices on page
+            document.querySelectorAll('.service-price').forEach(p => {
+                const aud = parseInt(p.textContent);
+                if (!isNaN(aud)) {
+                    p.textContent = Math.round(aud * exchangeRates[c]);
+                }
             });
             
             document.querySelectorAll('.currency-label').forEach(l => l.textContent = ' ' + c);
@@ -1308,10 +1350,7 @@
             playSound('click');
             const select = document.getElementById('serviceSelect');
             if (select) select.value = s;
-            
-            const orderSection = document.getElementById('order');
-            if (orderSection) orderSection.scrollIntoView({ behavior: 'smooth' });
-            
+            document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
             showToast(`Selected: ${s}`);
         }
         
@@ -1345,7 +1384,7 @@
             }
         }
         
-        // Order form submission with order tracking
+        // Order form submission
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault(); 
             playSound('success');
@@ -1363,7 +1402,6 @@
                 contactTime: null
             };
             
-            // Add to local orders
             orders.push(orderData);
             updateOrdersList();
             
@@ -1387,8 +1425,8 @@
                 })
             });
             
-            // Schedule reminder if not contacted
-            setTimeout(() => checkOrderReminder(orderData.id), 24 * 60 * 60 * 1000); // 24 hours
+            // Schedule reminder
+            setTimeout(() => checkOrderReminder(orderData.id), 24 * 60 * 60 * 1000);
             
             showToast('Order submitted!'); 
             e.target.reset();
@@ -1399,7 +1437,6 @@
         function checkOrderReminder(orderId) {
             const order = orders.find(o => o.id === orderId);
             if (order && !order.contacted) {
-                // Send reminder ping
                 fetch(CONFIG.webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1416,7 +1453,6 @@
                         }]
                     })
                 });
-                showToast('Reminder sent for order #' + orderId);
             }
         }
         
@@ -1463,7 +1499,6 @@
                 playSound('success');
                 showToast('Order marked as contacted');
                 
-                // Send confirmation to Discord
                 fetch(CONFIG.webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1480,7 +1515,6 @@
                     })
                 });
                 
-                // Save to database
                 saveToDatabase();
             }
         }
@@ -1491,8 +1525,6 @@
             updateOrdersList();
             playSound('success');
             showToast('Order completed and removed');
-            
-            // Save to database
             saveToDatabase();
         }
         
@@ -1508,7 +1540,6 @@
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminControls').classList.remove('hidden');
                 updateOrdersList();
-                initAssetPackEditor(); // Initialize the asset pack editor
                 playSound('success'); 
                 showToast('Admin access granted');
             } else {
@@ -1564,7 +1595,6 @@
                     body: JSON.stringify({
                         password: current,
                         newPassword: newPass,
-                        services: servicesData,
                         assetPackData: assetPackData,
                         orders: orders,
                         timestamp: new Date().toISOString()
@@ -1587,25 +1617,62 @@
             }
         }
         
-        // ==========================================
-        // ASSET PACK EDITOR FUNCTIONS - NEW
-        // ==========================================
-        
-        function initAssetPackEditor() {
-            // Populate fields with current data
-            document.getElementById('editShowRibbon').checked = assetPackData.showRibbon;
-            document.getElementById('editRibbonText').value = assetPackData.ribbonText;
-            document.getElementById('editPackTitle').value = assetPackData.title;
-            document.getElementById('editPackPrice').value = assetPackData.price;
-            document.getElementById('editPackDesc').value = assetPackData.description;
-            document.getElementById('editPackStatus').value = assetPackData.status;
+        // Update service prices from admin
+        function updateServicePrices() {
+            const prices = {
+                logo: document.getElementById('admin-price-logo').value,
+                pfp: document.getElementById('admin-price-pfp').value,
+                banner: document.getElementById('admin-price-banner').value,
+                banner_pfp: document.getElementById('admin-price-banner-pfp').value,
+                poster: document.getElementById('admin-price-poster').value,
+                thumbnails: document.getElementById('admin-price-thumbnails').value,
+                bundle: document.getElementById('admin-price-bundle').value
+            };
             
+            // Update DOM
+            for (const [key, value] of Object.entries(prices)) {
+                const el = document.querySelector(`.service-price[data-service="${key}"]`);
+                if (el) el.textContent = value;
+            }
+            
+            // Update order form options
+            updateOrderFormOptions();
+            
+            showToast('Prices updated - Save to persist');
+        }
+        
+        // Update order form dropdown
+        function updateOrderFormOptions() {
+            const select = document.getElementById('serviceSelect');
+            if (!select) return;
+            
+            const getPrice = (key) => {
+                const el = document.querySelector(`.service-price[data-service="${key}"]`);
+                return el ? el.textContent : '0';
+            };
+            
+            select.innerHTML = `
+                <option value="">Select a service...</option>
+                <option value="Logo">Logo - $${getPrice('logo')} AUD</option>
+                <option value="PFP">PFP - $${getPrice('pfp')} AUD</option>
+                <option value="Banner">Banner - $${getPrice('banner')} AUD</option>
+                <option value="Banner + PFP">Banner + PFP - $${getPrice('banner_pfp')} AUD</option>
+                <option value="Poster">Poster - $${getPrice('poster')} AUD</option>
+                <option value="Thumbnails">Thumbnails - $${getPrice('thumbnails')} AUD</option>
+                <option value="Complete Brand Bundle">Complete Brand Bundle - $${getPrice('bundle')} AUD</option>
+                <option value="All-in-One Asset Pack" id="assetPackOption">All-in-One Asset Pack - ${assetPackData.price ? '$'+assetPackData.price : 'TBA'}</option>
+            `;
+        }
+        
+        // ASSET PACK EDITOR FUNCTIONS
+        function initAssetPackEditor() {
             renderFeaturesEditor();
             updateAssetPackPreview();
         }
         
         function renderFeaturesEditor() {
             const container = document.getElementById('featuresEditor');
+            if (!container) return;
             container.innerHTML = assetPackData.features.map((feature, index) => `
                 <div class="feature-item">
                     <input type="text" value="${feature}" onchange="updateFeature(${index}, this.value)">
@@ -1637,7 +1704,6 @@
         }
         
         function updateAssetPackPreview() {
-            // Update data object from inputs
             assetPackData.showRibbon = document.getElementById('editShowRibbon').checked;
             assetPackData.ribbonText = document.getElementById('editRibbonText').value;
             assetPackData.title = document.getElementById('editPackTitle').value;
@@ -1646,9 +1712,13 @@
             assetPackData.status = document.getElementById('editPackStatus').value;
             
             // Update preview text
-            document.getElementById('previewTitle').textContent = assetPackData.title;
-            document.getElementById('previewPrice').textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
-            document.getElementById('previewFeatures').textContent = assetPackData.features.length + ' items';
+            const previewTitle = document.getElementById('previewTitle');
+            const previewPrice = document.getElementById('previewPrice');
+            const previewFeatures = document.getElementById('previewFeatures');
+            
+            if (previewTitle) previewTitle.textContent = assetPackData.title;
+            if (previewPrice) previewPrice.textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
+            if (previewFeatures) previewFeatures.textContent = assetPackData.features.length + ' items';
             
             // Live update the main page card
             updateAssetPackDisplay();
@@ -1657,47 +1727,58 @@
         function updateAssetPackDisplay() {
             // Update ribbon
             const ribbon = document.getElementById('assetPackRibbon');
-            if (assetPackData.showRibbon) {
-                ribbon.style.display = 'block';
-                document.getElementById('ribbonText').textContent = assetPackData.ribbonText;
-            } else {
-                ribbon.style.display = 'none';
+            if (ribbon) {
+                if (assetPackData.showRibbon) {
+                    ribbon.style.display = 'block';
+                    document.getElementById('ribbonText').textContent = assetPackData.ribbonText;
+                } else {
+                    ribbon.style.display = 'none';
+                }
             }
             
             // Update content
-            document.getElementById('assetPackTitle').textContent = assetPackData.title;
-            document.getElementById('assetPackPrice').textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
-            document.getElementById('assetPackDesc').textContent = assetPackData.description;
-            
-            // Update features list
+            const titleEl = document.getElementById('assetPackTitle');
+            const priceEl = document.getElementById('assetPackPrice');
+            const descEl = document.getElementById('assetPackDesc');
             const featuresList = document.getElementById('assetPackFeatures');
-            featuresList.innerHTML = assetPackData.features.map(f => 
-                `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${f}</li>`
-            ).join('');
-            
-            // Update status
             const comingSoonText = document.getElementById('comingSoonText');
             const btn = document.getElementById('assetPackBtn');
             
-            if (assetPackData.status === 'coming_soon') {
-                comingSoonText.style.display = 'block';
-                comingSoonText.textContent = 'COMING SOON';
-                btn.disabled = true;
-                btn.textContent = 'NOTIFY ME';
-                btn.className = 'w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-4';
-                
-                // Update service select
-                const option = document.querySelector('option[value="All-in-One Asset Pack"]');
-                if (option) option.textContent = 'All-in-One Asset Pack - Coming Soon';
-            } else {
-                comingSoonText.style.display = 'none';
-                btn.disabled = false;
-                btn.textContent = assetPackData.price ? 'BUY NOW - $' + assetPackData.price : 'BUY NOW';
-                btn.className = 'w-full btn-primary mt-4';
-                
-                // Update service select
-                const option = document.querySelector('option[value="All-in-One Asset Pack"]');
-                if (option) option.textContent = 'All-in-One Asset Pack - $' + (assetPackData.price || 'TBA') + ' AUD';
+            if (titleEl) titleEl.textContent = assetPackData.title;
+            if (priceEl) priceEl.textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
+            if (descEl) descEl.textContent = assetPackData.description;
+            
+            if (featuresList) {
+                featuresList.innerHTML = assetPackData.features.map(f => 
+                    `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${f}</li>`
+                ).join('');
+            }
+            
+            if (comingSoonText && btn) {
+                if (assetPackData.status === 'coming_soon') {
+                    comingSoonText.style.display = 'block';
+                    comingSoonText.textContent = 'COMING SOON';
+                    btn.disabled = true;
+                    btn.textContent = 'NOTIFY ME';
+                    btn.className = 'w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-4';
+                    btn.onclick = null;
+                } else {
+                    comingSoonText.style.display = 'none';
+                    btn.disabled = false;
+                    btn.textContent = assetPackData.price ? `BUY NOW - $${assetPackData.price}` : 'BUY NOW';
+                    btn.className = 'w-full btn-primary mt-4';
+                    // ENABLE CLICK TO ORDER
+                    btn.onclick = () => {
+                        selectService('All-in-One Asset Pack', assetPackData.price || 0);
+                    };
+                }
+            }
+            
+            // Update order form option
+            const assetPackOption = document.getElementById('assetPackOption');
+            if (assetPackOption) {
+                const priceText = assetPackData.price ? '$'+assetPackData.price : 'TBA';
+                assetPackOption.textContent = `All-in-One Asset Pack - ${priceText}`;
             }
         }
         
@@ -1707,9 +1788,7 @@
             showToast('Asset Pack updated!');
         }
         
-        // ==========================================
-        
-        // Save to database (MongoDB via Vercel) - UPDATED WITH ASSET PACK DATA
+        // Save to database
         async function saveToDatabase() {
             try {
                 const response = await fetch(CONFIG.apiUrl, {
@@ -1717,8 +1796,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         password: currentPassword,
-                        services: servicesData,
-                        assetPackData: assetPackData, // Now includes full asset pack data
+                        assetPackData: assetPackData,
                         orders: orders,
                         timestamp: new Date().toISOString()
                     })
@@ -1740,23 +1818,27 @@
             }
         }
         
-        // Load data from database - UPDATED TO LOAD ASSET PACK DATA
+        // Load data from database
         async function loadDataFromDatabase() {
             try {
                 const response = await fetch(CONFIG.apiUrl + '?password=' + encodeURIComponent(currentPassword));
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.services) servicesData = data.services;
                     if (data.orders) orders = data.orders;
                     
-                    // Load asset pack data if exists
                     if (data.assetPackData) {
                         assetPackData = { ...assetPackData, ...data.assetPackData };
+                        // Update UI to match loaded data
+                        document.getElementById('editShowRibbon').checked = assetPackData.showRibbon;
+                        document.getElementById('editRibbonText').value = assetPackData.ribbonText;
+                        document.getElementById('editPackTitle').value = assetPackData.title;
+                        document.getElementById('editPackPrice').value = assetPackData.price;
+                        document.getElementById('editPackDesc').value = assetPackData.description;
+                        document.getElementById('editPackStatus').value = assetPackData.status;
+                        renderFeaturesEditor();
                         updateAssetPackDisplay();
                     }
                     
-                    // Update UI
-                    renderAdminServices();
                     updateOrdersList();
                 }
             } catch (e) {
