@@ -52,7 +52,105 @@
             border-color: var(--primary-red);
         }
         
-        /* Glass Card */
+        /* Portfolio Item - Container */
+        .portfolio-item {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(17, 17, 17, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                        box-shadow 0.4s ease, 
+                        border-color 0.4s ease;
+            cursor: pointer;
+            will-change: transform;
+        }
+        
+        /* Thumbnails - 16:9 */
+        .portfolio-item.thumbnail {
+            aspect-ratio: 16/9;
+        }
+        
+        /* Posters - 3:4 (tall) */
+        .portfolio-item.poster {
+            aspect-ratio: 3/4;
+        }
+        
+        /* Banners - 21:9 (ultrawide) */
+        .portfolio-item.banner {
+            aspect-ratio: 21/9;
+        }
+        
+        /* Combos - 16:9 */
+        .portfolio-item.combo {
+            aspect-ratio: 16/9;
+        }
+        
+        /* Hover state - 3D Tilt Effect */
+        .portfolio-item.hover-active {
+            transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                        0 0 30px rgba(220, 38, 38, 0.3);
+            border-color: rgba(220, 38, 38, 0.5);
+            z-index: 10;
+        }
+        
+        /* Image inside portfolio item */
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+        
+        /* Image zoom on hover */
+        .portfolio-item.hover-active img {
+            transform: scale(1.1);
+        }
+        
+        /* Shine/Sweep Effect - Fixed */
+        .portfolio-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                transparent 100%);
+            transition: left 0.7s ease;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Trigger shine on hover */
+        .portfolio-item.hover-active::after {
+            left: 100%;
+        }
+        
+        /* Overlay - Fixed z-index */
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 24px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        
+        .portfolio-item.hover-active .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        /* Glass Card for Services - with shine effect */
         .glass-card {
             background: rgba(17, 17, 17, 0.7);
             backdrop-filter: blur(20px);
@@ -60,35 +158,31 @@
             border-radius: 24px;
             position: relative;
             overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
         .glass-card::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.7s;
+            z-index: 1;
+            pointer-events: none;
         }
         
-        .glass-card:hover::before { left: 100%; }
+        .glass-card:hover::before {
+            left: 100%;
+        }
         
         .glass-card:hover {
-            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.02) translateY(-10px);
+            transform: translateY(-8px) scale(1.02);
             border-color: rgba(220, 38, 38, 0.3);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(220, 38, 38, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(220, 38, 38, 0.2);
         }
-        
-        /* Portfolio 3D */
-        .portfolio-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        .portfolio-3d:hover { transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05); }
-        .portfolio-3d-inner { transform: translateZ(30px); }
         
         /* Navigation */
         .main-nav {
@@ -112,6 +206,8 @@
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            border: none;
         }
         
         .btn-primary::before {
@@ -134,9 +230,22 @@
             border-radius: 12px;
             font-weight: 600;
             transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
         
-        .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); }
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-secondary:hover::before { left: 100%; }
+        .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); transform: translateY(-2px); }
         
         .btn-danger {
             background: rgba(220, 38, 38, 0.2);
@@ -146,6 +255,7 @@
             border-radius: 12px;
             font-weight: 600;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
@@ -183,6 +293,7 @@
             border-radius: 100px;
             color: #888;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .filter-btn:hover, .filter-btn.active {
@@ -267,6 +378,7 @@
             width: 150px; height: 150px;
             overflow: hidden;
             z-index: 10;
+            pointer-events: none;
         }
         
         .corner-ribbon span {
@@ -455,6 +567,84 @@
             cursor: pointer;
             font-size: 0.875rem;
         }
+
+        /* Audio Controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: rgba(5, 5, 5, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .audio-controls:hover {
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+
+        .mute-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mute-btn:hover {
+            background: rgba(220, 38, 38, 0.2);
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+
+        .mute-btn.muted {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #DC2626;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+        }
+
+        .volume-label {
+            font-size: 0.75rem;
+            color: #666;
+            min-width: 35px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -464,6 +654,21 @@
     
     <!-- Grid Background -->
     <div class="grid-bg"></div>
+    
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button onclick="toggleMute()" class="mute-btn" id="muteBtn" title="Toggle Sound">
+            <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+            </svg>
+            <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+            </svg>
+        </button>
+        <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider" oninput="updateVolume(this.value)">
+        <span class="volume-label" id="volumeLabel">50%</span>
+    </div>
     
     <!-- Navigation -->
     <nav class="main-nav">
@@ -553,199 +758,168 @@
                 <button onclick="filterWork('combos')" class="filter-btn" data-filter="combos">COMBOS</button>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolioGrid">
-                <!-- Portfolio items -->
-                <div class="glass-card portfolio-3d aspect-video" data-category="thumbnails">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg" alt="Thumbnail 1" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
-                                <h3 class="text-white font-semibold mt-1">Gaming Thumbnail</h3>
-                            </div>
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" id="portfolioGrid">
+                <!-- Thumbnails - 16:9 Aspect Ratio -->
+                <div class="portfolio-item thumbnail" data-category="thumbnails">
+                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg" alt="Thumbnail 1">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
+                            <h3 class="text-white font-semibold mt-1">Gaming Thumbnail</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-video" data-category="thumbnails">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg" alt="Thumbnail 2" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
-                                <h3 class="text-white font-semibold mt-1">Esports Thumbnail</h3>
-                            </div>
+                <div class="portfolio-item thumbnail" data-category="thumbnails">
+                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg" alt="Thumbnail 2">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
+                            <h3 class="text-white font-semibold mt-1">Esports Thumbnail</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-video" data-category="thumbnails">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg" alt="Thumbnail 3" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
-                                <h3 class="text-white font-semibold mt-1">Fortnite Thumbnail</h3>
-                            </div>
+                <div class="portfolio-item thumbnail" data-category="thumbnails">
+                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg" alt="Thumbnail 3">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
+                            <h3 class="text-white font-semibold mt-1">Fortnite Thumbnail</h3>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Posters -->
-                <div class="glass-card portfolio-3d aspect-[3/4]" data-category="posters">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp" alt="Poster 1" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                                <h3 class="text-white font-semibold mt-1">Event Poster</h3>
-                            </div>
+                <!-- Posters - 3:4 Aspect Ratio (Tall) -->
+                <div class="portfolio-item poster" data-category="posters">
+                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp" alt="Poster 1">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
+                            <h3 class="text-white font-semibold mt-1">Event Poster</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[3/4]" data-category="posters">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp" alt="Poster 2" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                                <h3 class="text-white font-semibold mt-1">Tournament Poster</h3>
-                            </div>
+                <div class="portfolio-item poster" data-category="posters">
+                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp" alt="Poster 2">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
+                            <h3 class="text-white font-semibold mt-1">Tournament Poster</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[3/4]" data-category="posters">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp" alt="Poster 3" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                                <h3 class="text-white font-semibold mt-1">Team Poster</h3>
-                            </div>
+                <div class="portfolio-item poster" data-category="posters">
+                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp" alt="Poster 3">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
+                            <h3 class="text-white font-semibold mt-1">Team Poster</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[3/4]" data-category="posters">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp" alt="Poster 4" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                                <h3 class="text-white font-semibold mt-1">Championship Poster</h3>
-                            </div>
+                <div class="portfolio-item poster" data-category="posters">
+                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp" alt="Poster 4">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
+                            <h3 class="text-white font-semibold mt-1">Championship Poster</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[3/4]" data-category="posters">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp" alt="Poster 5" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                                <h3 class="text-white font-semibold mt-1">Match Poster</h3>
-                            </div>
+                <div class="portfolio-item poster" data-category="posters">
+                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp" alt="Poster 5">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
+                            <h3 class="text-white font-semibold mt-1">Match Poster</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[3/4]" data-category="posters">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp" alt="Poster 6" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                                <h3 class="text-white font-semibold mt-1">Finals Poster</h3>
-                            </div>
+                <div class="portfolio-item poster" data-category="posters">
+                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp" alt="Poster 6">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
+                            <h3 class="text-white font-semibold mt-1">Finals Poster</h3>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Banners -->
-                <div class="glass-card portfolio-3d aspect-[21/9]" data-category="banners">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg" alt="Banner 1" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
-                                <h3 class="text-white font-semibold mt-1">Twitter Header</h3>
-                            </div>
+                <!-- Banners - 21:9 Aspect Ratio (Ultrawide) -->
+                <div class="portfolio-item banner" data-category="banners">
+                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg" alt="Banner 1">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
+                            <h3 class="text-white font-semibold mt-1">Twitter Header</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[21/9]" data-category="banners">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg" alt="Banner 2" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
-                                <h3 class="text-white font-semibold mt-1">YouTube Banner</h3>
-                            </div>
+                <div class="portfolio-item banner" data-category="banners">
+                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg" alt="Banner 2">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
+                            <h3 class="text-white font-semibold mt-1">YouTube Banner</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-[21/9]" data-category="banners">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg" alt="Banner 3" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
-                                <h3 class="text-white font-semibold mt-1">Esports Banner</h3>
-                            </div>
+                <div class="portfolio-item banner" data-category="banners">
+                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg" alt="Banner 3">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
+                            <h3 class="text-white font-semibold mt-1">Esports Banner</h3>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Combos -->
-                <div class="glass-card portfolio-3d aspect-video" data-category="combos">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg" alt="Combo 1" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                                <h3 class="text-white font-semibold mt-1">Branding Package</h3>
-                            </div>
+                <!-- Combos - 16:9 Aspect Ratio -->
+                <div class="portfolio-item combo" data-category="combos">
+                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg" alt="Combo 1">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
+                            <h3 class="text-white font-semibold mt-1">Branding Package</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-video" data-category="combos">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg" alt="Combo 2" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                                <h3 class="text-white font-semibold mt-1">Streamer Package</h3>
-                            </div>
+                <div class="portfolio-item combo" data-category="combos">
+                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg" alt="Combo 2">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
+                            <h3 class="text-white font-semibold mt-1">Streamer Package</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-video" data-category="combos">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg" alt="Combo 3" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                                <h3 class="text-white font-semibold mt-1">Creator Package</h3>
-                            </div>
+                <div class="portfolio-item combo" data-category="combos">
+                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg" alt="Combo 3">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
+                            <h3 class="text-white font-semibold mt-1">Creator Package</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="glass-card portfolio-3d aspect-video" data-category="combos">
-                    <div class="portfolio-3d-inner w-full h-full relative">
-                        <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg" alt="Combo 4" class="w-full h-full object-cover rounded-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                            <div>
-                                <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                                <h3 class="text-white font-semibold mt-1">Pro Package</h3>
-                            </div>
+                <div class="portfolio-item combo" data-category="combos">
+                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg" alt="Combo 4">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
+                            <h3 class="text-white font-semibold mt-1">Pro Package</h3>
                         </div>
                     </div>
                 </div>
@@ -765,7 +939,7 @@
                 <p class="text-gray-400 max-w-xl mx-auto">Professional GFX at competitive prices. All prices in AUD.</p>
             </div>
             
-            <!-- Services Grid - HARDCODED (WILL ALWAYS SHOW) -->
+            <!-- Services Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 <!-- Logo -->
                 <div class="glass-card p-8 reveal" id="service-logo">
@@ -875,9 +1049,8 @@
                         <button onclick="selectService('Complete Brand Bundle', 45)" class="btn-primary w-full service-btn" data-service="bundle">SELECT BUNDLE</button>
                     </div>
                     
-                    <!-- ALL IN ONE ASSET PACK - Fully Editable -->
+                    <!-- ALL IN ONE ASSET PACK -->
                     <div class="glass-card p-8 reveal relative overflow-hidden" id="assetPackCard">
-                        <!-- Corner Ribbon (Toggleable) -->
                         <div class="corner-ribbon" id="assetPackRibbon">
                             <span id="ribbonText">COMING SOON</span>
                         </div>
@@ -1036,10 +1209,10 @@
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Add Portfolio Item</h4>
                     <input type="text" id="newImageUrl" class="form-input text-sm mb-2" placeholder="Image URL">
                     <select id="newImageCategory" class="form-input text-sm mb-2 bg-neutral-900">
-                        <option value="thumbnails">Thumbnails</option>
-                        <option value="posters">Posters</option>
-                        <option value="banners">Banners</option>
-                        <option value="combos">Combos</option>
+                        <option value="thumbnails">Thumbnails (16:9)</option>
+                        <option value="posters">Posters (3:4)</option>
+                        <option value="banners">Banners (21:9)</option>
+                        <option value="combos">Combos (16:9)</option>
                     </select>
                     <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm">ADD ITEM</button>
                 </div>
@@ -1180,6 +1353,8 @@
         let orders = [];
         let audioContext;
         let currentCurrency = 'AUD';
+        let isMuted = false;
+        let volumeLevel = 0.5;
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
         const currencySymbols = { AUD: '$', USD: '$', EUR: '€', GBP: '£', CAD: '$', JPY: '¥', NZD: '$', SGD: '$' };
@@ -1201,9 +1376,62 @@
             initAudio();
             initScrollReveal();
             initFormValidation();
+            initPortfolioHover();
             initAssetPackEditor();
             loadDataFromDatabase();
         });
+        
+        // RELIABLE Portfolio Hover with ALL effects
+        function initPortfolioHover() {
+            const items = document.querySelectorAll('.portfolio-item');
+            
+            items.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.classList.add('hover-active');
+                    playSound('hover');
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.classList.remove('hover-active');
+                });
+                
+                // Touch for mobile
+                item.addEventListener('touchstart', function() {
+                    this.classList.add('hover-active');
+                }, {passive: true});
+                
+                item.addEventListener('touchend', function() {
+                    setTimeout(() => this.classList.remove('hover-active'), 300);
+                });
+            });
+        }
+        
+        // Audio Controls
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('muteBtn');
+            const soundOnIcon = document.getElementById('soundOnIcon');
+            const soundOffIcon = document.getElementById('soundOffIcon');
+            
+            if (isMuted) {
+                muteBtn.classList.add('muted');
+                soundOnIcon.classList.add('hidden');
+                soundOffIcon.classList.remove('hidden');
+            } else {
+                muteBtn.classList.remove('muted');
+                soundOnIcon.classList.remove('hidden');
+                soundOffIcon.classList.add('hidden');
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            }
+            showToast(isMuted ? 'Sound muted' : 'Sound on');
+        }
+        
+        function updateVolume(value) {
+            volumeLevel = value / 100;
+            document.getElementById('volumeLabel').textContent = value + '%';
+        }
         
         // Cursor
         function initCursor() {
@@ -1248,26 +1476,28 @@
         }
         
         function playSound(type) {
-            if (!audioContext) return;
+            if (!audioContext || isMuted) return;
             try {
                 const osc = audioContext.createOscillator();
                 const gain = audioContext.createGain();
                 osc.connect(gain); 
                 gain.connect(audioContext.destination);
                 
+                const baseVolume = volumeLevel;
+                
                 if (type === 'hover') { 
                     osc.frequency.value = 600; 
-                    gain.gain.value = 0.03; 
+                    gain.gain.value = 0.03 * baseVolume; 
                     osc.start(); 
                     osc.stop(audioContext.currentTime + 0.05); 
                 } else if (type === 'click') { 
                     osc.frequency.value = 800; 
-                    gain.gain.value = 0.05; 
+                    gain.gain.value = 0.05 * baseVolume; 
                     osc.start(); 
                     osc.stop(audioContext.currentTime + 0.08); 
                 } else if (type === 'success') { 
                     osc.frequency.value = 1000; 
-                    gain.gain.value = 0.08; 
+                    gain.gain.value = 0.08 * baseVolume; 
                     osc.start(); 
                     osc.frequency.exponentialRampToValueAtTime(1500, audioContext.currentTime + 0.2); 
                     osc.stop(audioContext.currentTime + 0.3); 
@@ -1315,7 +1545,6 @@
             if (currEl) currEl.textContent = c;
             if (dropEl) dropEl.classList.add('opacity-0', 'invisible');
             
-            // Update all prices on page
             document.querySelectorAll('.service-price').forEach(p => {
                 const aud = parseInt(p.textContent);
                 if (!isNaN(aud)) {
@@ -1328,21 +1557,39 @@
             showToast(`Currency: ${c}`);
         }
         
-        // Portfolio filter
+        // Portfolio filter - Fixed GSAP animation
         function filterWork(cat) {
             playSound('click');
             document.querySelectorAll('.filter-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.filter === cat);
             });
             
-            document.querySelectorAll('.portfolio-3d').forEach(item => {
-                if (cat === 'all' || item.dataset.category === cat) {
+            const items = document.querySelectorAll('.portfolio-item');
+            let visibleItems = [];
+            
+            items.forEach(item => {
+                const shouldShow = cat === 'all' || item.dataset.category === cat;
+                if (shouldShow) {
                     item.style.display = 'block';
-                    gsap.fromTo(item, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4 });
+                    visibleItems.push(item);
                 } else {
                     item.style.display = 'none';
                 }
             });
+            
+            if (visibleItems.length > 0) {
+                gsap.fromTo(visibleItems, 
+                    { opacity: 0, scale: 0.9, y: 20 }, 
+                    { 
+                        opacity: 1, 
+                        scale: 1, 
+                        y: 0, 
+                        duration: 0.4, 
+                        stagger: 0.05,
+                        ease: "power2.out"
+                    }
+                );
+            }
         }
         
         // Service selection
@@ -1360,17 +1607,20 @@
             const cat = document.getElementById('newImageCategory').value;
             if (!url) return;
             
+            let aspectClass = 'thumbnail';
+            if (cat === 'posters') aspectClass = 'poster';
+            else if (cat === 'banners') aspectClass = 'banner';
+            else if (cat === 'combos') aspectClass = 'combo';
+            
             const div = document.createElement('div');
-            div.className = 'glass-card portfolio-3d aspect-video';
+            div.className = `portfolio-item ${aspectClass}`;
             div.dataset.category = cat;
             div.innerHTML = `
-                <div class="portfolio-3d-inner w-full h-full relative">
-                    <img src="${url}" class="w-full h-full object-cover rounded-2xl">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">${cat.toUpperCase()}</span>
-                            <h3 class="text-white font-semibold mt-1">New Work</h3>
-                        </div>
+                <img src="${url}" alt="New Work">
+                <div class="portfolio-overlay">
+                    <div>
+                        <span class="text-red-500 font-medium text-sm tracking-wider">${cat.toUpperCase()}</span>
+                        <h3 class="text-white font-semibold mt-1">New Work</h3>
                     </div>
                 </div>
             `;
@@ -1381,6 +1631,19 @@
                 document.getElementById('newImageUrl').value = '';
                 playSound('success'); 
                 showToast('Item added - Save to persist');
+                
+                div.addEventListener('mouseenter', function() {
+                    this.classList.add('hover-active');
+                    playSound('hover');
+                });
+                div.addEventListener('mouseleave', function() {
+                    this.classList.remove('hover-active');
+                });
+                
+                gsap.fromTo(div, 
+                    { opacity: 0, scale: 0.9 }, 
+                    { opacity: 1, scale: 1, duration: 0.4 }
+                );
             }
         }
         
@@ -1405,7 +1668,6 @@
             orders.push(orderData);
             updateOrdersList();
             
-            // Send to Discord webhook
             await fetch(CONFIG.webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1425,7 +1687,6 @@
                 })
             });
             
-            // Schedule reminder
             setTimeout(() => checkOrderReminder(orderData.id), 24 * 60 * 60 * 1000);
             
             showToast('Order submitted!'); 
@@ -1456,7 +1717,7 @@
             }
         }
         
-        // Update orders list in admin panel
+        // Update orders list
         function updateOrdersList() {
             const container = document.getElementById('ordersList');
             if (!container) return;
@@ -1617,7 +1878,7 @@
             }
         }
         
-        // Update service prices from admin
+        // Update service prices
         function updateServicePrices() {
             const prices = {
                 logo: document.getElementById('admin-price-logo').value,
@@ -1629,15 +1890,12 @@
                 bundle: document.getElementById('admin-price-bundle').value
             };
             
-            // Update DOM
             for (const [key, value] of Object.entries(prices)) {
                 const el = document.querySelector(`.service-price[data-service="${key}"]`);
                 if (el) el.textContent = value;
             }
             
-            // Update order form options
             updateOrderFormOptions();
-            
             showToast('Prices updated - Save to persist');
         }
         
@@ -1711,7 +1969,6 @@
             assetPackData.description = document.getElementById('editPackDesc').value;
             assetPackData.status = document.getElementById('editPackStatus').value;
             
-            // Update preview text
             const previewTitle = document.getElementById('previewTitle');
             const previewPrice = document.getElementById('previewPrice');
             const previewFeatures = document.getElementById('previewFeatures');
@@ -1720,12 +1977,10 @@
             if (previewPrice) previewPrice.textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
             if (previewFeatures) previewFeatures.textContent = assetPackData.features.length + ' items';
             
-            // Live update the main page card
             updateAssetPackDisplay();
         }
         
         function updateAssetPackDisplay() {
-            // Update ribbon
             const ribbon = document.getElementById('assetPackRibbon');
             if (ribbon) {
                 if (assetPackData.showRibbon) {
@@ -1736,7 +1991,6 @@
                 }
             }
             
-            // Update content
             const titleEl = document.getElementById('assetPackTitle');
             const priceEl = document.getElementById('assetPackPrice');
             const descEl = document.getElementById('assetPackDesc');
@@ -1767,14 +2021,12 @@
                     btn.disabled = false;
                     btn.textContent = assetPackData.price ? `BUY NOW - $${assetPackData.price}` : 'BUY NOW';
                     btn.className = 'w-full btn-primary mt-4';
-                    // ENABLE CLICK TO ORDER
                     btn.onclick = () => {
                         selectService('All-in-One Asset Pack', assetPackData.price || 0);
                     };
                 }
             }
             
-            // Update order form option
             const assetPackOption = document.getElementById('assetPackOption');
             if (assetPackOption) {
                 const priceText = assetPackData.price ? '$'+assetPackData.price : 'TBA';
@@ -1828,7 +2080,6 @@
                     
                     if (data.assetPackData) {
                         assetPackData = { ...assetPackData, ...data.assetPackData };
-                        // Update UI to match loaded data
                         document.getElementById('editShowRibbon').checked = assetPackData.showRibbon;
                         document.getElementById('editRibbonText').value = assetPackData.ribbonText;
                         document.getElementById('editPackTitle').value = assetPackData.title;
