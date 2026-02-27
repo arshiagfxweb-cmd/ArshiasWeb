@@ -3,8 +3,16 @@ import crypto from 'crypto';
 
 const uri = process.env.MONGODB_URI;
 
+if (!uri) {
+  console.error('MONGODB_URI not set');
+}
+
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
+
 // Password: ArshiaGFX2024!
-const DEFAULT_PASSWORD_HASH = 'a8f5f167f44f4964e6c998dee827110c9a0c5e1e7a5b6e5f9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0';
+const DEFAULT_PASSWORD_HASH = hashPassword('ArshiaGFX2024!');
 
 let cachedClient = null;
 let cachedDb = null;
@@ -22,10 +30,6 @@ async function connectToDatabase() {
   cachedDb = db;
   
   return { client, db };
-}
-
-function hashPassword(password) {
-  return crypto.createHash('sha256').update(password).digest('hex');
 }
 
 export default async function handler(req, res) {
@@ -64,7 +68,6 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const { action, password, token, currentPassword, newPassword, assetPackData, orders, servicePrices } = req.body;
       
-      // LOGIN - No session required
       if (action === 'login') {
         const stored = await config.findOne({ key: 'admin_password' });
         const validHash = stored ? stored.value : DEFAULT_PASSWORD_HASH;
@@ -86,7 +89,6 @@ export default async function handler(req, res) {
         return res.json({ success: true, token: newToken });
       }
       
-      // All other actions require valid session
       if (!token) {
         return res.status(401).json({ success: false, error: 'No token provided' });
       }
@@ -96,7 +98,6 @@ export default async function handler(req, res) {
         return res.status(401).json({ success: false, error: 'Session expired' });
       }
       
-      // CHANGE PASSWORD
       if (action === 'changePassword') {
         const stored = await config.findOne({ key: 'admin_password' });
         const currentHash = stored ? stored.value : DEFAULT_PASSWORD_HASH;
@@ -114,7 +115,6 @@ export default async function handler(req, res) {
         return res.json({ success: true });
       }
       
-      // SAVE DATA
       if (action === 'saveData') {
         await data.updateOne(
           { key: 'site_data' },
