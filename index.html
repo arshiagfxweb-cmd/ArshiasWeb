@@ -69,7 +69,7 @@
             position: relative;
             border-radius: 24px;
             overflow: hidden;
-            background: rgba(17, 17, 17, 0.7);
+            background: var(--card-black);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d;
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
@@ -83,6 +83,18 @@
         .portfolio-item.poster { aspect-ratio: 3/4; }
         .portfolio-item.banner { aspect-ratio: 21/9; }
         .portfolio-item.combo { aspect-ratio: 16/9; }
+        
+        /* FIX: Ensure images fill container properly */
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            background-color: var(--card-black);
+        }
         
         /* Mobile: Simpler hover effect */
         @media (hover: hover) {
@@ -99,16 +111,6 @@
             .portfolio-item:active {
                 transform: scale(0.98);
             }
-        }
-        
-        .portfolio-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.6s ease;
-            pointer-events: none;
-            -webkit-user-drag: none;
         }
         
         .portfolio-item.hover-active img {
@@ -1015,7 +1017,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" id="portfolioGrid">
                 <!-- Thumbnails -->
                 <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb1">
-                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg" alt="Thumbnail 1" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg" alt="Thumbnail 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
@@ -1025,7 +1027,7 @@
                 </div>
                 
                 <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb2">
-                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg" alt="Thumbnail 2" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg" alt="Thumbnail 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
@@ -1035,7 +1037,7 @@
                 </div>
                 
                 <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb3">
-                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg" alt="Thumbnail 3" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg" alt="Thumbnail 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
@@ -1046,7 +1048,7 @@
                 
                 <!-- Posters -->
                 <div class="portfolio-item poster" data-category="posters" data-id="poster1">
-                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp" alt="Poster 1" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp" alt="Poster 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -1056,7 +1058,7 @@
                 </div>
                 
                 <div class="portfolio-item poster" data-category="posters" data-id="poster2">
-                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp" alt="Poster 2" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp" alt="Poster 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -1066,7 +1068,7 @@
                 </div>
                 
                 <div class="portfolio-item poster" data-category="posters" data-id="poster3">
-                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp" alt="Poster 3" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp" alt="Poster 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -1076,7 +1078,7 @@
                 </div>
                 
                 <div class="portfolio-item poster" data-category="posters" data-id="poster4">
-                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp" alt="Poster 4" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp" alt="Poster 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -1086,7 +1088,7 @@
                 </div>
                 
                 <div class="portfolio-item poster" data-category="posters" data-id="poster5">
-                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp" alt="Poster 5" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp" alt="Poster 5" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -1096,7 +1098,7 @@
                 </div>
                 
                 <div class="portfolio-item poster" data-category="posters" data-id="poster6">
-                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp" alt="Poster 6" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp" alt="Poster 6" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -1107,7 +1109,7 @@
                 
                 <!-- Banners -->
                 <div class="portfolio-item banner" data-category="banners" data-id="banner1">
-                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg" alt="Banner 1" onerror="this.src='https://via.placeholder.com/840x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg" alt="Banner 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
@@ -1117,7 +1119,7 @@
                 </div>
                 
                 <div class="portfolio-item banner" data-category="banners" data-id="banner2">
-                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg" alt="Banner 2" onerror="this.src='https://via.placeholder.com/840x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg" alt="Banner 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
@@ -1127,7 +1129,7 @@
                 </div>
                 
                 <div class="portfolio-item banner" data-category="banners" data-id="banner3">
-                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg" alt="Banner 3" onerror="this.src='https://via.placeholder.com/840x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg" alt="Banner 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
@@ -1138,7 +1140,7 @@
                 
                 <!-- Combos -->
                 <div class="portfolio-item combo" data-category="combos" data-id="combo1">
-                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg" alt="Combo 1" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg" alt="Combo 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -1148,7 +1150,7 @@
                 </div>
                 
                 <div class="portfolio-item combo" data-category="combos" data-id="combo2">
-                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg" alt="Combo 2" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg" alt="Combo 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -1158,7 +1160,7 @@
                 </div>
                 
                 <div class="portfolio-item combo" data-category="combos" data-id="combo3">
-                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg" alt="Combo 3" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg" alt="Combo 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -1168,7 +1170,7 @@
                 </div>
                 
                 <div class="portfolio-item combo" data-category="combos" data-id="combo4">
-                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg" alt="Combo 4" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
+                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg" alt="Combo 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -1450,7 +1452,7 @@
             <p class="text-xl text-gray-400 mb-12 reveal">Ready to elevate your brand? Get in touch.</p>
             
             <div class="flex justify-center gap-4 mb-12 reveal">
-                <a href="https://x.com/arshiapsd" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
+                a href="https://x.com/arshiapsd" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
                 <a href="https://www.behance.net/arshiagfx" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
@@ -2095,7 +2097,7 @@
             div.dataset.id = id;
             div.dataset.custom = 'true';
             div.innerHTML = `
-                <img src="${escapeHtml(url)}" alt="${escapeHtml(title)}" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Error'" loading="lazy">
+                <img src="${escapeHtml(url)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                 <div class="portfolio-overlay">
                     <div>
                         <span class="text-red-500 font-medium text-sm tracking-wider">${cat.toUpperCase()}</span>
@@ -2737,7 +2739,7 @@
                 div.dataset.id = item.id;
                 div.dataset.custom = 'true';
                 div.innerHTML = `
-                    <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Error'" loading="lazy">
+                    <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">${item.category.toUpperCase()}</span>
