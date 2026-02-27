@@ -4,14 +4,14 @@ import crypto from 'crypto';
 const uri = process.env.MONGODB_URI;
 
 if (!uri) {
-  console.error('MONGODB_URI not set');
+  console.error('ERROR: MONGODB_URI not set!');
 }
 
 function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
 
-// Password: ArshiaGFX2024!
+// Default password: ArshiaGFX2024!
 const DEFAULT_PASSWORD_HASH = hashPassword('ArshiaGFX2024!');
 
 let cachedClient = null;
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
 
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('API Error:', error.message);
     return res.status(500).json({ error: 'Server error', message: error.message });
   }
 }
