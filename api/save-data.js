@@ -4,8 +4,9 @@ import crypto from 'crypto';
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
-// Admin password - CHANGE THIS to your own secure password
-const ADMIN_PASSWORD = 'ZINf5I7SxS1Lvwn9';
+// Admin password from environment variable (set in Vercel dashboard)
+// If not set, defaults to a temporary password (change immediately in production)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
 // Store active sessions (in production, use Redis or database)
 const sessions = new Map();
