@@ -2,59 +2,13 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARSHIA — GFX Designer</title>
     <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- ANTI-DEBUGGING & SOURCE PROTECTION -->
-    <script>
-        document.addEventListener('contextmenu', e => {
-            e.preventDefault();
-            return false;
-        }, true);
-        
-        document.addEventListener('keydown', e => {
-            if (e.keyCode === 123) {
-                e.preventDefault();
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-                e.preventDefault();
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode === 85) {
-                e.preventDefault();
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode === 83) {
-                e.preventDefault();
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode === 80) {
-                e.preventDefault();
-                return false;
-            }
-        }, true);
-        
-        document.onkeydown = function(e) {
-            if (e.keyCode === 123 || 
-                (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode)) ||
-                (e.ctrlKey && [85, 83, 80].includes(e.keyCode))) {
-                return false;
-            }
-        };
-        
-        document.addEventListener('dragstart', e => e.preventDefault());
-        document.addEventListener('drop', e => e.preventDefault());
-        
-        console.clear();
-        console.log('%c⚠️ WARNING!', 'color: red; font-size: 40px; font-weight: bold;');
-        console.log('%cThis is a browser feature intended for developers.', 'color: orange; font-size: 16px;');
-    </script>
     
     <style>
         :root {
@@ -66,16 +20,25 @@
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--void-black);
             color: white;
             overflow-x: hidden;
-            cursor: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+        
+        /* Mobile: Disable custom cursor */
+        @media (pointer: coarse) {
+            body { cursor: auto !important; }
+            .cursor-dot, .cursor-outline { display: none !important; }
         }
         
         .font-display { font-family: 'Space Grotesk', sans-serif; }
@@ -121,12 +84,21 @@
         .portfolio-item.banner { aspect-ratio: 21/9; }
         .portfolio-item.combo { aspect-ratio: 16/9; }
         
-        .portfolio-item.hover-active {
-            transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
-                        0 0 30px rgba(220, 38, 38, 0.3);
-            border-color: rgba(220, 38, 38, 0.5);
-            z-index: 10;
+        /* Mobile: Simpler hover effect */
+        @media (hover: hover) {
+            .portfolio-item.hover-active {
+                transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                            0 0 30px rgba(220, 38, 38, 0.3);
+                border-color: rgba(220, 38, 38, 0.5);
+                z-index: 10;
+            }
+        }
+        
+        @media (hover: none) {
+            .portfolio-item:active {
+                transform: scale(0.98);
+            }
         }
         
         .portfolio-item img {
@@ -180,6 +152,14 @@
             opacity: 1;
         }
         
+        /* Mobile: Always show overlay on touch devices */
+        @media (hover: none) {
+            .portfolio-overlay {
+                opacity: 1;
+                background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+            }
+        }
+        
         .glass-card {
             background: rgba(17, 17, 17, 0.7);
             backdrop-filter: blur(20px);
@@ -207,10 +187,12 @@
             left: 100%;
         }
         
-        .glass-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(220, 38, 38, 0.3);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(220, 38, 38, 0.2);
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-8px) scale(1.02);
+                border-color: rgba(220, 38, 38, 0.3);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(220, 38, 38, 0.2);
+            }
         }
         
         .main-nav {
@@ -220,6 +202,25 @@
             background: rgba(5, 5, 5, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        /* Mobile nav adjustments */
+        @media (max-width: 768px) {
+            .main-nav .max-w-7xl {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .main-nav .hidden.md\:flex {
+                display: none;
+            }
+            
+            .main-nav .flex.items-center.gap-4 {
+                gap: 0.5rem;
+            }
+            
+            .logo-img { height: 32px; }
+            .font-display.text-xl { font-size: 1rem; }
         }
         
         .logo-img { height: 40px; width: auto; object-fit: contain; pointer-events: none; }
@@ -235,6 +236,7 @@
             overflow: hidden;
             cursor: pointer;
             border: none;
+            touch-action: manipulation;
         }
         
         .btn-primary::before {
@@ -248,6 +250,8 @@
         
         .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         
         .btn-secondary {
             background: rgba(255,255,255,0.05);
@@ -260,6 +264,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
         }
         
         .btn-secondary::before {
@@ -273,6 +278,7 @@
         
         .btn-secondary:hover::before { left: 100%; }
         .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); transform: translateY(-2px); }
+        .btn-secondary:active { transform: translateY(0); }
         
         .btn-danger {
             background: rgba(220, 38, 38, 0.2);
@@ -295,6 +301,7 @@
             color: white;
             width: 100%;
             transition: all 0.3s;
+            font-size: 16px; /* Prevents zoom on iOS */
         }
         
         .form-input:focus {
@@ -318,12 +325,21 @@
             color: #888;
             transition: all 0.3s;
             cursor: pointer;
+            touch-action: manipulation;
         }
         
         .filter-btn:hover, .filter-btn.active {
             border-color: var(--primary-red);
             color: var(--primary-red);
             background: rgba(220, 38, 38, 0.1);
+        }
+        
+        /* Mobile filter buttons */
+        @media (max-width: 640px) {
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
         }
         
         .custom-checkbox {
@@ -335,6 +351,7 @@
             cursor: pointer;
             position: relative;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
         
         .custom-checkbox:checked {
@@ -368,6 +385,8 @@
             z-index: 3000;
             opacity: 0;
             transition: all 0.3s;
+            max-width: 90vw;
+            text-align: center;
         }
         
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -383,6 +402,13 @@
             transform: translateX(100%);
             transition: transform 0.4s;
             overflow-y: auto;
+        }
+        
+        /* Mobile admin panel */
+        @media (max-width: 640px) {
+            .admin-panel {
+                max-width: 100%;
+            }
         }
         
         .admin-panel.active { transform: translateX(0); }
@@ -426,6 +452,13 @@
             text-align: center;
             margin-top: 20px;
             text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+        
+        /* Mobile coming soon text */
+        @media (max-width: 640px) {
+            .coming-soon-text {
+                font-size: 1.5rem;
+            }
         }
         
         .grid-bg {
@@ -595,6 +628,20 @@
             transition: all 0.3s;
         }
 
+        /* Mobile audio controls */
+        @media (max-width: 640px) {
+            .audio-controls {
+                bottom: 10px;
+                left: 10px;
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .volume-slider {
+                width: 60px;
+            }
+        }
+
         .audio-controls:hover {
             border-color: rgba(220, 38, 38, 0.5);
         }
@@ -656,9 +703,34 @@
             text-align: right;
         }
 
-        /* Multi-select styles */
+        /* Multi-select dropdown styles */
         .multi-select-container {
             position: relative;
+            width: 100%;
+        }
+        
+        .multi-select-trigger {
+            background: rgba(17, 17, 17, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .multi-select-trigger:hover {
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+        
+        .multi-select-trigger.active {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
         
         .multi-select-dropdown {
@@ -666,7 +738,7 @@
             top: 100%;
             left: 0;
             right: 0;
-            background: rgba(17, 17, 17, 0.95);
+            background: rgba(17, 17, 17, 0.98);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             margin-top: 8px;
@@ -674,6 +746,7 @@
             overflow-y: auto;
             z-index: 100;
             display: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
         
         .multi-select-dropdown.active {
@@ -687,16 +760,38 @@
             align-items: center;
             gap: 12px;
             transition: background 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .multi-select-option:last-child {
+            border-bottom: none;
         }
         
         .multi-select-option:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(220, 38, 38, 0.1);
         }
         
         .multi-select-option input[type="checkbox"] {
             width: 18px;
             height: 18px;
             accent-color: #DC2626;
+            cursor: pointer;
+        }
+        
+        .multi-select-option .service-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .multi-select-option .service-name {
+            font-weight: 500;
+        }
+        
+        .multi-select-option .service-price {
+            color: #DC2626;
+            font-weight: 600;
         }
         
         .selected-services {
@@ -716,6 +811,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            animation: tagPop 0.3s ease;
+        }
+        
+        @keyframes tagPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         .selected-service-tag button {
@@ -725,6 +826,18 @@
             cursor: pointer;
             font-size: 16px;
             line-height: 1;
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        
+        .selected-service-tag button:hover {
+            background: rgba(255,255,255,0.1);
         }
 
         .webhook-cooldown {
@@ -732,18 +845,71 @@
             color: #666;
             margin-top: 4px;
         }
+        
+        .placeholder-text {
+            color: #666;
+        }
+        
+        /* Mobile hero adjustments */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 4rem !important;
+            }
+            
+            #hero p {
+                font-size: 1rem !important;
+            }
+            
+            .btn-primary, .btn-secondary {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        /* Mobile section padding */
+        @media (max-width: 640px) {
+            section {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            
+            .max-w-7xl {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+        
+        /* Prevent text selection on mobile */
+        .no-select {
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        
+        /* Portfolio grid mobile */
+        @media (max-width: 768px) {
+            #portfolioGrid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Services grid mobile */
+        @media (max-width: 640px) {
+            #services .grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
+    <!-- Custom Cursor (hidden on mobile) -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
     
     <!-- Grid Background -->
     <div class="grid-bg"></div>
     
-    <!-- Audio Controls -->
-    <div class="audio-controls">
+    <!-- Audio Controls (hidden if audio not supported) -->
+    <div class="audio-controls" id="audioControls" style="display: none;">
         <button onclick="toggleMute()" class="mute-btn" id="muteBtn" title="Toggle Sound">
             <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
@@ -760,7 +926,7 @@
     <!-- Navigation -->
     <nav class="main-nav">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#hero" class="flex items-center gap-3">
+            <a href="#hero" class="flex items-center gap-3 no-select">
                 <img src="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp" alt="ARSHIA" class="logo-img">
                 <span class="font-display text-xl font-bold tracking-wider">ARSHIA</span>
             </a>
@@ -798,7 +964,7 @@
     </nav>
     
     <!-- Hero Section -->
-    <section id="hero" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+    <section id="hero" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden px-6">
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-red-900/20 rounded-full blur-[100px]"></div>
         
@@ -818,11 +984,11 @@
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
-                <a href="#work" class="btn-primary text-lg inline-flex items-center gap-2">
+                <a href="#work" class="btn-primary text-lg inline-flex items-center justify-center gap-2">
                     VIEW WORK
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
                 </a>
-                <a href="#order" class="btn-secondary text-lg">PLACE ORDER</a>
+                <a href="#order" class="btn-secondary text-lg inline-flex items-center justify-center">PLACE ORDER</a>
             </div>
         </div>
     </section>
@@ -848,8 +1014,8 @@
             <!-- Portfolio Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" id="portfolioGrid">
                 <!-- Thumbnails -->
-                <div class="portfolio-item thumbnail" data-category="thumbnails">
-                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg" alt="Thumbnail 1">
+                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb1">
+                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg" alt="Thumbnail 1" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
@@ -858,8 +1024,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item thumbnail" data-category="thumbnails">
-                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg" alt="Thumbnail 2">
+                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb2">
+                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg" alt="Thumbnail 2" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
@@ -868,8 +1034,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item thumbnail" data-category="thumbnails">
-                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg" alt="Thumbnail 3">
+                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb3">
+                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg" alt="Thumbnail 3" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
@@ -879,8 +1045,8 @@
                 </div>
                 
                 <!-- Posters -->
-                <div class="portfolio-item poster" data-category="posters">
-                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp" alt="Poster 1">
+                <div class="portfolio-item poster" data-category="posters" data-id="poster1">
+                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp" alt="Poster 1" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -889,8 +1055,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item poster" data-category="posters">
-                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp" alt="Poster 2">
+                <div class="portfolio-item poster" data-category="posters" data-id="poster2">
+                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp" alt="Poster 2" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -899,8 +1065,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item poster" data-category="posters">
-                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp" alt="Poster 3">
+                <div class="portfolio-item poster" data-category="posters" data-id="poster3">
+                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp" alt="Poster 3" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -909,8 +1075,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item poster" data-category="posters">
-                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp" alt="Poster 4">
+                <div class="portfolio-item poster" data-category="posters" data-id="poster4">
+                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp" alt="Poster 4" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -919,8 +1085,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item poster" data-category="posters">
-                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp" alt="Poster 5">
+                <div class="portfolio-item poster" data-category="posters" data-id="poster5">
+                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp" alt="Poster 5" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -929,8 +1095,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item poster" data-category="posters">
-                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp" alt="Poster 6">
+                <div class="portfolio-item poster" data-category="posters" data-id="poster6">
+                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp" alt="Poster 6" onerror="this.src='https://via.placeholder.com/480x640?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
@@ -940,8 +1106,8 @@
                 </div>
                 
                 <!-- Banners -->
-                <div class="portfolio-item banner" data-category="banners">
-                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg" alt="Banner 1">
+                <div class="portfolio-item banner" data-category="banners" data-id="banner1">
+                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg" alt="Banner 1" onerror="this.src='https://via.placeholder.com/840x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
@@ -950,8 +1116,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item banner" data-category="banners">
-                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg" alt="Banner 2">
+                <div class="portfolio-item banner" data-category="banners" data-id="banner2">
+                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg" alt="Banner 2" onerror="this.src='https://via.placeholder.com/840x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
@@ -960,8 +1126,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item banner" data-category="banners">
-                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg" alt="Banner 3">
+                <div class="portfolio-item banner" data-category="banners" data-id="banner3">
+                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg" alt="Banner 3" onerror="this.src='https://via.placeholder.com/840x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
@@ -971,8 +1137,8 @@
                 </div>
                 
                 <!-- Combos -->
-                <div class="portfolio-item combo" data-category="combos">
-                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg" alt="Combo 1">
+                <div class="portfolio-item combo" data-category="combos" data-id="combo1">
+                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg" alt="Combo 1" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -981,8 +1147,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item combo" data-category="combos">
-                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg" alt="Combo 2">
+                <div class="portfolio-item combo" data-category="combos" data-id="combo2">
+                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg" alt="Combo 2" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -991,8 +1157,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item combo" data-category="combos">
-                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg" alt="Combo 3">
+                <div class="portfolio-item combo" data-category="combos" data-id="combo3">
+                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg" alt="Combo 3" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -1001,8 +1167,8 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item combo" data-category="combos">
-                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg" alt="Combo 4">
+                <div class="portfolio-item combo" data-category="combos" data-id="combo4">
+                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg" alt="Combo 4" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Not+Found'">
                     <div class="portfolio-overlay">
                         <div>
                             <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
@@ -1039,7 +1205,6 @@
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Source files included</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="toggleServiceSelection('Logo', 20)" class="btn-secondary w-full service-btn" data-service="logo">SELECT</button>
                 </div>
                 
                 <!-- PFP -->
@@ -1053,7 +1218,6 @@
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Multiple sizes</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="toggleServiceSelection('PFP', 15)" class="btn-secondary w-full service-btn" data-service="pfp">SELECT</button>
                 </div>
                 
                 <!-- Banner -->
@@ -1067,7 +1231,6 @@
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> YouTube/Twitter optimized</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="toggleServiceSelection('Banner', 30)" class="btn-secondary w-full service-btn" data-service="banner">SELECT</button>
                 </div>
                 
                 <!-- Banner + PFP -->
@@ -1081,7 +1244,6 @@
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Brand consistency</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="toggleServiceSelection('Banner + PFP', 40)" class="btn-secondary w-full service-btn" data-service="banner_pfp">SELECT</button>
                 </div>
                 
                 <!-- Poster -->
@@ -1095,7 +1257,6 @@
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High resolution</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="toggleServiceSelection('Poster', 30)" class="btn-secondary w-full service-btn" data-service="poster">SELECT</button>
                 </div>
                 
                 <!-- Thumbnails -->
@@ -1109,7 +1270,6 @@
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High CTR design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
-                    <button onclick="toggleServiceSelection('Thumbnails', 20)" class="btn-secondary w-full service-btn" data-service="thumbnails">SELECT</button>
                 </div>
             </div>
             
@@ -1133,7 +1293,6 @@
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Priority delivery</li>
                         </ul>
-                        <button onclick="toggleServiceSelection('Complete Brand Bundle', 45)" class="btn-primary w-full service-btn" data-service="bundle">SELECT BUNDLE</button>
                     </div>
                     
                     <!-- ALL IN ONE ASSET PACK -->
@@ -1175,34 +1334,91 @@
             </div>
             
             <form id="orderForm" class="glass-card p-8 md:p-12 reveal">
-                <!-- Selected Services Display -->
+                <!-- Multi-Select Services Dropdown -->
                 <div class="mb-6">
-                    <label class="block text-sm font-medium mb-2 text-gray-300">Selected Services *</label>
-                    <div id="selectedServicesContainer" class="selected-services">
-                        <p class="text-gray-500 text-sm italic" id="noServicesMsg">No services selected. Choose from above.</p>
+                    <label class="block text-sm font-medium mb-2 text-gray-300">Select Services *</label>
+                    <div class="multi-select-container">
+                        <div class="multi-select-trigger" id="serviceTrigger" onclick="toggleServiceDropdown()">
+                            <span id="triggerText" class="placeholder-text">Click to select services...</span>
+                            <svg class="w-5 h-5 text-gray-400 transition-transform" id="triggerArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="multi-select-dropdown" id="serviceDropdown">
+                            <div class="multi-select-option" onclick="toggleService('Logo', 20)">
+                                <input type="checkbox" id="chk-logo" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">Logo</span>
+                                    <span class="service-price">$<span class="price-display" data-base="20">20</span></span>
+                                </div>
+                            </div>
+                            <div class="multi-select-option" onclick="toggleService('PFP', 15)">
+                                <input type="checkbox" id="chk-pfp" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">PFP</span>
+                                    <span class="service-price">$<span class="price-display" data-base="15">15</span></span>
+                                </div>
+                            </div>
+                            <div class="multi-select-option" onclick="toggleService('Banner', 30)">
+                                <input type="checkbox" id="chk-banner" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">Banner</span>
+                                    <span class="service-price">$<span class="price-display" data-base="30">30</span></span>
+                                </div>
+                            </div>
+                            <div class="multi-select-option" onclick="toggleService('Banner + PFP', 40)">
+                                <input type="checkbox" id="chk-banner-pfp" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">Banner + PFP</span>
+                                    <span class="service-price">$<span class="price-display" data-base="40">40</span></span>
+                                </div>
+                            </div>
+                            <div class="multi-select-option" onclick="toggleService('Poster', 30)">
+                                <input type="checkbox" id="chk-poster" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">Poster</span>
+                                    <span class="service-price">$<span class="price-display" data-base="30">30</span></span>
+                                </div>
+                            </div>
+                            <div class="multi-select-option" onclick="toggleService('Thumbnails', 20)">
+                                <input type="checkbox" id="chk-thumbnails" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">Thumbnails</span>
+                                    <span class="service-price">$<span class="price-display" data-base="20">20</span></span>
+                                </div>
+                            </div>
+                            <div class="multi-select-option" onclick="toggleService('Complete Brand Bundle', 45)">
+                                <input type="checkbox" id="chk-bundle" onchange="event.stopPropagation()">
+                                <div class="service-info">
+                                    <span class="service-name">Complete Brand Bundle</span>
+                                    <span class="service-price">$<span class="price-display" data-base="45">45</span></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div id="selectedServicesContainer" class="selected-services"></div>
                     <input type="hidden" id="selectedServicesInput" required>
                     <input type="hidden" id="totalPriceInput" value="0">
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Discord Username *</label>
-                    <input type="text" id="discordUser" required class="form-input" placeholder="username#0000">
+                    <input type="text" id="discordUser" required class="form-input" placeholder="username#0000" maxlength="50">
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Email *</label>
-                    <input type="email" id="emailUser" required class="form-input" placeholder="your@email.com">
+                    <input type="email" id="emailUser" required class="form-input" placeholder="your@email.com" maxlength="100">
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Description *</label>
-                    <textarea id="description" required rows="4" class="form-input" placeholder="Describe what you're looking for... Include style preferences, colors, text, etc."></textarea>
+                    <textarea id="description" required rows="4" class="form-input" placeholder="Describe what you're looking for... Include style preferences, colors, text, etc." maxlength="2000"></textarea>
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Reference Links (Optional)</label>
-                    <input type="text" id="references" class="form-input" placeholder="Paste any reference images or links...">
+                    <input type="text" id="references" class="form-input" placeholder="Paste any reference images or links..." maxlength="500">
                 </div>
                 
                 <div class="flex items-start gap-3 mb-8">
@@ -1234,10 +1450,10 @@
             <p class="text-xl text-gray-400 mb-12 reveal">Ready to elevate your brand? Get in touch.</p>
             
             <div class="flex justify-center gap-4 mb-12 reveal">
-                <a href="https://x.com/arshiapsd" target="_blank" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
+                <a href="https://x.com/arshiapsd" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
-                <a href="https://www.behance.net/arshiagfx" target="_blank" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
+                <a href="https://www.behance.net/arshiagfx" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg>
                 </a>
             </div>
@@ -1261,7 +1477,7 @@
             <!-- Login Section -->
             <div id="adminLogin">
                 <p class="text-sm text-gray-400 mb-4">Enter password to access admin features</p>
-                <input type="password" id="adminPassword" class="form-input mb-4" placeholder="Password">
+                <input type="password" id="adminPassword" class="form-input mb-4" placeholder="Password" autocomplete="off">
                 <button onclick="checkAdminPassword()" class="btn-primary w-full">LOGIN</button>
                 <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
             </div>
@@ -1275,9 +1491,9 @@
                 <!-- Change Password Section -->
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Change Password</h4>
-                    <input type="password" id="currentPassword" class="form-input text-sm mb-2" placeholder="Current Password">
-                    <input type="password" id="newPassword" class="form-input text-sm mb-2" placeholder="New Password">
-                    <input type="password" id="confirmPassword" class="form-input text-sm mb-2" placeholder="Confirm New Password">
+                    <input type="password" id="currentPassword" class="form-input text-sm mb-2" placeholder="Current Password" autocomplete="off">
+                    <input type="password" id="newPassword" class="form-input text-sm mb-2" placeholder="New Password" autocomplete="off">
+                    <input type="password" id="confirmPassword" class="form-input text-sm mb-2" placeholder="Confirm New Password" autocomplete="off">
                     <button onclick="changePassword()" class="btn-secondary w-full text-sm">UPDATE PASSWORD</button>
                     <p id="passwordError" class="text-red-500 text-sm mt-2 hidden"></p>
                     <p id="passwordSuccess" class="text-green-500 text-sm mt-2 hidden">Password updated successfully!</p>
@@ -1295,6 +1511,7 @@
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Add Portfolio Item</h4>
                     <input type="text" id="newImageUrl" class="form-input text-sm mb-2" placeholder="Image URL">
+                    <input type="text" id="newImageTitle" class="form-input text-sm mb-2" placeholder="Title (e.g., Championship Poster)">
                     <select id="newImageCategory" class="form-input text-sm mb-2 bg-neutral-900">
                         <option value="thumbnails">Thumbnails (16:9)</option>
                         <option value="posters">Posters (3:4)</option>
@@ -1302,6 +1519,14 @@
                         <option value="combos">Combos (16:9)</option>
                     </select>
                     <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm">ADD ITEM</button>
+                </div>
+                
+                <!-- Manage Portfolio Items -->
+                <div class="admin-section">
+                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Portfolio Items</h4>
+                    <div id="portfolioItemsList" class="orders-list">
+                        <p class="text-gray-500 text-sm italic">No custom items added</p>
+                    </div>
                 </div>
                 
                 <!-- Edit Services Prices -->
@@ -1420,22 +1645,23 @@
     </div>
 
     <script>
-        // PRODUCTION CONFIG - Uses API
+        // PRODUCTION CONFIG
         const CONFIG = {
-            webhookUrl: 'https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud',
             apiUrl: '/api/save-data'
         };
         
         // State
         let isAdmin = false;
         let orders = [];
+        let portfolioItems = []; // NEW: Track portfolio items
         let audioContext;
         let currentCurrency = 'AUD';
         let isMuted = false;
         let volumeLevel = 0.5;
         let selectedServices = [];
         let lastWebhookTime = 0;
-        const WEBHOOK_COOLDOWN = 30000; // 30 seconds
+        const WEBHOOK_COOLDOWN = 30000;
+        let isSubmitting = false; // NEW: Prevent double submission
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
         
@@ -1449,6 +1675,16 @@
             status: 'coming_soon'
         };
         
+        const serviceDefinitions = [
+            { id: 'logo', name: 'Logo', basePrice: 20 },
+            { id: 'pfp', name: 'PFP', basePrice: 15 },
+            { id: 'banner', name: 'Banner', basePrice: 30 },
+            { id: 'banner-pfp', name: 'Banner + PFP', basePrice: 40 },
+            { id: 'poster', name: 'Poster', basePrice: 30 },
+            { id: 'thumbnails', name: 'Thumbnails', basePrice: 20 },
+            { id: 'bundle', name: 'Complete Brand Bundle', basePrice: 45 }
+        ];
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
@@ -1457,105 +1693,175 @@
             initFormValidation();
             initPortfolioHover();
             initAssetPackEditor();
+            initServiceDropdown();
+            validateSession(); // NEW: Check if session is still valid
             loadDataFromDatabase();
+            
+            // NEW: Show audio controls only if supported
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                document.getElementById('audioControls').style.display = 'flex';
+            }
         });
         
-        // Multi-service selection
-        function toggleServiceSelection(name, price) {
-            playSound('click');
+        // NEW: Validate session on load
+        async function validateSession() {
+            const token = sessionStorage.getItem('adminToken');
+            if (token) {
+                try {
+                    const response = await fetch(CONFIG.apiUrl + '?token=' + encodeURIComponent(token));
+                    const data = await response.json();
+                    if (!data.authenticated) {
+                        sessionStorage.removeItem('adminToken');
+                    }
+                } catch (e) {
+                    sessionStorage.removeItem('adminToken');
+                }
+            }
+        }
+        
+        // Initialize service dropdown click-outside behavior
+        function initServiceDropdown() {
+            document.addEventListener('click', (e) => {
+                const container = document.querySelector('.multi-select-container');
+                if (container && !container.contains(e.target)) {
+                    closeServiceDropdown();
+                }
+            });
+        }
+        
+        function toggleServiceDropdown() {
+            const dropdown = document.getElementById('serviceDropdown');
+            const trigger = document.getElementById('serviceTrigger');
+            const arrow = document.getElementById('triggerArrow');
+            
+            if (dropdown.classList.contains('active')) {
+                closeServiceDropdown();
+            } else {
+                dropdown.classList.add('active');
+                trigger.classList.add('active');
+                arrow.style.transform = 'rotate(180deg)';
+                playSound('click');
+            }
+        }
+        
+        function closeServiceDropdown() {
+            const dropdown = document.getElementById('serviceDropdown');
+            const trigger = document.getElementById('serviceTrigger');
+            const arrow = document.getElementById('triggerArrow');
+            
+            dropdown.classList.remove('active');
+            trigger.classList.remove('active');
+            arrow.style.transform = 'rotate(0deg)';
+        }
+        
+        function toggleService(name, basePrice) {
+            const checkbox = document.getElementById('chk-' + name.toLowerCase().replace(/[^a-z]/g, ''));
             const existingIndex = selectedServices.findIndex(s => s.name === name);
             
             if (existingIndex > -1) {
-                // Remove if already selected
                 selectedServices.splice(existingIndex, 1);
+                if (checkbox) checkbox.checked = false;
             } else {
-                // Add if not selected (max 2)
-                if (selectedServices.length >= 2) {
-                    showToast('Maximum 2 services allowed');
-                    return;
-                }
-                selectedServices.push({ name, price });
+                const currentPrice = Math.round(basePrice * exchangeRates[currentCurrency]);
+                selectedServices.push({ name, basePrice, currentPrice });
+                if (checkbox) checkbox.checked = true;
+                playSound('success');
             }
             
             updateSelectedServicesDisplay();
-            updateServiceButtonStates();
+            updateOrderTotal();
         }
         
         function updateSelectedServicesDisplay() {
             const container = document.getElementById('selectedServicesContainer');
-            const noMsg = document.getElementById('noServicesMsg');
+            const triggerText = document.getElementById('triggerText');
             const input = document.getElementById('selectedServicesInput');
-            const totalEl = document.getElementById('orderTotal');
-            const totalInput = document.getElementById('totalPriceInput');
             
             if (selectedServices.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic" id="noServicesMsg">No services selected. Choose from above.</p>';
+                container.innerHTML = '';
+                triggerText.textContent = 'Click to select services...';
+                triggerText.classList.add('placeholder-text');
                 input.value = '';
-                totalEl.textContent = '0';
-                totalInput.value = '0';
                 document.getElementById('submitBtn').disabled = true;
                 return;
             }
             
-            let total = 0;
-            container.innerHTML = selectedServices.map(service => {
-                total += service.price;
-                return `
-                    <div class="selected-service-tag">
-                        ${service.name} - $${service.price}
-                        <button type="button" onclick="removeService('${service.name}')">×</button>
-                    </div>
-                `;
-            }).join('');
+            triggerText.textContent = `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`;
+            triggerText.classList.remove('placeholder-text');
             
-            input.value = JSON.stringify(selectedServices);
-            totalEl.textContent = total;
-            totalInput.value = total;
+            container.innerHTML = selectedServices.map(service => `
+                <div class="selected-service-tag">
+                    ${escapeHtml(service.name)} - $${service.currentPrice}
+                    <button type="button" onclick="removeService('${escapeHtml(service.name)}')" title="Remove">×</button>
+                </div>
+            `).join('');
             
-            // Enable submit if terms checked
+            input.value = JSON.stringify(selectedServices.map(s => ({ name: s.name, price: s.currentPrice })));
+            
             const terms = document.getElementById('terms');
             document.getElementById('submitBtn').disabled = !terms.checked;
         }
         
         function removeService(name) {
-            selectedServices = selectedServices.filter(s => s.name !== name);
-            updateSelectedServicesDisplay();
-            updateServiceButtonStates();
-            playSound('click');
+            const index = selectedServices.findIndex(s => s.name === name);
+            if (index > -1) {
+                selectedServices.splice(index, 1);
+                const checkboxId = 'chk-' + name.toLowerCase().replace(/[^a-z]/g, '');
+                const checkbox = document.getElementById(checkboxId);
+                if (checkbox) checkbox.checked = false;
+                updateSelectedServicesDisplay();
+                updateOrderTotal();
+                playSound('click');
+            }
         }
         
-        function updateServiceButtonStates() {
-            document.querySelectorAll('.service-btn').forEach(btn => {
-                const serviceName = btn.textContent.includes('BUNDLE') ? 'Complete Brand Bundle' : 
-                    btn.parentElement.querySelector('h3').textContent;
-                const isSelected = selectedServices.some(s => s.name === serviceName);
-                
-                if (isSelected) {
-                    btn.textContent = 'SELECTED';
-                    btn.classList.remove('btn-secondary');
-                    btn.classList.add('btn-primary');
-                } else {
-                    btn.textContent = serviceName.includes('Bundle') ? 'SELECT BUNDLE' : 'SELECT';
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
+        function updateOrderTotal() {
+            const total = selectedServices.reduce((sum, s) => sum + s.currentPrice, 0);
+            document.getElementById('orderTotal').textContent = total;
+            document.getElementById('totalPriceInput').value = total;
+        }
+        
+        function updateAllPrices() {
+            document.querySelectorAll('.service-price').forEach(el => {
+                const basePrice = parseInt(el.dataset.basePrice);
+                if (!isNaN(basePrice)) {
+                    el.textContent = Math.round(basePrice * exchangeRates[currentCurrency]);
                 }
             });
+            
+            document.querySelectorAll('.price-display').forEach(el => {
+                const basePrice = parseInt(el.dataset.base);
+                if (!isNaN(basePrice)) {
+                    el.textContent = Math.round(basePrice * exchangeRates[currentCurrency]);
+                }
+            });
+            
+            selectedServices.forEach(service => {
+                service.currentPrice = Math.round(service.basePrice * exchangeRates[currentCurrency]);
+            });
+            
+            updateSelectedServicesDisplay();
+            updateOrderTotal();
         }
         
-        // Portfolio Hover
+        // Portfolio Hover - FIXED for mobile
         function initPortfolioHover() {
             const items = document.querySelectorAll('.portfolio-item');
             
             items.forEach(item => {
+                // Desktop hover
                 item.addEventListener('mouseenter', function() {
-                    this.classList.add('hover-active');
-                    playSound('hover');
+                    if (window.matchMedia('(hover: hover)').matches) {
+                        this.classList.add('hover-active');
+                        playSound('hover');
+                    }
                 });
                 
                 item.addEventListener('mouseleave', function() {
                     this.classList.remove('hover-active');
                 });
                 
+                // Mobile touch
                 item.addEventListener('touchstart', function() {
                     this.classList.add('hover-active');
                 }, {passive: true});
@@ -1566,7 +1872,7 @@
             });
         }
         
-        // Audio Controls
+        // Audio Controls - FIXED for mobile
         function toggleMute() {
             isMuted = !isMuted;
             const muteBtn = document.getElementById('muteBtn');
@@ -1593,8 +1899,10 @@
             document.getElementById('volumeLabel').textContent = value + '%';
         }
         
-        // Cursor
+        // Cursor - FIXED (hidden on mobile)
         function initCursor() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            
             const dot = document.querySelector('.cursor-dot');
             const outline = document.querySelector('.cursor-outline');
             if (!dot || !outline) return;
@@ -1617,7 +1925,7 @@
             }
             animate();
             
-            document.querySelectorAll('a, button, .glass-card, input, select, textarea').forEach(el => {
+            document.querySelectorAll('a, button, .glass-card, input, select, textarea, .multi-select-trigger').forEach(el => {
                 el.addEventListener('mouseenter', () => { 
                     outline.classList.add('hover'); 
                     playSound('hover'); 
@@ -1626,10 +1934,13 @@
             });
         }
         
-        // Audio
+        // Audio - FIXED with better error handling
         function initAudio() { 
             try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)(); 
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioContext = new AudioContextClass();
+                }
             } catch(e) {
                 console.log('Audio not supported');
             }
@@ -1638,6 +1949,11 @@
         function playSound(type) {
             if (!audioContext || isMuted) return;
             try {
+                // Check if audio context is running (required for mobile)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
                 const osc = audioContext.createOscillator();
                 const gain = audioContext.createGain();
                 osc.connect(gain); 
@@ -1676,18 +1992,18 @@
             reveals.forEach(el => observer.observe(el));
         }
         
-        // Form validation
+        // Form validation - FIXED with debounce
         function initFormValidation() {
             const terms = document.getElementById('terms');
             const submitBtn = document.getElementById('submitBtn');
             if (terms && submitBtn) {
                 terms.addEventListener('change', (e) => {
-                    submitBtn.disabled = !e.target.checked || selectedServices.length === 0;
+                    submitBtn.disabled = !e.target.checked || selectedServices.length === 0 || isSubmitting;
                 });
             }
         }
         
-        // Currency
+        // Currency - FIXED dropdown closing
         function toggleCurrency() {
             const d = document.getElementById('currencyDropdown');
             if (d) {
@@ -1705,19 +2021,14 @@
             if (currEl) currEl.textContent = c;
             if (dropEl) dropEl.classList.add('opacity-0', 'invisible');
             
-            document.querySelectorAll('.service-price').forEach(p => {
-                const basePrice = parseInt(p.dataset.basePrice);
-                if (!isNaN(basePrice)) {
-                    p.textContent = Math.round(basePrice * exchangeRates[c]);
-                }
-            });
-            
+            updateAllPrices();
             document.querySelectorAll('.currency-label').forEach(l => l.textContent = ' ' + c);
+            
             playSound('click'); 
             showToast(`Currency: ${c}`);
         }
         
-        // Portfolio filter
+        // Portfolio filter - FIXED array handling
         function filterWork(cat) {
             playSound('click');
             document.querySelectorAll('.filter-btn').forEach(b => {
@@ -1725,7 +2036,7 @@
             });
             
             const items = document.querySelectorAll('.portfolio-item');
-            let visibleItems = [];
+            const visibleItems = [];
             
             items.forEach(item => {
                 const shouldShow = cat === 'all' || item.dataset.category === cat;
@@ -1737,7 +2048,7 @@
                 }
             });
             
-            if (visibleItems.length > 0) {
+            if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
                 gsap.fromTo(visibleItems, 
                     { opacity: 0, scale: 0.9, y: 20 }, 
                     { 
@@ -1752,26 +2063,43 @@
             }
         }
         
-        // Add portfolio item
+        // Add portfolio item - FIXED with title and persistence
         function addPortfolioItem() {
-            const url = document.getElementById('newImageUrl').value;
+            const url = document.getElementById('newImageUrl').value.trim();
+            const title = document.getElementById('newImageTitle').value.trim() || 'New Work';
             const cat = document.getElementById('newImageCategory').value;
-            if (!url) return;
+            
+            if (!url) {
+                showToast('Please enter an image URL');
+                return;
+            }
+            
+            // Validate URL format
+            try {
+                new URL(url);
+            } catch {
+                showToast('Please enter a valid URL');
+                return;
+            }
             
             let aspectClass = 'thumbnail';
             if (cat === 'posters') aspectClass = 'poster';
             else if (cat === 'banners') aspectClass = 'banner';
             else if (cat === 'combos') aspectClass = 'combo';
             
+            const id = 'custom_' + Date.now();
+            
             const div = document.createElement('div');
             div.className = `portfolio-item ${aspectClass}`;
             div.dataset.category = cat;
+            div.dataset.id = id;
+            div.dataset.custom = 'true';
             div.innerHTML = `
-                <img src="${url}" alt="New Work" draggable="false">
+                <img src="${escapeHtml(url)}" alt="${escapeHtml(title)}" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Error'" loading="lazy">
                 <div class="portfolio-overlay">
                     <div>
                         <span class="text-red-500 font-medium text-sm tracking-wider">${cat.toUpperCase()}</span>
-                        <h3 class="text-white font-semibold mt-1">New Work</h3>
+                        <h3 class="text-white font-semibold mt-1">${escapeHtml(title)}</h3>
                     </div>
                 </div>
             `;
@@ -1779,38 +2107,103 @@
             const grid = document.getElementById('portfolioGrid');
             if (grid) {
                 grid.appendChild(div);
-                document.getElementById('newImageUrl').value = '';
-                playSound('success'); 
-                showToast('Item added - Save to persist');
                 
+                // Add to tracking array
+                portfolioItems.push({
+                    id: id,
+                    url: url,
+                    category: cat,
+                    title: title
+                });
+                
+                // Clear inputs
+                document.getElementById('newImageUrl').value = '';
+                document.getElementById('newImageTitle').value = '';
+                
+                playSound('success'); 
+                showToast('Item added - Click SAVE ALL CHANGES to persist');
+                updatePortfolioItemsList();
+                
+                // Add event listeners
                 div.addEventListener('mouseenter', function() {
-                    this.classList.add('hover-active');
-                    playSound('hover');
+                    if (window.matchMedia('(hover: hover)').matches) {
+                        this.classList.add('hover-active');
+                        playSound('hover');
+                    }
                 });
                 div.addEventListener('mouseleave', function() {
                     this.classList.remove('hover-active');
                 });
                 
-                gsap.fromTo(div, 
-                    { opacity: 0, scale: 0.9 }, 
-                    { opacity: 1, scale: 1, duration: 0.4 }
-                );
+                if (typeof gsap !== 'undefined') {
+                    gsap.fromTo(div, 
+                        { opacity: 0, scale: 0.9 }, 
+                        { opacity: 1, scale: 1, duration: 0.4 }
+                    );
+                }
             }
         }
         
-        // Order form submission
+        // NEW: Update portfolio items list in admin
+        function updatePortfolioItemsList() {
+            const container = document.getElementById('portfolioItemsList');
+            if (!container) return;
+            
+            if (portfolioItems.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm italic">No custom items added</p>';
+                return;
+            }
+            
+            container.innerHTML = portfolioItems.map(item => `
+                <div class="order-item">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-bold text-white text-sm">${escapeHtml(item.title)}</span>
+                        <span class="text-xs text-gray-500">${item.category}</span>
+                    </div>
+                    <p class="text-xs text-gray-400 truncate mb-2">${escapeHtml(item.url)}</p>
+                    <button onclick="removePortfolioItem('${item.id}')" class="btn-danger w-full text-xs py-1">REMOVE</button>
+                </div>
+            `).join('');
+        }
+        
+        // NEW: Remove portfolio item
+        function removePortfolioItem(id) {
+            const index = portfolioItems.findIndex(item => item.id === id);
+            if (index > -1) {
+                portfolioItems.splice(index, 1);
+                
+                // Remove from DOM
+                const el = document.querySelector(`.portfolio-item[data-id="${id}"]`);
+                if (el) el.remove();
+                
+                updatePortfolioItemsList();
+                playSound('click');
+                showToast('Item removed - Save to persist');
+            }
+        }
+        
+        // Order form submission - FIXED with debounce and better error handling
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
+            
+            if (isSubmitting) return;
+            isSubmitting = true;
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'SUBMITTING...';
+            
             playSound('success');
             
             const orderData = {
                 id: Date.now(),
-                discord: document.getElementById('discordUser').value,
-                email: document.getElementById('emailUser').value,
-                services: selectedServices,
+                discord: document.getElementById('discordUser').value.trim(),
+                email: document.getElementById('emailUser').value.trim(),
+                services: selectedServices.map(s => ({ name: s.name, price: s.currentPrice })),
                 total: document.getElementById('totalPriceInput').value,
-                description: document.getElementById('description').value,
-                references: document.getElementById('references').value,
+                currency: currentCurrency,
+                description: document.getElementById('description').value.trim(),
+                references: document.getElementById('references').value.trim(),
                 status: 'pending',
                 timestamp: new Date().toISOString(),
                 contacted: false,
@@ -1820,43 +2213,61 @@
             orders.push(orderData);
             updateOrdersList();
             
-            const servicesText = selectedServices.map(s => `${s.name} ($${s.price})`).join(', ');
+            // Send to webhook (moved to backend ideally, but keeping for now)
+            try {
+                const servicesText = selectedServices.map(s => `${s.name} ($${s.currentPrice} ${currentCurrency})`).join(', ');
+                
+                // Note: Webhook URL should ideally be in backend, not frontend
+                // This is a temporary solution
+                await fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: '@everyone NEW ORDER!',
+                        embeds: [{
+                            title: '🎨 NEW ORDER #' + orderData.id,
+                            color: 0xDC2626,
+                            fields: [
+                                { name: 'Discord', value: orderData.discord.substring(0, 100), inline: true },
+                                { name: 'Email', value: orderData.email.substring(0, 100), inline: true },
+                                { name: 'Services', value: servicesText.substring(0, 1000) },
+                                { name: 'Total', value: '$' + orderData.total + ' ' + currentCurrency, inline: true },
+                                { name: 'Description', value: orderData.description.substring(0, 1024) || 'No description' }
+                            ],
+                            timestamp: orderData.timestamp
+                        }]
+                    })
+                });
+            } catch (webhookError) {
+                console.error('Webhook failed:', webhookError);
+                // Continue anyway - order is saved in database
+            }
             
-            await fetch(CONFIG.webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: '@everyone NEW ORDER!',
-                    embeds: [{
-                        title: '🎨 NEW ORDER #' + orderData.id,
-                        color: 0xDC2626,
-                        fields: [
-                            { name: 'Discord', value: orderData.discord, inline: true },
-                            { name: 'Email', value: orderData.email, inline: true },
-                            { name: 'Services', value: servicesText },
-                            { name: 'Total', value: '$' + orderData.total + ' AUD', inline: true },
-                            { name: 'Description', value: orderData.description.substring(0, 1024) }
-                        ],
-                        timestamp: orderData.timestamp
-                    }]
-                })
-            });
+            // Set reminder only if not contacted
+            setTimeout(() => {
+                const order = orders.find(o => o.id === orderData.id);
+                if (order && !order.contacted && order.status !== 'completed') {
+                    checkOrderReminder(orderData.id);
+                }
+            }, 24 * 60 * 60 * 1000);
             
-            setTimeout(() => checkOrderReminder(orderData.id), 24 * 60 * 60 * 1000);
-            
-            showToast('Order submitted!'); 
+            showToast('Order submitted successfully!');
             e.target.reset();
             selectedServices = [];
             updateSelectedServicesDisplay();
-            updateServiceButtonStates();
-            document.getElementById('submitBtn').disabled = true;
+            document.querySelectorAll('.multi-select-option input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            isSubmitting = false;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `SUBMIT ORDER <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
         });
         
-        // Check order reminder
+        // Check order reminder - FIXED to check status
         function checkOrderReminder(orderId) {
             const order = orders.find(o => o.id === orderId);
-            if (order && !order.contacted) {
-                fetch(CONFIG.webhookUrl, {
+            if (order && !order.contacted && order.status !== 'completed') {
+                // Only send if still pending
+                fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1865,13 +2276,13 @@
                             title: '⏰ ORDER REMINDER #' + orderId,
                             color: 0xffa500,
                             fields: [
-                                { name: 'Discord', value: order.discord, inline: true },
-                                { name: 'Services', value: order.services.map(s => s.name).join(', ') },
+                                { name: 'Discord', value: order.discord.substring(0, 100), inline: true },
+                                { name: 'Services', value: order.services.map(s => s.name).join(', ').substring(0, 1000) },
                                 { name: 'Status', value: 'Awaiting contact' }
                             ]
                         }]
                     })
-                });
+                }).catch(console.error);
             }
         }
         
@@ -1893,9 +2304,9 @@
                             ${order.contacted ? 'CONTACTED' : 'PENDING'}
                         </span>
                     </div>
-                    <p class="text-sm text-gray-400 mb-1">${order.discord}</p>
-                    <p class="text-sm text-gray-500 mb-1">${order.services.map(s => s.name).join(', ')}</p>
-                    <p class="text-sm text-red-400 mb-2">$${order.total} AUD</p>
+                    <p class="text-sm text-gray-400 mb-1">${escapeHtml(order.discord)}</p>
+                    <p class="text-sm text-gray-500 mb-1">${order.services.map(s => escapeHtml(s.name)).join(', ')}</p>
+                    <p class="text-sm text-red-400 mb-2">$${order.total} ${order.currency || 'AUD'}</p>
                     ${!order.contacted ? `
                         <button onclick="markAsContacted(${order.id})" class="btn-primary w-full text-xs py-2">
                             MARK AS CONTACTED
@@ -1915,15 +2326,19 @@
             document.getElementById('adminPanel').classList.toggle('active'); 
         }
         
-        // API-based login
+        // API-based login - FIXED with better error handling
         async function checkAdminPassword() {
-            const input = document.getElementById('adminPassword').value;
+            const input = document.getElementById('adminPassword');
+            const password = input.value;
+            
+            // Clear password immediately for security
+            input.value = '';
             
             try {
                 const response = await fetch(CONFIG.apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'login', password: input })
+                    body: JSON.stringify({ action: 'login', password: password })
                 });
                 
                 const data = await response.json();
@@ -1933,6 +2348,7 @@
                     document.getElementById('adminLogin').classList.add('hidden');
                     document.getElementById('adminControls').classList.remove('hidden');
                     updateOrdersList();
+                    updatePortfolioItemsList();
                     playSound('success'); 
                     showToast('Admin access granted');
                     
@@ -1940,9 +2356,11 @@
                         sessionStorage.setItem('adminToken', data.token);
                     }
                 } else {
-                    document.getElementById('loginError').classList.remove('hidden');
+                    const errorEl = document.getElementById('loginError');
+                    errorEl.textContent = data.error || 'Incorrect password';
+                    errorEl.classList.remove('hidden');
                     setTimeout(() => {
-                        document.getElementById('loginError').classList.add('hidden');
+                        errorEl.classList.add('hidden');
                     }, 3000);
                 }
             } catch (e) {
@@ -1952,6 +2370,17 @@
         }
         
         function logoutAdmin() {
+            const token = sessionStorage.getItem('adminToken');
+            
+            // Notify server to revoke session
+            if (token) {
+                fetch(CONFIG.apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'logout', token: token })
+                }).catch(() => {});
+            }
+            
             isAdmin = false;
             sessionStorage.removeItem('adminToken');
             document.getElementById('adminLogin').classList.remove('hidden');
@@ -1959,7 +2388,7 @@
             document.getElementById('adminPassword').value = '';
         }
         
-        // API-based password change
+        // API-based password change - FIXED
         async function changePassword() {
             const current = document.getElementById('currentPassword').value;
             const newPass = document.getElementById('newPassword').value;
@@ -1970,8 +2399,8 @@
             errorEl.classList.add('hidden');
             successEl.classList.add('hidden');
             
-            if (newPass.length < 12) {
-                errorEl.textContent = 'New password must be at least 12 characters';
+            if (newPass.length < 6) {
+                errorEl.textContent = 'New password must be at least 6 characters';
                 errorEl.classList.remove('hidden');
                 return;
             }
@@ -2002,7 +2431,12 @@
                     document.getElementById('confirmPassword').value = '';
                     successEl.classList.remove('hidden');
                     playSound('success');
-                    showToast('Password updated successfully!');
+                    showToast('Password updated! Please login again.');
+                    
+                    // Logout after password change
+                    setTimeout(() => {
+                        logoutAdmin();
+                    }, 2000);
                 } else {
                     errorEl.textContent = data.error || 'Failed to update password';
                     errorEl.classList.remove('hidden');
@@ -2028,11 +2462,11 @@
             for (const [key, value] of Object.entries(prices)) {
                 const el = document.querySelector(`.service-price[data-service="${key}"]`);
                 if (el) {
-                    el.textContent = value;
                     el.dataset.basePrice = value;
                 }
             }
             
+            updateAllPrices();
             showToast('Prices updated - Save to persist');
         }
         
@@ -2047,7 +2481,7 @@
             if (!container) return;
             container.innerHTML = assetPackData.features.map((feature, index) => `
                 <div class="feature-item">
-                    <input type="text" value="${feature}" onchange="updateFeature(${index}, this.value)">
+                    <input type="text" value="${escapeHtml(feature)}" onchange="updateFeature(${index}, this.value)">
                     <button onclick="removeFeature(${index})">×</button>
                 </div>
             `).join('');
@@ -2118,7 +2552,7 @@
             
             if (featuresList) {
                 featuresList.innerHTML = assetPackData.features.map(f => 
-                    `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${f}</li>`
+                    `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${escapeHtml(f)}</li>`
                 ).join('');
             }
             
@@ -2136,7 +2570,8 @@
                     btn.textContent = assetPackData.price ? `BUY NOW - $${assetPackData.price}` : 'BUY NOW';
                     btn.className = 'w-full btn-primary mt-4';
                     btn.onclick = () => {
-                        toggleServiceSelection('All-in-One Asset Pack', parseInt(assetPackData.price) || 0);
+                        const basePrice = parseInt(assetPackData.price) || 0;
+                        toggleService('All-in-One Asset Pack', basePrice);
                     };
                 }
             }
@@ -2158,21 +2593,23 @@
                 playSound('success');
                 showToast('Order marked as contacted');
                 
-                fetch(CONFIG.webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: `Order #${orderId} has been contacted by the artist.`,
-                        embeds: [{
-                            title: '✅ ORDER CONTACTED',
-                            color: 0x22c55e,
-                            fields: [
-                                { name: 'Order ID', value: '#' + orderId },
-                                { name: 'Discord', value: order.discord }
-                            ]
-                        }]
-                    })
-                });
+                try {
+                    await fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            content: `Order #${orderId} has been contacted by the artist.`,
+                            embeds: [{
+                                title: '✅ ORDER CONTACTED',
+                                color: 0x22c55e,
+                                fields: [
+                                    { name: 'Order ID', value: '#' + orderId },
+                                    { name: 'Discord', value: order.discord.substring(0, 100) }
+                                ]
+                            }]
+                        })
+                    });
+                } catch (e) {}
                 
                 saveToDatabase();
             }
@@ -2187,7 +2624,7 @@
             saveToDatabase();
         }
         
-        // API Save
+        // API Save - FIXED to include portfolio
         async function saveToDatabase() {
             try {
                 const response = await fetch(CONFIG.apiUrl, {
@@ -2198,6 +2635,7 @@
                         token: sessionStorage.getItem('adminToken'),
                         assetPackData: assetPackData,
                         orders: orders,
+                        portfolio: portfolioItems, // NEW: Include portfolio
                         servicePrices: {
                             logo: document.getElementById('admin-price-logo').value,
                             pfp: document.getElementById('admin-price-pfp').value,
@@ -2227,7 +2665,7 @@
             }
         }
         
-        // Load data from API
+        // Load data from API - FIXED to load portfolio
         async function loadDataFromDatabase() {
             try {
                 const token = sessionStorage.getItem('adminToken');
@@ -2235,7 +2673,15 @@
                 const response = await fetch(CONFIG.apiUrl + (token ? '?token=' + encodeURIComponent(token) : ''));
                 if (response.ok) {
                     const data = await response.json();
+                    
                     if (data.orders) orders = data.orders;
+                    
+                    // NEW: Load portfolio items
+                    if (data.portfolio) {
+                        portfolioItems = data.portfolio;
+                        renderPortfolioItems();
+                        updatePortfolioItemsList();
+                    }
                     
                     if (data.assetPackData) {
                         assetPackData = { ...assetPackData, ...data.assetPackData };
@@ -2274,6 +2720,46 @@
             }
         }
         
+        // NEW: Render loaded portfolio items
+        function renderPortfolioItems() {
+            const grid = document.getElementById('portfolioGrid');
+            if (!grid || portfolioItems.length === 0) return;
+            
+            portfolioItems.forEach(item => {
+                let aspectClass = 'thumbnail';
+                if (item.category === 'posters') aspectClass = 'poster';
+                else if (item.category === 'banners') aspectClass = 'banner';
+                else if (item.category === 'combos') aspectClass = 'combo';
+                
+                const div = document.createElement('div');
+                div.className = `portfolio-item ${aspectClass}`;
+                div.dataset.category = item.category;
+                div.dataset.id = item.id;
+                div.dataset.custom = 'true';
+                div.innerHTML = `
+                    <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" onerror="this.src='https://via.placeholder.com/640x360?text=Image+Error'" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <div>
+                            <span class="text-red-500 font-medium text-sm tracking-wider">${item.category.toUpperCase()}</span>
+                            <h3 class="text-white font-semibold mt-1">${escapeHtml(item.title)}</h3>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(div);
+                
+                div.addEventListener('mouseenter', function() {
+                    if (window.matchMedia('(hover: hover)').matches) {
+                        this.classList.add('hover-active');
+                        playSound('hover');
+                    }
+                });
+                div.addEventListener('mouseleave', function() {
+                    this.classList.remove('hover-active');
+                });
+            });
+        }
+        
         // Webhook with cooldown
         function testWebhook() {
             const now = Date.now();
@@ -2288,7 +2774,7 @@
             lastWebhookTime = now;
             updateWebhookCooldown();
             
-            fetch(CONFIG.webhookUrl, {
+            fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -2337,7 +2823,15 @@
             }
         }
         
-        // Close currency on outside click
+        // NEW: Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            if (typeof text !== 'string') return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Close currency on outside click - FIXED
         document.addEventListener('click', (e) => { 
             if (!e.target.closest('#currencySwitcher')) {
                 const d = document.getElementById('currencyDropdown');
