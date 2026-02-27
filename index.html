@@ -1688,6 +1688,9 @@
             { id: 'bundle', name: 'Complete Brand Bundle', basePrice: 45 }
         ];
         
+        // Category order for proper insertion
+        const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
@@ -2066,7 +2069,7 @@
             }
         }
         
-        // Add portfolio item - FIXED with title and persistence
+        // Add portfolio item - FIXED to insert in correct category position
         function addPortfolioItem() {
             const url = document.getElementById('newImageUrl').value.trim();
             const title = document.getElementById('newImageTitle').value.trim() || 'New Work';
@@ -2109,7 +2112,38 @@
             
             const grid = document.getElementById('portfolioGrid');
             if (grid) {
-                grid.appendChild(div);
+                // Find the correct position to insert based on category order
+                const targetCategoryIndex = CATEGORY_ORDER.indexOf(cat);
+                const allItems = Array.from(grid.querySelectorAll('.portfolio-item'));
+                
+                let inserted = false;
+                
+                // Look for items in the same category to insert after
+                for (let i = targetCategoryIndex; i < CATEGORY_ORDER.length; i++) {
+                    const categoryToCheck = CATEGORY_ORDER[i];
+                    const itemsInCategory = allItems.filter(item => item.dataset.category === categoryToCheck);
+                    
+                    if (itemsInCategory.length > 0) {
+                        if (categoryToCheck === cat) {
+                            // Same category found - insert after the last one
+                            const lastItem = itemsInCategory[itemsInCategory.length - 1];
+                            lastItem.after(div);
+                            inserted = true;
+                            break;
+                        } else {
+                            // Later category found - insert before the first one
+                            const firstItemOfNextCategory = itemsInCategory[0];
+                            grid.insertBefore(div, firstItemOfNextCategory);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // If no items found in same or later categories, append to end
+                if (!inserted) {
+                    grid.appendChild(div);
+                }
                 
                 // Add to tracking array
                 portfolioItems.push({
@@ -2124,7 +2158,7 @@
                 document.getElementById('newImageTitle').value = '';
                 
                 playSound('success'); 
-                showToast('Item added - Click SAVE ALL CHANGES to persist');
+                showToast('Item added to ' + cat + ' section - Click SAVE ALL CHANGES to persist');
                 updatePortfolioItemsList();
                 
                 // Add event listeners
@@ -2668,7 +2702,7 @@
             }
         }
         
-        // Load data from API - FIXED to load portfolio
+        // Load data from API - FIXED to load portfolio with proper ordering
         async function loadDataFromDatabase() {
             try {
                 const token = sessionStorage.getItem('adminToken');
@@ -2679,9 +2713,13 @@
                     
                     if (data.orders) orders = data.orders;
                     
-                    // NEW: Load portfolio items
+                    // NEW: Load portfolio items and sort by category order
                     if (data.portfolio) {
                         portfolioItems = data.portfolio;
+                        // Sort by category order before rendering
+                        portfolioItems.sort((a, b) => {
+                            return CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category);
+                        });
                         renderPortfolioItems();
                         updatePortfolioItemsList();
                     }
@@ -2723,10 +2761,15 @@
             }
         }
         
-        // NEW: Render loaded portfolio items
+        // NEW: Render loaded portfolio items in correct order
         function renderPortfolioItems() {
             const grid = document.getElementById('portfolioGrid');
             if (!grid || portfolioItems.length === 0) return;
+            
+            // Sort by category order
+            portfolioItems.sort((a, b) => {
+                return CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category);
+            });
             
             portfolioItems.forEach(item => {
                 let aspectClass = 'thumbnail';
