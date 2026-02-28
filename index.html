@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300 ;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -20,9 +20,7 @@
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -35,7 +33,6 @@
             user-select: none;
         }
         
-        /* Mobile: Disable custom cursor */
         @media (pointer: coarse) {
             body { cursor: auto !important; }
             .cursor-dot, .cursor-outline { display: none !important; }
@@ -84,7 +81,6 @@
         .portfolio-item.banner { aspect-ratio: 21/9; }
         .portfolio-item.combo { aspect-ratio: 16/9; }
         
-        /* FIX: Ensure images fill container properly */
         .portfolio-item img {
             width: 100%;
             height: 100%;
@@ -96,7 +92,6 @@
             background-color: var(--card-black);
         }
         
-        /* Mobile: Simpler hover effect */
         @media (hover: hover) {
             .portfolio-item.hover-active {
                 transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
@@ -108,14 +103,10 @@
         }
         
         @media (hover: none) {
-            .portfolio-item:active {
-                transform: scale(0.98);
-            }
+            .portfolio-item:active { transform: scale(0.98); }
         }
         
-        .portfolio-item.hover-active img {
-            transform: scale(1.1);
-        }
+        .portfolio-item.hover-active img { transform: scale(1.1); }
         
         .portfolio-item::after {
             content: '';
@@ -133,9 +124,7 @@
             z-index: 5;
         }
         
-        .portfolio-item.hover-active::after {
-            left: 100%;
-        }
+        .portfolio-item.hover-active::after { left: 100%; }
         
         .portfolio-overlay {
             position: absolute;
@@ -150,11 +139,8 @@
             pointer-events: none;
         }
         
-        .portfolio-item.hover-active .portfolio-overlay {
-            opacity: 1;
-        }
+        .portfolio-item.hover-active .portfolio-overlay { opacity: 1; }
         
-        /* Mobile: Always show overlay on touch devices */
         @media (hover: none) {
             .portfolio-overlay {
                 opacity: 1;
@@ -170,24 +156,17 @@
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
         }
         
         .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.7s;
-            z-index: 1;
-            pointer-events: none;
+            transition: left 0.7s; z-index: 1; pointer-events: none;
         }
         
-        .glass-card:hover::before {
-            left: 100%;
-        }
+        .glass-card:hover::before { left: 100%; }
         
         @media (hover: hover) {
             .glass-card:hover {
@@ -198,29 +177,15 @@
         }
         
         .main-nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.9);
-            backdrop-filter: blur(20px);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
-        /* Mobile nav adjustments */
         @media (max-width: 768px) {
-            .main-nav .max-w-7xl {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .main-nav .hidden.md\:flex {
-                display: none;
-            }
-            
-            .main-nav .flex.items-center.gap-4 {
-                gap: 0.5rem;
-            }
-            
+            .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+            .main-nav .hidden.md\:flex { display: none; }
+            .main-nav .flex.items-center.gap-4 { gap: 0.5rem; }
             .logo-img { height: 32px; }
             .font-display.text-xl { font-size: 1rem; }
         }
@@ -229,23 +194,13 @@
         
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            border: none;
-            touch-action: manipulation;
+            color: white; padding: 1rem 2rem; border-radius: 12px;
+            font-weight: 600; transition: all 0.3s; position: relative;
+            overflow: hidden; cursor: pointer; border: none; touch-action: manipulation;
         }
         
         .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
@@ -253,27 +208,16 @@
         .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4); }
         .btn-primary:active { transform: translateY(0); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;}
         
         .btn-secondary {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            touch-action: manipulation;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600;
+            transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; touch-action: manipulation;
         }
         
         .btn-secondary::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             transition: left 0.5s;
         }
@@ -283,92 +227,35 @@
         .btn-secondary:active { transform: translateY(0); }
         
         .btn-danger {
-            background: rgba(220, 38, 38, 0.2);
-            border: 1px solid rgba(220, 38, 38, 0.5);
-            color: #ff6b6b;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            cursor: pointer;
+            background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5);
+            color: #ff6b6b; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer;
         }
-        
         .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
         
         .form-input {
-            background: rgba(17, 17, 17, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            color: white;
-            width: 100%;
-            transition: all 0.3s;
-            font-size: 16px; /* Prevents zoom on iOS */
+            background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 1rem 1.25rem; color: white; width: 100%;
+            transition: all 0.3s; font-size: 16px;
         }
+        .form-input:focus { outline: none; border-color: var(--primary-red); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
         
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
-        }
-        
-        .currency-dropdown {
-            background: rgba(17, 17, 17, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-        }
+        .currency-dropdown { background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
         
         .filter-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 0.75rem 1.5rem;
-            border-radius: 100px;
-            color: #888;
-            transition: all 0.3s;
-            cursor: pointer;
-            touch-action: manipulation;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.75rem 1.5rem; border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation;
         }
+        .filter-btn:hover, .filter-btn.active { border-color: var(--primary-red); color: var(--primary-red); background: rgba(220, 38, 38, 0.1); }
         
-        .filter-btn:hover, .filter-btn.active {
-            border-color: var(--primary-red);
-            color: var(--primary-red);
-            background: rgba(220, 38, 38, 0.1);
-        }
-        
-        /* Mobile filter buttons */
-        @media (max-width: 640px) {
-            .filter-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.875rem;
-            }
-        }
+        @media (max-width: 640px) { .filter-btn { padding: 0.5rem 1rem; font-size: 0.875rem; } }
         
         .custom-checkbox {
-            appearance: none;
-            width: 20px; height: 20px;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s;
-            flex-shrink: 0;
+            appearance: none; width: 20px; height: 20px; background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;
+            position: relative; transition: all 0.3s; flex-shrink: 0;
         }
-        
-        .custom-checkbox:checked {
-            background: var(--primary-red);
-            border-color: var(--primary-red);
-        }
-        
-        .custom-checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 12px;
-        }
+        .custom-checkbox:checked { background: var(--primary-red); border-color: var(--primary-red); }
+        .custom-checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 12px; }
         
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--void-black); }
@@ -376,556 +263,134 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
         
         .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: rgba(17, 17, 17, 0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            z-index: 3000;
-            opacity: 0;
-            transition: all 0.3s;
-            max-width: 90vw;
-            text-align: center;
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(17, 17, 17, 0.95); border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0; transition: all 0.3s; max-width: 90vw; text-align: center;
         }
-        
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
         .admin-panel {
-            position: fixed;
-            top: 0; right: 0;
-            width: 100%; max-width: 450px;
-            height: 100vh;
-            background: rgba(5, 5, 5, 0.98);
-            border-left: 1px solid rgba(255,255,255,0.1);
-            z-index: 2000;
-            transform: translateX(100%);
-            transition: transform 0.4s;
-            overflow-y: auto;
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh;
+            background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 2000; transform: translateX(100%); transition: transform 0.4s; overflow-y: auto;
         }
-        
-        /* Mobile admin panel */
-        @media (max-width: 640px) {
-            .admin-panel {
-                max-width: 100%;
-            }
-        }
-        
+        @media (max-width: 640px) { .admin-panel { max-width: 100%; } }
         .admin-panel.active { transform: translateX(0); }
         
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         
         .corner-ribbon {
-            position: absolute;
-            top: 0; right: 0;
-            width: 150px; height: 150px;
-            overflow: hidden;
-            z-index: 10;
-            pointer-events: none;
+            position: absolute; top: 0; right: 0; width: 150px; height: 150px; overflow: hidden; z-index: 10; pointer-events: none;
         }
-        
         .corner-ribbon span {
-            position: absolute;
-            display: block;
-            width: 225px;
-            padding: 8px 0;
-            background: var(--primary-red);
-            box-shadow: 0 5px 10px rgba(0,0,0,.1);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            text-align: center;
-            left: -25px;
-            top: 30px;
-            transform: rotate(45deg);
-            letter-spacing: 1px;
+            position: absolute; display: block; width: 225px; padding: 8px 0; background: var(--primary-red);
+            box-shadow: 0 5px 10px rgba(0,0,0,.1); color: #fff; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; text-align: center; left: -25px; top: 30px; transform: rotate(45deg); letter-spacing: 1px;
         }
         
-        .coming-soon-text {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: #DC2626;
-            text-align: center;
-            margin-top: 20px;
-            text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
-        }
-        
-        /* Mobile coming soon text */
-        @media (max-width: 640px) {
-            .coming-soon-text {
-                font-size: 1.5rem;
-            }
-        }
+        .coming-soon-text { font-size: 2.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; text-align: center; margin-top: 20px; text-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
+        @media (max-width: 640px) { .coming-soon-text { font-size: 1.5rem; } }
         
         .grid-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px; pointer-events: none; z-index: -1;
         }
         
         .orders-list { max-height: 300px; overflow-y: auto; }
-        .order-item {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
-        }
-        
+        .order-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
         .order-item.pending { border-left: 3px solid #DC2626; }
         .order-item.contacted { border-left: 3px solid #fbbf24; }
         .order-item.completed { border-left: 3px solid #22c55e; }
 
-        .admin-section {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 16px;
-            margin-top: 16px;
-        }
+        .admin-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-top: 16px; }
+        .admin-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; margin-bottom: 0.5rem; display: block; }
+        
+        .feature-item { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .feature-item input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px; color: white; font-size: 0.875rem; }
+        .feature-item button { background: rgba(220, 38, 38, 0.2); border: none; color: #ef4444; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.875rem; }
+        .feature-item button:hover { background: rgba(220, 38, 38, 0.4); }
 
-        .admin-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #9ca3af;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: #DC2626; }
+        input:checked + .toggle-slider:before { transform: translateX(24px); }
 
-        .feature-item {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
-        }
-
-        .feature-item input {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 12px;
-            border-radius: 6px;
-            color: white;
-            font-size: 0.875rem;
-        }
-
-        .feature-item button {
-            background: rgba(220, 38, 38, 0.2);
-            border: none;
-            color: #ef4444;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .feature-item button:hover {
-            background: rgba(220, 38, 38, 0.4);
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .toggle-slider {
-            background-color: #DC2626;
-        }
-
-        input:checked + .toggle-slider:before {
-            transform: translateX(24px);
-        }
-
-        .service-edit-item {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            background: rgba(255,255,255,0.05);
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-
-        .service-edit-item input {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 6px 10px;
-            border-radius: 6px;
-            color: white;
-            font-size: 0.875rem;
-        }
-
-        .service-edit-item input[name="serviceName"] {
-            flex: 1;
-        }
-
-        .service-edit-item input[name="servicePrice"] {
-            width: 70px;
-            text-align: center;
-        }
-
-        .service-edit-item button {
-            background: rgba(220, 38, 38, 0.2);
-            border: none;
-            color: #ef4444;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
+        .service-edit-item { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; margin-bottom: 8px; }
+        .service-edit-item input { background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 6px 10px; border-radius: 6px; color: white; font-size: 0.875rem; }
+        .service-edit-item input[name="serviceName"] { flex: 1; }
+        .service-edit-item input[name="servicePrice"] { width: 70px; text-align: center; }
+        .service-edit-item button { background: rgba(220, 38, 38, 0.2); border: none; color: #ef4444; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.875rem; }
 
         .audio-controls {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1001;
-            background: rgba(5, 5, 5, 0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 12px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s;
+            position: fixed; bottom: 20px; left: 20px; z-index: 1001; background: rgba(5, 5, 5, 0.95); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 12px; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; transition: all 0.3s;
         }
+        @media (max-width: 640px) { .audio-controls { bottom: 10px; left: 10px; padding: 8px; gap: 8px; } .volume-slider { width: 60px; } }
+        .audio-controls:hover { border-color: rgba(220, 38, 38, 0.5); }
+        .mute-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
+        .mute-btn:hover { background: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.5); }
+        .mute-btn.muted { color: #ef4444; border-color: #ef4444; }
+        .volume-slider { width: 100px; height: 4px; -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; background: #DC2626; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
+        .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 10px rgba(220, 38, 38, 0.5); }
+        .volume-label { font-size: 0.75rem; color: #666; min-width: 35px; text-align: right; }
 
-        /* Mobile audio controls */
-        @media (max-width: 640px) {
-            .audio-controls {
-                bottom: 10px;
-                left: 10px;
-                padding: 8px;
-                gap: 8px;
-            }
-            
-            .volume-slider {
-                width: 60px;
-            }
-        }
-
-        .audio-controls:hover {
-            border-color: rgba(220, 38, 38, 0.5);
-        }
-
-        .mute-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .mute-btn:hover {
-            background: rgba(220, 38, 38, 0.2);
-            border-color: rgba(220, 38, 38, 0.5);
-        }
-
-        .mute-btn.muted {
-            color: #ef4444;
-            border-color: #ef4444;
-        }
-
-        .volume-slider {
-            width: 100px;
-            height: 4px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            outline: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            background: #DC2626;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .volume-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
-        }
-
-        .volume-label {
-            font-size: 0.75rem;
-            color: #666;
-            min-width: 35px;
-            text-align: right;
-        }
-
-        /* Multi-select dropdown styles */
-        .multi-select-container {
-            position: relative;
-            width: 100%;
-        }
+        .multi-select-container { position: relative; width: 100%; }
+        .multi-select-trigger { background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem 1.25rem; color: white; width: 100%; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; font-size: 16px; }
+        .multi-select-trigger:hover { border-color: rgba(220, 38, 38, 0.5); }
+        .multi-select-trigger.active { border-color: var(--primary-red); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
+        .multi-select-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: rgba(17, 17, 17, 0.98); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-top: 8px; max-height: 300px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .multi-select-dropdown.active { display: block; }
+        .multi-select-option { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: background 0.2s; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .multi-select-option:last-child { border-bottom: none; }
+        .multi-select-option:hover { background: rgba(220, 38, 38, 0.1); }
+        .multi-select-option input[type="checkbox"] { width: 18px; height: 18px; accent-color: #DC2626; cursor: pointer; }
+        .multi-select-option .service-info { flex: 1; display: flex; justify-content: space-between; align-items: center; }
+        .multi-select-option .service-name { font-weight: 500; }
+        .multi-select-option .service-price { color: #DC2626; font-weight: 600; }
         
-        .multi-select-trigger {
-            background: rgba(17, 17, 17, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            color: white;
-            width: 100%;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-            font-size: 16px;
-        }
+        .selected-services { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .selected-service-tag { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.875rem; display: flex; align-items: center; gap: 8px; animation: tagPop 0.3s ease; }
+        @keyframes tagPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .selected-service-tag button { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px; line-height: 1; padding: 0; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; }
+        .selected-service-tag button:hover { background: rgba(255,255,255,0.1); }
         
-        .multi-select-trigger:hover {
-            border-color: rgba(220, 38, 38, 0.5);
-        }
+        .webhook-cooldown { font-size: 0.75rem; color: #666; margin-top: 4px; }
+        .placeholder-text { color: #666; }
         
-        .multi-select-trigger.active {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
-        }
-        
-        .multi-select-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(17, 17, 17, 0.98);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            margin-top: 8px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 100;
-            display: none;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        
-        .multi-select-dropdown.active {
-            display: block;
-        }
-        
-        .multi-select-option {
-            padding: 12px 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: background 0.2s;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .multi-select-option:last-child {
-            border-bottom: none;
-        }
-        
-        .multi-select-option:hover {
-            background: rgba(220, 38, 38, 0.1);
-        }
-        
-        .multi-select-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #DC2626;
-            cursor: pointer;
-        }
-        
-        .multi-select-option .service-info {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .multi-select-option .service-name {
-            font-weight: 500;
-        }
-        
-        .multi-select-option .service-price {
-            color: #DC2626;
-            font-weight: 600;
-        }
-        
-        .selected-services {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .selected-service-tag {
-            background: rgba(220, 38, 38, 0.2);
-            border: 1px solid rgba(220, 38, 38, 0.5);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: tagPop 0.3s ease;
-        }
-        
-        @keyframes tagPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .selected-service-tag button {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 1;
-            padding: 0;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s;
-        }
-        
-        .selected-service-tag button:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .webhook-cooldown {
-            font-size: 0.75rem;
-            color: #666;
-            margin-top: 4px;
-        }
-        
-        .placeholder-text {
-            color: #666;
-        }
-        
-        /* Mobile hero adjustments */
         @media (max-width: 768px) {
-            #hero h1 {
-                font-size: 4rem !important;
-            }
-            
-            #hero p {
-                font-size: 1rem !important;
-            }
-            
-            .btn-primary, .btn-secondary {
-                padding: 0.875rem 1.5rem;
-                font-size: 0.875rem;
-            }
+            #hero h1 { font-size: 4rem !important; }
+            #hero p { font-size: 1rem !important; }
+            .btn-primary, .btn-secondary { padding: 0.875rem 1.5rem; font-size: 0.875rem; }
+            #portfolioGrid { grid-template-columns: 1fr !important; }
         }
-        
-        /* Mobile section padding */
         @media (max-width: 640px) {
-            section {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-            
-            .max-w-7xl {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
+            section { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+            #services .grid { grid-template-columns: 1fr !important; }
         }
-        
-        /* Prevent text selection on mobile */
-        .no-select {
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-        
-        /* Portfolio grid mobile */
-        @media (max-width: 768px) {
-            #portfolioGrid {
-                grid-template-columns: 1fr !important;
-            }
-        }
-        
-        /* Services grid mobile */
-        @media (max-width: 640px) {
-            #services .grid {
-                grid-template-columns: 1fr !important;
-            }
-        }
+        .no-select { -webkit-user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor (hidden on mobile) -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
-    
-    <!-- Grid Background -->
     <div class="grid-bg"></div>
     
-    <!-- Audio Controls (hidden if audio not supported) -->
     <div class="audio-controls" id="audioControls" style="display: none;">
         <button onclick="toggleMute()" class="mute-btn" id="muteBtn" title="Toggle Sound">
-            <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-            </svg>
-            <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
-            </svg>
+            <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
         </button>
         <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider" oninput="updateVolume(this.value)">
         <span class="volume-label" id="volumeLabel">50%</span>
     </div>
     
-    <!-- Navigation -->
     <nav class="main-nav">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#hero" class="flex items-center gap-3 no-select">
@@ -936,8 +401,8 @@
             <div class="hidden md:flex items-center gap-8">
                 <a href="#work" class="text-sm text-gray-300 hover:text-white transition-colors">Work</a>
                 <a href="#services" class="text-sm text-gray-300 hover:text-white transition-colors">Services</a>
+                <a href="#reviews" class="text-sm text-gray-300 hover:text-white transition-colors">Reviews</a>
                 <a href="#order" class="text-sm text-gray-300 hover:text-white transition-colors">Order</a>
-                <a href="#contact" class="text-sm text-gray-300 hover:text-white transition-colors">Contact</a>
             </div>
             
             <div class="flex items-center gap-4">
@@ -960,12 +425,26 @@
                     </div>
                 </div>
                 
+                <div id="authContainer" class="relative">
+                    <a href="/api/auth?action=login" id="loginBtn" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        SIGN IN
+                    </a>
+                    
+                    <div id="userProfile" class="hidden flex items-center gap-3 cursor-pointer" onclick="document.getElementById('userMenu').classList.toggle('hidden')">
+                        <img id="userAvatar" src="" class="w-10 h-10 rounded-full border-2 border-[#5865F2] hover:scale-105 transition-transform">
+                        <div id="userMenu" class="absolute top-12 right-0 bg-neutral-900 border border-white/10 rounded-xl p-2 hidden min-w-[150px] shadow-2xl">
+                            <div class="px-3 py-2 text-sm text-gray-400 border-b border-white/10 mb-1 truncate" id="userNameDisplay">Username</div>
+                            <button onclick="logoutDiscord()" class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded-lg">Logout</button>
+                        </div>
+                    </div>
+                </div>
+                
                 <button onclick="toggleAdmin()" class="text-xs border border-white/10 px-4 py-2 rounded-xl hover:border-red-500/50 hover:text-red-500 transition-all">Admin</button>
             </div>
         </div>
     </nav>
     
-    <!-- Hero Section -->
     <section id="hero" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden px-6">
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-red-900/20 rounded-full blur-[100px]"></div>
@@ -976,15 +455,12 @@
                     GFX DESIGNER & VISUAL ARTIST
                 </span>
             </div>
-            
             <h1 class="text-7xl md:text-9xl font-display font-bold mb-6 tracking-tight reveal">
                 ARSHIA<span class="text-red-600">.</span>
             </h1>
-            
             <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto reveal">
                 Creating <span class="text-white font-semibold">visual identities</span> that demand attention. Professional GFX for content creators, esports teams, and brands.
             </p>
-            
             <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
                 <a href="#work" class="btn-primary text-lg inline-flex items-center justify-center gap-2">
                     VIEW WORK
@@ -995,7 +471,6 @@
         </div>
     </section>
     
-    <!-- Work/Portfolio Section -->
     <section id="work" class="py-24 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="mb-16 text-center reveal">
@@ -1013,177 +488,78 @@
                 <button onclick="filterWork('combos')" class="filter-btn" data-filter="combos">COMBOS</button>
             </div>
             
-            <!-- Portfolio Grid - GROUPED BY CATEGORY -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" id="portfolioGrid">
-                
-                <!-- THUMBNAILS (All 3 together) -->
                 <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb1">
                     <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg " alt="Thumbnail 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
-                            <h3 class="text-white font-semibold mt-1">Gaming Thumbnail</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Gaming Thumbnail</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb2">
                     <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg " alt="Thumbnail 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
-                            <h3 class="text-white font-semibold mt-1">Esports Thumbnail</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Esports Thumbnail</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb3">
                     <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg " alt="Thumbnail 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span>
-                            <h3 class="text-white font-semibold mt-1">Fortnite Thumbnail</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Fortnite Thumbnail</h3></div></div>
                 </div>
                 
-                <!-- POSTERS (All 6 together) -->
                 <div class="portfolio-item poster" data-category="posters" data-id="poster1">
                     <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp " alt="Poster 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                            <h3 class="text-white font-semibold mt-1">Event Poster</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Event Poster</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item poster" data-category="posters" data-id="poster2">
                     <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp " alt="Poster 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                            <h3 class="text-white font-semibold mt-1">Tournament Poster</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Tournament Poster</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item poster" data-category="posters" data-id="poster3">
                     <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp " alt="Poster 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                            <h3 class="text-white font-semibold mt-1">Team Poster</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Team Poster</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item poster" data-category="posters" data-id="poster4">
                     <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp " alt="Poster 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                            <h3 class="text-white font-semibold mt-1">Championship Poster</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Championship Poster</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item poster" data-category="posters" data-id="poster5">
                     <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp " alt="Poster 5" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                            <h3 class="text-white font-semibold mt-1">Match Poster</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Match Poster</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item poster" data-category="posters" data-id="poster6">
                     <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp " alt="Poster 6" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span>
-                            <h3 class="text-white font-semibold mt-1">Finals Poster</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Finals Poster</h3></div></div>
                 </div>
                 
-                <!-- BANNERS (All 3 together) -->
                 <div class="portfolio-item banner" data-category="banners" data-id="banner1">
                     <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg " alt="Banner 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
-                            <h3 class="text-white font-semibold mt-1">Twitter Header</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">Twitter Header</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item banner" data-category="banners" data-id="banner2">
                     <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg " alt="Banner 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
-                            <h3 class="text-white font-semibold mt-1">YouTube Banner</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">YouTube Banner</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item banner" data-category="banners" data-id="banner3">
                     <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg " alt="Banner 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span>
-                            <h3 class="text-white font-semibold mt-1">Esports Banner</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">Esports Banner</h3></div></div>
                 </div>
                 
-                <!-- COMBOS (All 4 together) -->
                 <div class="portfolio-item combo" data-category="combos" data-id="combo1">
                     <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg " alt="Combo 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                            <h3 class="text-white font-semibold mt-1">Branding Package</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Branding Package</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item combo" data-category="combos" data-id="combo2">
                     <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg " alt="Combo 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                            <h3 class="text-white font-semibold mt-1">Streamer Package</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Streamer Package</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item combo" data-category="combos" data-id="combo3">
                     <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg " alt="Combo 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                            <h3 class="text-white font-semibold mt-1">Creator Package</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Creator Package</h3></div></div>
                 </div>
-                
                 <div class="portfolio-item combo" data-category="combos" data-id="combo4">
                     <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg " alt="Combo 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span>
-                            <h3 class="text-white font-semibold mt-1">Pro Package</h3>
-                        </div>
-                    </div>
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Pro Package</h3></div></div>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Services & Pricing -->
     <section id="services" class="py-24 px-6 relative">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-red-500/5 to-transparent pointer-events-none"></div>
         
@@ -1195,94 +571,79 @@
                 <p class="text-gray-400 max-w-xl mx-auto">Professional GFX at competitive prices. All prices in AUD.</p>
             </div>
             
-            <!-- Services Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                <!-- Logo -->
                 <div class="glass-card p-8 reveal" id="service-logo">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">LOGO</h3>
-                    <div class="text-4xl font-bold text-red-600 mb-4">
-                        $<span class="service-price" data-service="logo" data-base-price="20">20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                    <div class="text-4xl font-bold text-red-600 mb-4">$<span class="service-price" data-service="logo" data-base-price="20">20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span></div>
+                    <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High-quality design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Source files included</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
+                    <button onclick="document.getElementById('order').scrollIntoView(); toggleService('Logo', 20);" class="btn-secondary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                 </div>
                 
-                <!-- PFP -->
                 <div class="glass-card p-8 reveal" id="service-pfp">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">PFP</h3>
-                    <div class="text-4xl font-bold text-red-600 mb-4">
-                        $<span class="service-price" data-service="pfp" data-base-price="15">15</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                    <div class="text-4xl font-bold text-red-600 mb-4">$<span class="service-price" data-service="pfp" data-base-price="15">15</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span></div>
+                    <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Profile picture design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Multiple sizes</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
+                    <button onclick="document.getElementById('order').scrollIntoView(); toggleService('PFP', 15);" class="btn-secondary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                 </div>
                 
-                <!-- Banner -->
                 <div class="glass-card p-8 reveal" id="service-banner">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">BANNER</h3>
-                    <div class="text-4xl font-bold text-red-600 mb-4">
-                        $<span class="service-price" data-service="banner" data-base-price="30">30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                    <div class="text-4xl font-bold text-red-600 mb-4">$<span class="service-price" data-service="banner" data-base-price="30">30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span></div>
+                    <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Social media banner</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> YouTube/Twitter optimized</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
+                    <button onclick="document.getElementById('order').scrollIntoView(); toggleService('Banner', 30);" class="btn-secondary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                 </div>
                 
-                <!-- Banner + PFP -->
                 <div class="glass-card p-8 reveal" id="service-banner-pfp">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">BANNER + PFP</h3>
-                    <div class="text-4xl font-bold text-red-600 mb-4">
-                        $<span class="service-price" data-service="banner_pfp" data-base-price="40">40</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                    <div class="text-4xl font-bold text-red-600 mb-4">$<span class="service-price" data-service="banner_pfp" data-base-price="40">40</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span></div>
+                    <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Matching set design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Brand consistency</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
+                    <button onclick="document.getElementById('order').scrollIntoView(); toggleService('Banner + PFP', 40);" class="btn-secondary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                 </div>
                 
-                <!-- Poster -->
                 <div class="glass-card p-8 reveal" id="service-poster">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">POSTER</h3>
-                    <div class="text-4xl font-bold text-red-600 mb-4">
-                        $<span class="service-price" data-service="poster" data-base-price="30">30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                    <div class="text-4xl font-bold text-red-600 mb-4">$<span class="service-price" data-service="poster" data-base-price="30">30</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span></div>
+                    <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Event/announcement poster</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High resolution</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
+                    <button onclick="document.getElementById('order').scrollIntoView(); toggleService('Poster', 30);" class="btn-secondary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                 </div>
                 
-                <!-- Thumbnails -->
                 <div class="glass-card p-8 reveal" id="service-thumbnails">
                     <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">THUMBNAILS</h3>
-                    <div class="text-4xl font-bold text-red-600 mb-4">
-                        $<span class="service-price" data-service="thumbnails" data-base-price="20">20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                    <div class="text-4xl font-bold text-red-600 mb-4">$<span class="service-price" data-service="thumbnails" data-base-price="20">20</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span></div>
+                    <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> YouTube thumbnail</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> High CTR design</li>
                         <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                     </ul>
+                    <button onclick="document.getElementById('order').scrollIntoView(); toggleService('Thumbnails', 20);" class="btn-secondary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                 </div>
             </div>
             
-            <!-- Bundle Deals & Asset Pack -->
             <div class="mt-16">
                 <h3 class="text-2xl font-display font-bold mb-8 text-center reveal">
                     BUNDLE <span class="text-red-600">DEALS</span> & <span class="text-red-600">ASSETS</span>
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                    <!-- Complete Brand Bundle -->
                     <div class="glass-card p-8 reveal" style="background: linear-gradient(135deg, rgba(220,38,38,0.15), rgba(17,17,17,0.8));">
                         <div class="absolute top-6 right-6 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">SAVE $20</div>
                         <h3 class="text-2xl font-display font-bold mb-2 tracking-wider">COMPLETE BRAND</h3>
@@ -1290,15 +651,15 @@
                             $<span class="service-price" data-service="bundle" data-base-price="45">45</span><span class="text-lg text-gray-500 font-normal currency-label"> AUD</span>
                         </div>
                         <p class="text-gray-400 mb-4">Banner + PFP + Logo</p>
-                        <ul class="space-y-2 text-gray-400 text-sm mb-6">
+                        <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow">
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Complete branding package</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Consistent visual identity</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> 1 revision</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">✓</span> Priority delivery</li>
                         </ul>
+                        <button onclick="document.getElementById('order').scrollIntoView(); toggleService('Complete Brand Bundle', 45);" class="btn-primary w-full text-sm py-3 mt-auto">ORDER NOW</button>
                     </div>
                     
-                    <!-- ALL IN ONE ASSET PACK -->
                     <div class="glass-card p-8 reveal relative overflow-hidden" id="assetPackCard">
                         <div class="corner-ribbon" id="assetPackRibbon">
                             <span id="ribbonText">COMING SOON</span>
@@ -1308,7 +669,7 @@
                         <div class="text-4xl font-bold text-gray-500 mb-4" id="assetPackPrice">TBA</div>
                         <p class="text-gray-400 mb-4" id="assetPackDesc">Complete GFX Asset Collection</p>
                         
-                        <ul class="space-y-2 text-gray-400 text-sm mb-6" id="assetPackFeatures">
+                        <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow" id="assetPackFeatures">
                             <li class="flex items-center gap-2"><span class="text-red-600">→</span> Commercial License</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">→</span> 50+ Thumbnails</li>
                             <li class="flex items-center gap-2"><span class="text-red-600">→</span> Stream Overlays</li>
@@ -1317,7 +678,7 @@
                         
                         <div class="coming-soon-text" id="comingSoonText">COMING SOON</div>
                         
-                        <button id="assetPackBtn" disabled class="w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-4">
+                        <button id="assetPackBtn" disabled class="w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-auto">
                             NOTIFY ME
                         </button>
                     </div>
@@ -1325,8 +686,44 @@
             </div>
         </div>
     </section>
+
+    <section id="reviews" class="py-24 px-6 border-t border-white/5 bg-neutral-950/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-display font-bold mb-4 reveal">VOICE OF <span class="text-red-600">EXCELLENCE</span></h2>
+            <p class="text-gray-400 mb-12 reveal">Client Testimonials</p>
+
+            <div id="reviewsContainer" class="grid gap-6 mb-12 text-left reveal">
+                </div>
+
+            <div class="glass-card p-8 max-w-xl mx-auto reveal border border-red-500/20 bg-gradient-to-b from-red-900/10 to-transparent">
+                <h3 class="text-2xl font-bold mb-2">Loved our work?</h3>
+                <p class="text-gray-400 text-sm mb-6">Join the community and share your experience. (Negative words are automatically hidden)</p>
+                
+                <div id="reviewLoginState">
+                    <a href="/api/auth?action=login" class="btn-primary w-full block text-center py-3">Sign in with Discord to Review</a>
+                </div>
+                
+                <div id="reviewFormState" class="hidden text-left">
+                    <div class="mb-4">
+                        <label class="text-sm text-gray-400 block mb-2">Rating</label>
+                        <select id="reviewRating" class="form-input bg-neutral-900">
+                            <option value="5">★★★★★ (5/5)</option>
+                            <option value="4">★★★★☆ (4/5)</option>
+                            <option value="3">★★★☆☆ (3/5)</option>
+                            <option value="2">★★☆☆☆ (2/5)</option>
+                            <option value="1">★☆☆☆☆ (1/5)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-sm text-gray-400 block mb-2">Your Review</label>
+                        <textarea id="reviewText" rows="3" class="form-input bg-neutral-900" placeholder="Tell us about your experience..."></textarea>
+                    </div>
+                    <button onclick="submitReview()" id="submitReviewBtn" class="btn-secondary w-full text-sm">Submit Review</button>
+                </div>
+            </div>
+        </div>
+    </section>
     
-    <!-- Order Form Section -->
     <section id="order" class="py-24 px-6">
         <div class="max-w-2xl mx-auto">
             <div class="mb-12 text-center reveal">
@@ -1337,7 +734,6 @@
             </div>
             
             <form id="orderForm" class="glass-card p-8 md:p-12 reveal">
-                <!-- Multi-Select Services Dropdown -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Select Services *</label>
                     <div class="multi-select-container">
@@ -1350,52 +746,31 @@
                         <div class="multi-select-dropdown" id="serviceDropdown">
                             <div class="multi-select-option" onclick="toggleService('Logo', 20)">
                                 <input type="checkbox" id="chk-logo" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">Logo</span>
-                                    <span class="service-price">$<span class="price-display" data-base="20">20</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">Logo</span><span class="service-price">$<span class="price-display" data-base="20">20</span></span></div>
                             </div>
                             <div class="multi-select-option" onclick="toggleService('PFP', 15)">
                                 <input type="checkbox" id="chk-pfp" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">PFP</span>
-                                    <span class="service-price">$<span class="price-display" data-base="15">15</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">PFP</span><span class="service-price">$<span class="price-display" data-base="15">15</span></span></div>
                             </div>
                             <div class="multi-select-option" onclick="toggleService('Banner', 30)">
                                 <input type="checkbox" id="chk-banner" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">Banner</span>
-                                    <span class="service-price">$<span class="price-display" data-base="30">30</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">Banner</span><span class="service-price">$<span class="price-display" data-base="30">30</span></span></div>
                             </div>
                             <div class="multi-select-option" onclick="toggleService('Banner + PFP', 40)">
                                 <input type="checkbox" id="chk-banner-pfp" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">Banner + PFP</span>
-                                    <span class="service-price">$<span class="price-display" data-base="40">40</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">Banner + PFP</span><span class="service-price">$<span class="price-display" data-base="40">40</span></span></div>
                             </div>
                             <div class="multi-select-option" onclick="toggleService('Poster', 30)">
                                 <input type="checkbox" id="chk-poster" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">Poster</span>
-                                    <span class="service-price">$<span class="price-display" data-base="30">30</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">Poster</span><span class="service-price">$<span class="price-display" data-base="30">30</span></span></div>
                             </div>
                             <div class="multi-select-option" onclick="toggleService('Thumbnails', 20)">
                                 <input type="checkbox" id="chk-thumbnails" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">Thumbnails</span>
-                                    <span class="service-price">$<span class="price-display" data-base="20">20</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">Thumbnails</span><span class="service-price">$<span class="price-display" data-base="20">20</span></span></div>
                             </div>
                             <div class="multi-select-option" onclick="toggleService('Complete Brand Bundle', 45)">
                                 <input type="checkbox" id="chk-bundle" onchange="event.stopPropagation()">
-                                <div class="service-info">
-                                    <span class="service-name">Complete Brand Bundle</span>
-                                    <span class="service-price">$<span class="price-display" data-base="45">45</span></span>
-                                </div>
+                                <div class="service-info"><span class="service-name">Complete Brand Bundle</span><span class="service-price">$<span class="price-display" data-base="45">45</span></span></div>
                             </div>
                         </div>
                     </div>
@@ -1444,7 +819,6 @@
         </div>
     </section>
     
-    <!-- Contact/Footer -->
     <section id="contact" class="py-24 px-6 bg-neutral-950 border-t border-white/5">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-5xl md:text-6xl font-display font-bold mb-8 reveal">
@@ -1467,7 +841,6 @@
         </div>
     </section>
     
-    <!-- Admin Panel -->
     <div id="adminPanel" class="admin-panel">
         <div class="p-6 border-b border-white/10 flex justify-between items-center">
             <h3 class="text-xl font-display font-bold">ADMIN PANEL</h3>
@@ -1477,7 +850,6 @@
         </div>
         
         <div class="p-6 space-y-6">
-            <!-- Login Section -->
             <div id="adminLogin">
                 <p class="text-sm text-gray-400 mb-4">Enter password to access admin features</p>
                 <input type="password" id="adminPassword" class="form-input mb-4" placeholder="Password" autocomplete="off">
@@ -1485,13 +857,18 @@
                 <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
             </div>
             
-            <!-- Admin Controls -->
             <div id="adminControls" class="hidden space-y-6">
                 <div class="bg-red-600/10 border border-red-600/30 rounded-lg p-4">
                     <p class="text-sm text-red-400 font-medium">✓ Admin Access Granted</p>
                 </div>
                 
-                <!-- Change Password Section -->
+                <div class="admin-section">
+                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Manage Reviews</h4>
+                    <div id="adminReviewsList" class="orders-list">
+                        <p class="text-gray-500 text-sm italic">Loading reviews...</p>
+                    </div>
+                </div>
+
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Change Password</h4>
                     <input type="password" id="currentPassword" class="form-input text-sm mb-2" placeholder="Current Password" autocomplete="off">
@@ -1502,7 +879,6 @@
                     <p id="passwordSuccess" class="text-green-500 text-sm mt-2 hidden">Password updated successfully!</p>
                 </div>
                 
-                <!-- Orders Management Section -->
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Orders Management</h4>
                     <div id="ordersList" class="orders-list">
@@ -1510,7 +886,6 @@
                     </div>
                 </div>
                 
-                <!-- Add Portfolio Item -->
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Add Portfolio Item</h4>
                     <input type="text" id="newImageUrl" class="form-input text-sm mb-2" placeholder="Image URL">
@@ -1524,7 +899,6 @@
                     <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm">ADD ITEM</button>
                 </div>
                 
-                <!-- Manage Portfolio Items -->
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Portfolio Items</h4>
                     <div id="portfolioItemsList" class="orders-list">
@@ -1532,46 +906,22 @@
                     </div>
                 </div>
                 
-                <!-- Edit Services Prices -->
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Edit Service Prices</h4>
                     <div class="space-y-2">
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">Logo:</span>
-                            <input type="number" id="admin-price-logo" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">PFP:</span>
-                            <input type="number" id="admin-price-pfp" value="15" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">Banner:</span>
-                            <input type="number" id="admin-price-banner" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">Banner+PFP:</span>
-                            <input type="number" id="admin-price-banner-pfp" value="40" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">Poster:</span>
-                            <input type="number" id="admin-price-poster" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">Thumbnails:</span>
-                            <input type="number" id="admin-price-thumbnails" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
-                        <div class="service-edit-item">
-                            <span class="text-sm text-gray-400 w-24">Bundle:</span>
-                            <input type="number" id="admin-price-bundle" value="45" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
-                        </div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Logo:</span><input type="number" id="admin-price-logo" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">PFP:</span><input type="number" id="admin-price-pfp" value="15" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Banner:</span><input type="number" id="admin-price-banner" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Banner+PFP:</span><input type="number" id="admin-price-banner-pfp" value="40" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Poster:</span><input type="number" id="admin-price-poster" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Thumbnails:</span><input type="number" id="admin-price-thumbnails" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
+                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Bundle:</span><input type="number" id="admin-price-bundle" value="45" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
                     </div>
                     <button onclick="updateServicePrices()" class="btn-secondary w-full text-sm mt-3">UPDATE PRICES</button>
                 </div>
                 
-                <!-- ASSET PACK EDITOR -->
                 <div class="admin-section bg-red-500/5 border border-red-500/20 rounded-lg p-4">
                     <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-red-400">Asset Pack Editor</h4>
-                    
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-sm text-gray-300">Show Corner Ribbon</span>
                         <label class="toggle-switch">
@@ -1579,27 +929,10 @@
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
-                    
-                    <div class="mb-4">
-                        <label class="admin-label">Ribbon Text</label>
-                        <input type="text" id="editRibbonText" class="form-input text-sm" value="COMING SOON" onchange="updateAssetPackPreview()">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="admin-label">Pack Title</label>
-                        <input type="text" id="editPackTitle" class="form-input text-sm" value="ALL-IN-ONE ASSET PACK" onchange="updateAssetPackPreview()">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="admin-label">Price (leave empty for TBA)</label>
-                        <input type="text" id="editPackPrice" class="form-input text-sm" placeholder="99" onchange="updateAssetPackPreview()">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="admin-label">Description</label>
-                        <input type="text" id="editPackDesc" class="form-input text-sm" value="Complete GFX Asset Collection" onchange="updateAssetPackPreview()">
-                    </div>
-                    
+                    <div class="mb-4"><label class="admin-label">Ribbon Text</label><input type="text" id="editRibbonText" class="form-input text-sm" value="COMING SOON" onchange="updateAssetPackPreview()"></div>
+                    <div class="mb-4"><label class="admin-label">Pack Title</label><input type="text" id="editPackTitle" class="form-input text-sm" value="ALL-IN-ONE ASSET PACK" onchange="updateAssetPackPreview()"></div>
+                    <div class="mb-4"><label class="admin-label">Price (leave empty for TBA)</label><input type="text" id="editPackPrice" class="form-input text-sm" placeholder="99" onchange="updateAssetPackPreview()"></div>
+                    <div class="mb-4"><label class="admin-label">Description</label><input type="text" id="editPackDesc" class="form-input text-sm" value="Complete GFX Asset Collection" onchange="updateAssetPackPreview()"></div>
                     <div class="mb-4">
                         <label class="admin-label">Features (click × to remove)</label>
                         <div id="featuresEditor" class="space-y-2 mb-2"></div>
@@ -1608,7 +941,6 @@
                             <button onclick="addFeature()" class="btn-secondary text-sm px-3">+</button>
                         </div>
                     </div>
-                    
                     <div class="mb-4">
                         <label class="admin-label">Status</label>
                         <select id="editPackStatus" class="form-input text-sm bg-neutral-900" onchange="updateAssetPackPreview()">
@@ -1616,7 +948,6 @@
                             <option value="available">Available Now</option>
                         </select>
                     </div>
-                    
                     <div class="bg-black/30 rounded-lg p-3 mb-4">
                         <p class="text-xs text-gray-500 mb-2">Preview:</p>
                         <div class="text-xs text-gray-300 space-y-1">
@@ -1625,11 +956,9 @@
                             <p>Features: <span id="previewFeatures" class="text-white">4 items</span></p>
                         </div>
                     </div>
-                    
                     <button onclick="saveAssetPackChanges()" class="btn-primary w-full text-sm">SAVE ASSET PACK CHANGES</button>
                 </div>
                 
-                <!-- Actions -->
                 <div class="admin-section">
                     <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Actions</h4>
                     <button onclick="saveToDatabase()" class="btn-primary w-full text-sm mb-2">SAVE ALL CHANGES</button>
@@ -1642,21 +971,15 @@
         </div>
     </div>
     
-    <!-- Toast -->
-    <div id="toast" class="toast">
-        <span id="toastMessage">Message</span>
-    </div>
+    <div id="toast" class="toast"><span id="toastMessage">Message</span></div>
 
     <script>
-        // PRODUCTION CONFIG
-        const CONFIG = {
-            apiUrl: '/api/save-data'
-        };
+        const CONFIG = { apiUrl: '/api/save-data' };
         
-        // State
         let isAdmin = false;
         let orders = [];
-        let portfolioItems = []; // NEW: Track portfolio items
+        let portfolioItems = [];
+        let reviewsList = []; // NEW
         let audioContext;
         let currentCurrency = 'AUD';
         let isMuted = false;
@@ -1664,16 +987,13 @@
         let selectedServices = [];
         let lastWebhookTime = 0;
         const WEBHOOK_COOLDOWN = 30000;
-        let isSubmitting = false; // NEW: Prevent double submission
+        let isSubmitting = false;
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
         
         let assetPackData = {
-            showRibbon: true,
-            ribbonText: 'COMING SOON',
-            title: 'ALL-IN-ONE ASSET PACK',
-            price: '',
-            description: 'Complete GFX Asset Collection',
+            showRibbon: true, ribbonText: 'COMING SOON', title: 'ALL-IN-ONE ASSET PACK',
+            price: '', description: 'Complete GFX Asset Collection',
             features: ['Commercial License', '50+ Thumbnails', 'Stream Overlays', 'Transition Pack'],
             status: 'coming_soon'
         };
@@ -1688,10 +1008,8 @@
             { id: 'bundle', name: 'Complete Brand Bundle', basePrice: 45 }
         ];
         
-        // Category order for proper insertion
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
         
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
             initAudio();
@@ -1700,16 +1018,182 @@
             initPortfolioHover();
             initAssetPackEditor();
             initServiceDropdown();
-            validateSession(); // NEW: Check if session is still valid
+            validateSession();
             loadDataFromDatabase();
+            checkAuth(); // NEW: Discord Auth
+            loadReviews(); // NEW: Fetch Reviews
             
-            // NEW: Show audio controls only if supported
             if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                 document.getElementById('audioControls').style.display = 'flex';
             }
         });
-        
-        // NEW: Validate session on load
+
+        // -----------------------------------------
+        // NEW: AUTH & REVIEWS LOGIC
+        // -----------------------------------------
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth?action=me');
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    document.getElementById('loginBtn').classList.add('hidden');
+                    document.getElementById('userProfile').classList.remove('hidden');
+                    
+                    const avatarUrl = data.user.avatar 
+                        ? `https://cdn.discordapp.com/avatars/${data.user.id}/${data.user.avatar}.png`
+                        : 'https://cdn.discordapp.com/embed/avatars/0.png';
+                    
+                    document.getElementById('userAvatar').src = avatarUrl;
+                    document.getElementById('userNameDisplay').textContent = data.user.username;
+                    
+                    // Switch Review Form State
+                    document.getElementById('reviewLoginState').classList.add('hidden');
+                    document.getElementById('reviewFormState').classList.remove('hidden');
+
+                    if(window.location.search.includes('login=success')) {
+                        showToast(`Welcome back, ${data.user.username}!`);
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                }
+            } catch (e) { console.error("Auth check failed"); }
+        }
+
+        async function logoutDiscord() {
+            await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'logout' }) });
+            window.location.reload();
+        }
+
+        async function loadReviews() {
+            try {
+                const res = await fetch('/api/reviews');
+                const reviews = await res.json();
+                const container = document.getElementById('reviewsContainer');
+                
+                if (reviews.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 italic">No reviews yet. Be the first!</p>';
+                    return;
+                }
+
+                container.innerHTML = reviews.map(r => {
+                    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                    const avatarUrl = r.avatar ? `https://cdn.discordapp.com/avatars/${r.userId}/${r.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
+                    return `
+                    <div class="glass-card p-8 border border-white/10">
+                        <div class="text-yellow-500 text-2xl mb-4">${stars}</div>
+                        <p class="text-gray-300 italic mb-6">"${escapeHtml(r.text)}"</p>
+                        <div class="flex items-center gap-3">
+                            <img src="${avatarUrl}" class="w-10 h-10 rounded-full border border-white/10">
+                            <div>
+                                <div class="text-white font-semibold text-sm">${escapeHtml(r.username)}</div>
+                                <div class="text-gray-500 text-xs">Verified Client</div>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch(e) { console.error(e); }
+        }
+
+        async function submitReview() {
+            const btn = document.getElementById('submitReviewBtn');
+            const rating = document.getElementById('reviewRating').value;
+            const text = document.getElementById('reviewText').value.trim();
+            
+            if (!text) return showToast('Please write a review first');
+            
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rating, text })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('reviewText').value = '';
+                    if (data.flagged) {
+                        showToast('Review submitted! It is pending admin approval.');
+                    } else {
+                        showToast('Review posted successfully!');
+                        loadReviews(); // Reload list
+                    }
+                } else {
+                    showToast(data.error || 'Failed to post review');
+                }
+            } catch(e) {
+                showToast('Server error');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Submit Review';
+        }
+
+        function renderAdminReviews() {
+            const container = document.getElementById('adminReviewsList');
+            if (!container) return;
+            if (reviewsList.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm italic">No reviews found.</p>';
+                return;
+            }
+            container.innerHTML = reviewsList.map(r => `
+                <div class="order-item ${r.flagged ? 'border-red-500' : 'border-white/10'}">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-bold text-white text-sm">${escapeHtml(r.username)}</span>
+                        <span class="text-xs text-yellow-500">${'★'.repeat(r.rating)}</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-2">${escapeHtml(r.text)}</p>
+                    ${r.flagged ? '<span class="text-xs text-red-500 block mb-2">⚠️ Flagged by auto-filter</span>' : ''}
+                    <button onclick="deleteReview('${r.id}')" class="btn-danger w-full text-xs py-1">DELETE REVIEW</button>
+                </div>
+            `).join('');
+        }
+
+        async function deleteReview(id) {
+            reviewsList = reviewsList.filter(r => r.id !== id);
+            renderAdminReviews();
+            saveToDatabase();
+            loadReviews(); // Refresh public UI
+            showToast('Review deleted');
+        }
+
+        // -----------------------------------------
+        // FIXED GSAP FILTER FUNCTION
+        // -----------------------------------------
+        function filterWork(cat) {
+            playSound('click');
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.filter === cat);
+            });
+            
+            const items = document.querySelectorAll('.portfolio-item');
+            const visibleItems = [];
+            
+            // Kill existing GSAP animations
+            if (typeof gsap !== 'undefined') gsap.killTweensOf(items);
+            
+            items.forEach(item => {
+                const shouldShow = cat === 'all' || item.dataset.category === cat;
+                if (shouldShow) {
+                    item.style.display = 'block';
+                    visibleItems.push(item);
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
+                gsap.fromTo(visibleItems, 
+                    { clearProps: "all", opacity: 0, scale: 0.9, y: 20 }, 
+                    { opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out" }
+                );
+            }
+        }
+
+        // -----------------------------------------
+        // ORIGINAL FUNCTIONS RE-ADDED BELOW
+        // -----------------------------------------
         async function validateSession() {
             const token = sessionStorage.getItem('adminToken');
             if (token) {
@@ -1725,7 +1209,6 @@
             }
         }
         
-        // Initialize service dropdown click-outside behavior
         function initServiceDropdown() {
             document.addEventListener('click', (e) => {
                 const container = document.querySelector('.multi-select-container');
@@ -1754,10 +1237,9 @@
             const dropdown = document.getElementById('serviceDropdown');
             const trigger = document.getElementById('serviceTrigger');
             const arrow = document.getElementById('triggerArrow');
-            
-            dropdown.classList.remove('active');
-            trigger.classList.remove('active');
-            arrow.style.transform = 'rotate(0deg)';
+            if(dropdown) dropdown.classList.remove('active');
+            if(trigger) trigger.classList.remove('active');
+            if(arrow) arrow.style.transform = 'rotate(0deg)';
         }
         
         function toggleService(name, basePrice) {
@@ -1850,35 +1332,27 @@
             updateOrderTotal();
         }
         
-        // Portfolio Hover - FIXED for mobile
         function initPortfolioHover() {
             const items = document.querySelectorAll('.portfolio-item');
-            
             items.forEach(item => {
-                // Desktop hover
                 item.addEventListener('mouseenter', function() {
                     if (window.matchMedia('(hover: hover)').matches) {
                         this.classList.add('hover-active');
                         playSound('hover');
                     }
                 });
-                
                 item.addEventListener('mouseleave', function() {
                     this.classList.remove('hover-active');
                 });
-                
-                // Mobile touch
                 item.addEventListener('touchstart', function() {
                     this.classList.add('hover-active');
                 }, {passive: true});
-                
                 item.addEventListener('touchend', function() {
                     setTimeout(() => this.classList.remove('hover-active'), 300);
                 });
             });
         }
         
-        // Audio Controls - FIXED for mobile
         function toggleMute() {
             isMuted = !isMuted;
             const muteBtn = document.getElementById('muteBtn');
@@ -1905,7 +1379,6 @@
             document.getElementById('volumeLabel').textContent = value + '%';
         }
         
-        // Cursor - FIXED (hidden on mobile)
         function initCursor() {
             if (window.matchMedia('(pointer: coarse)').matches) return;
             
@@ -1940,7 +1413,6 @@
             });
         }
         
-        // Audio - FIXED with better error handling
         function initAudio() { 
             try {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -1955,7 +1427,6 @@
         function playSound(type) {
             if (!audioContext || isMuted) return;
             try {
-                // Check if audio context is running (required for mobile)
                 if (audioContext.state === 'suspended') {
                     audioContext.resume();
                 }
@@ -1987,7 +1458,6 @@
             } catch(e) {}
         }
         
-        // Scroll reveal
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
@@ -1998,7 +1468,6 @@
             reveals.forEach(el => observer.observe(el));
         }
         
-        // Form validation - FIXED with debounce
         function initFormValidation() {
             const terms = document.getElementById('terms');
             const submitBtn = document.getElementById('submitBtn');
@@ -2009,7 +1478,6 @@
             }
         }
         
-        // Currency - FIXED dropdown closing
         function toggleCurrency() {
             const d = document.getElementById('currencyDropdown');
             if (d) {
@@ -2034,42 +1502,6 @@
             showToast(`Currency: ${c}`);
         }
         
-        // Portfolio filter - FIXED array handling
-        function filterWork(cat) {
-            playSound('click');
-            document.querySelectorAll('.filter-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.filter === cat);
-            });
-            
-            const items = document.querySelectorAll('.portfolio-item');
-            const visibleItems = [];
-            
-            items.forEach(item => {
-                const shouldShow = cat === 'all' || item.dataset.category === cat;
-                if (shouldShow) {
-                    item.style.display = 'block';
-                    visibleItems.push(item);
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-            
-            if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
-                gsap.fromTo(visibleItems, 
-                    { opacity: 0, scale: 0.9, y: 20 }, 
-                    { 
-                        opacity: 1, 
-                        scale: 1, 
-                        y: 0, 
-                        duration: 0.4, 
-                        stagger: 0.05,
-                        ease: "power2.out"
-                    }
-                );
-            }
-        }
-        
-        // Add portfolio item - FIXED to insert in correct category position
         function addPortfolioItem() {
             const url = document.getElementById('newImageUrl').value.trim();
             const title = document.getElementById('newImageTitle').value.trim() || 'New Work';
@@ -2080,13 +1512,7 @@
                 return;
             }
             
-            // Validate URL format
-            try {
-                new URL(url);
-            } catch {
-                showToast('Please enter a valid URL');
-                return;
-            }
+            try { new URL(url); } catch { showToast('Please enter a valid URL'); return; }
             
             let aspectClass = 'thumbnail';
             if (cat === 'posters') aspectClass = 'poster';
@@ -2112,26 +1538,21 @@
             
             const grid = document.getElementById('portfolioGrid');
             if (grid) {
-                // Find the correct position to insert based on category order
                 const targetCategoryIndex = CATEGORY_ORDER.indexOf(cat);
                 const allItems = Array.from(grid.querySelectorAll('.portfolio-item'));
                 
                 let inserted = false;
-                
-                // Look for items in the same category to insert after
                 for (let i = targetCategoryIndex; i < CATEGORY_ORDER.length; i++) {
                     const categoryToCheck = CATEGORY_ORDER[i];
                     const itemsInCategory = allItems.filter(item => item.dataset.category === categoryToCheck);
                     
                     if (itemsInCategory.length > 0) {
                         if (categoryToCheck === cat) {
-                            // Same category found - insert after the last one
                             const lastItem = itemsInCategory[itemsInCategory.length - 1];
                             lastItem.after(div);
                             inserted = true;
                             break;
                         } else {
-                            // Later category found - insert before the first one
                             const firstItemOfNextCategory = itemsInCategory[0];
                             grid.insertBefore(div, firstItemOfNextCategory);
                             inserted = true;
@@ -2140,20 +1561,10 @@
                     }
                 }
                 
-                // If no items found in same or later categories, append to end
-                if (!inserted) {
-                    grid.appendChild(div);
-                }
+                if (!inserted) grid.appendChild(div);
                 
-                // Add to tracking array
-                portfolioItems.push({
-                    id: id,
-                    url: url,
-                    category: cat,
-                    title: title
-                });
+                portfolioItems.push({ id: id, url: url, category: cat, title: title });
                 
-                // Clear inputs
                 document.getElementById('newImageUrl').value = '';
                 document.getElementById('newImageTitle').value = '';
                 
@@ -2161,7 +1572,6 @@
                 showToast('Item added to ' + cat + ' section - Click SAVE ALL CHANGES to persist');
                 updatePortfolioItemsList();
                 
-                // Add event listeners
                 div.addEventListener('mouseenter', function() {
                     if (window.matchMedia('(hover: hover)').matches) {
                         this.classList.add('hover-active');
@@ -2173,15 +1583,11 @@
                 });
                 
                 if (typeof gsap !== 'undefined') {
-                    gsap.fromTo(div, 
-                        { opacity: 0, scale: 0.9 }, 
-                        { opacity: 1, scale: 1, duration: 0.4 }
-                    );
+                    gsap.fromTo(div, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4 });
                 }
             }
         }
         
-        // NEW: Update portfolio items list in admin
         function updatePortfolioItemsList() {
             const container = document.getElementById('portfolioItemsList');
             if (!container) return;
@@ -2203,23 +1609,18 @@
             `).join('');
         }
         
-        // NEW: Remove portfolio item
         function removePortfolioItem(id) {
             const index = portfolioItems.findIndex(item => item.id === id);
             if (index > -1) {
                 portfolioItems.splice(index, 1);
-                
-                // Remove from DOM
                 const el = document.querySelector(`.portfolio-item[data-id="${id}"]`);
                 if (el) el.remove();
-                
                 updatePortfolioItemsList();
                 playSound('click');
                 showToast('Item removed - Save to persist');
             }
         }
         
-        // Order form submission - FIXED with debounce and better error handling
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -2250,12 +1651,8 @@
             orders.push(orderData);
             updateOrdersList();
             
-            // Send to webhook (moved to backend ideally, but keeping for now)
             try {
                 const servicesText = selectedServices.map(s => `${s.name} ($${s.currentPrice} ${currentCurrency})`).join(', ');
-                
-                // Note: Webhook URL should ideally be in backend, not frontend
-                // This is a temporary solution
                 await fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud ', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2277,10 +1674,8 @@
                 });
             } catch (webhookError) {
                 console.error('Webhook failed:', webhookError);
-                // Continue anyway - order is saved in database
             }
             
-            // Set reminder only if not contacted
             setTimeout(() => {
                 const order = orders.find(o => o.id === orderData.id);
                 if (order && !order.contacted && order.status !== 'completed') {
@@ -2299,11 +1694,9 @@
             submitBtn.innerHTML = `SUBMIT ORDER <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
         });
         
-        // Check order reminder - FIXED to check status
         function checkOrderReminder(orderId) {
             const order = orders.find(o => o.id === orderId);
             if (order && !order.contacted && order.status !== 'completed') {
-                // Only send if still pending
                 fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud ', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2323,7 +1716,6 @@
             }
         }
         
-        // Update orders list
         function updateOrdersList() {
             const container = document.getElementById('ordersList');
             if (!container) return;
@@ -2357,18 +1749,14 @@
             `).join('');
         }
         
-        // Admin panel
         function toggleAdmin() { 
             playSound('click'); 
             document.getElementById('adminPanel').classList.toggle('active'); 
         }
         
-        // API-based login - FIXED with better error handling
         async function checkAdminPassword() {
             const input = document.getElementById('adminPassword');
             const password = input.value;
-            
-            // Clear password immediately for security
             input.value = '';
             
             try {
@@ -2386,6 +1774,7 @@
                     document.getElementById('adminControls').classList.remove('hidden');
                     updateOrdersList();
                     updatePortfolioItemsList();
+                    renderAdminReviews();
                     playSound('success'); 
                     showToast('Admin access granted');
                     
@@ -2408,8 +1797,6 @@
         
         function logoutAdmin() {
             const token = sessionStorage.getItem('adminToken');
-            
-            // Notify server to revoke session
             if (token) {
                 fetch(CONFIG.apiUrl, {
                     method: 'POST',
@@ -2425,7 +1812,6 @@
             document.getElementById('adminPassword').value = '';
         }
         
-        // API-based password change - FIXED
         async function changePassword() {
             const current = document.getElementById('currentPassword').value;
             const newPass = document.getElementById('newPassword').value;
@@ -2441,7 +1827,6 @@
                 errorEl.classList.remove('hidden');
                 return;
             }
-            
             if (newPass !== confirm) {
                 errorEl.textContent = 'Passwords do not match';
                 errorEl.classList.remove('hidden');
@@ -2469,11 +1854,7 @@
                     successEl.classList.remove('hidden');
                     playSound('success');
                     showToast('Password updated! Please login again.');
-                    
-                    // Logout after password change
-                    setTimeout(() => {
-                        logoutAdmin();
-                    }, 2000);
+                    setTimeout(() => { logoutAdmin(); }, 2000);
                 } else {
                     errorEl.textContent = data.error || 'Failed to update password';
                     errorEl.classList.remove('hidden');
@@ -2484,7 +1865,6 @@
             }
         }
         
-        // Update service prices
         function updateServicePrices() {
             const prices = {
                 logo: document.getElementById('admin-price-logo').value,
@@ -2498,16 +1878,13 @@
             
             for (const [key, value] of Object.entries(prices)) {
                 const el = document.querySelector(`.service-price[data-service="${key}"]`);
-                if (el) {
-                    el.dataset.basePrice = value;
-                }
+                if (el) el.dataset.basePrice = value;
             }
             
             updateAllPrices();
             showToast('Prices updated - Save to persist');
         }
         
-        // ASSET PACK EDITOR FUNCTIONS
         function initAssetPackEditor() {
             renderFeaturesEditor();
             updateAssetPackPreview();
@@ -2599,16 +1976,17 @@
                     comingSoonText.textContent = 'COMING SOON';
                     btn.disabled = true;
                     btn.textContent = 'NOTIFY ME';
-                    btn.className = 'w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-4';
+                    btn.className = 'w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-auto';
                     btn.onclick = null;
                 } else {
                     comingSoonText.style.display = 'none';
                     btn.disabled = false;
                     btn.textContent = assetPackData.price ? `BUY NOW - $${assetPackData.price}` : 'BUY NOW';
-                    btn.className = 'w-full btn-primary mt-4';
+                    btn.className = 'w-full btn-primary mt-auto';
                     btn.onclick = () => {
                         const basePrice = parseInt(assetPackData.price) || 0;
                         toggleService('All-in-One Asset Pack', basePrice);
+                        document.getElementById('order').scrollIntoView();
                     };
                 }
             }
@@ -2620,7 +1998,6 @@
             showToast('Asset Pack updated!');
         }
         
-        // Mark order as contacted
         async function markAsContacted(orderId) {
             const order = orders.find(o => o.id === orderId);
             if (order) {
@@ -2652,7 +2029,6 @@
             }
         }
         
-        // Mark order as completed
         async function markAsCompleted(orderId) {
             orders = orders.filter(o => o.id !== orderId);
             updateOrdersList();
@@ -2661,7 +2037,6 @@
             saveToDatabase();
         }
         
-        // API Save - FIXED to include portfolio
         async function saveToDatabase() {
             try {
                 const response = await fetch(CONFIG.apiUrl, {
@@ -2672,7 +2047,8 @@
                         token: sessionStorage.getItem('adminToken'),
                         assetPackData: assetPackData,
                         orders: orders,
-                        portfolio: portfolioItems, // NEW: Include portfolio
+                        portfolio: portfolioItems,
+                        reviews: reviewsList,
                         servicePrices: {
                             logo: document.getElementById('admin-price-logo').value,
                             pfp: document.getElementById('admin-price-pfp').value,
@@ -2702,18 +2078,17 @@
             }
         }
         
-        // Load data from API - FIXED to load portfolio with proper ordering
         async function loadDataFromDatabase() {
             try {
                 const token = sessionStorage.getItem('adminToken');
-                
                 const response = await fetch(CONFIG.apiUrl + (token ? '?token=' + encodeURIComponent(token) : ''));
+                
                 if (response.ok) {
                     const data = await response.json();
                     
                     if (data.orders) orders = data.orders;
+                    if (data.reviews) reviewsList = data.reviews;
                     
-                    // NEW: Load portfolio items - they will be inserted in correct positions
                     if (data.portfolio) {
                         portfolioItems = data.portfolio;
                         renderPortfolioItems();
@@ -2740,7 +2115,6 @@
                         document.getElementById('admin-price-poster').value = data.servicePrices.poster || 30;
                         document.getElementById('admin-price-thumbnails').value = data.servicePrices.thumbnails || 20;
                         document.getElementById('admin-price-bundle').value = data.servicePrices.bundle || 45;
-                        
                         updateServicePrices();
                     }
                     
@@ -2748,6 +2122,7 @@
                         isAdmin = true;
                         document.getElementById('adminLogin').classList.add('hidden');
                         document.getElementById('adminControls').classList.remove('hidden');
+                        renderAdminReviews();
                     }
                     
                     updateOrdersList();
@@ -2757,18 +2132,13 @@
             }
         }
         
-        // NUCLEAR FIX: Render loaded portfolio items in correct category positions
         function renderPortfolioItems() {
             const grid = document.getElementById('portfolioGrid');
             if (!grid || portfolioItems.length === 0) return;
             
-            // Sort portfolio items by category order
             const categoryOrder = ['thumbnails', 'posters', 'banners', 'combos'];
-            portfolioItems.sort((a, b) => {
-                return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
-            });
+            portfolioItems.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
             
-            // Insert each custom item in its correct position
             portfolioItems.forEach(item => {
                 let aspectClass = 'thumbnail';
                 if (item.category === 'posters') aspectClass = 'poster';
@@ -2790,26 +2160,21 @@
                     </div>
                 `;
                 
-                // NUCLEAR OPTION: Find exact position and insert there
                 const targetCategoryIndex = categoryOrder.indexOf(item.category);
                 const allCurrentItems = Array.from(grid.querySelectorAll('.portfolio-item'));
                 
                 let inserted = false;
-                
-                // Look for items in same category to insert after
                 for (let i = targetCategoryIndex; i < categoryOrder.length; i++) {
                     const categoryToCheck = categoryOrder[i];
                     const itemsInCategory = allCurrentItems.filter(el => el.dataset.category === categoryToCheck);
                     
                     if (itemsInCategory.length > 0) {
                         if (categoryToCheck === item.category) {
-                            // Same category - insert after the last one
                             const lastItem = itemsInCategory[itemsInCategory.length - 1];
                             lastItem.after(div);
                             inserted = true;
                             break;
                         } else {
-                            // Later category - insert before first one
                             const firstItem = itemsInCategory[0];
                             grid.insertBefore(div, firstItem);
                             inserted = true;
@@ -2818,12 +2183,8 @@
                     }
                 }
                 
-                // If no items found in same or later categories, append to end
-                if (!inserted) {
-                    grid.appendChild(div);
-                }
+                if (!inserted) grid.appendChild(div);
                 
-                // Add event listeners
                 div.addEventListener('mouseenter', function() {
                     if (window.matchMedia('(hover: hover)').matches) {
                         this.classList.add('hover-active');
@@ -2836,7 +2197,6 @@
             });
         }
         
-        // Webhook with cooldown
         function testWebhook() {
             const now = Date.now();
             const timeSinceLast = now - lastWebhookTime;
@@ -2888,7 +2248,6 @@
             cooldownEl.textContent = 'Cooldown: 30s';
         }
         
-        // Toast
         function showToast(m) {
             const t = document.getElementById('toast');
             const msg = document.getElementById('toastMessage');
@@ -2899,7 +2258,6 @@
             }
         }
         
-        // NEW: Escape HTML to prevent XSS
         function escapeHtml(text) {
             if (typeof text !== 'string') return '';
             const div = document.createElement('div');
@@ -2907,7 +2265,6 @@
             return div.innerHTML;
         }
         
-        // Close currency on outside click - FIXED
         document.addEventListener('click', (e) => { 
             if (!e.target.closest('#currencySwitcher')) {
                 const d = document.getElementById('currencyDropdown');
