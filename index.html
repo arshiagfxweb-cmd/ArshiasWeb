@@ -2762,49 +2762,85 @@
         }
         
         // NEW: Render loaded portfolio items in correct order
-        function renderPortfolioItems() {
-            const grid = document.getElementById('portfolioGrid');
-            if (!grid || portfolioItems.length === 0) return;
+// REPLACE the entire renderPortfolioItems function with this:
+
+function renderPortfolioItems() {
+    const grid = document.getElementById('portfolioGrid');
+    if (!grid || portfolioItems.length === 0) return;
+    
+    // Sort portfolio items by category order
+    const categoryOrder = ['thumbnails', 'posters', 'banners', 'combos'];
+    portfolioItems.sort((a, b) => {
+        return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
+    });
+    
+    // Insert each custom item in its correct position
+    portfolioItems.forEach(item => {
+        let aspectClass = 'thumbnail';
+        if (item.category === 'posters') aspectClass = 'poster';
+        else if (item.category === 'banners') aspectClass = 'banner';
+        else if (item.category === 'combos') aspectClass = 'combo';
+        
+        const div = document.createElement('div');
+        div.className = `portfolio-item ${aspectClass}`;
+        div.dataset.category = item.category;
+        div.dataset.id = item.id;
+        div.dataset.custom = 'true';
+        div.innerHTML = `
+            <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+            <div class="portfolio-overlay">
+                <div>
+                    <span class="text-red-500 font-medium text-sm tracking-wider">${item.category.toUpperCase()}</span>
+                    <h3 class="text-white font-semibold mt-1">${escapeHtml(item.title)}</h3>
+                </div>
+            </div>
+        `;
+        
+        // NUCLEAR OPTION: Find exact position and insert there
+        const targetCategoryIndex = categoryOrder.indexOf(item.category);
+        const allCurrentItems = Array.from(grid.querySelectorAll('.portfolio-item'));
+        
+        let inserted = false;
+        
+        // Look for items in same category to insert after
+        for (let i = targetCategoryIndex; i < categoryOrder.length; i++) {
+            const categoryToCheck = categoryOrder[i];
+            const itemsInCategory = allCurrentItems.filter(el => el.dataset.category === categoryToCheck);
             
-            // Sort by category order
-            portfolioItems.sort((a, b) => {
-                return CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category);
-            });
-            
-            portfolioItems.forEach(item => {
-                let aspectClass = 'thumbnail';
-                if (item.category === 'posters') aspectClass = 'poster';
-                else if (item.category === 'banners') aspectClass = 'banner';
-                else if (item.category === 'combos') aspectClass = 'combo';
-                
-                const div = document.createElement('div');
-                div.className = `portfolio-item ${aspectClass}`;
-                div.dataset.category = item.category;
-                div.dataset.id = item.id;
-                div.dataset.custom = 'true';
-                div.innerHTML = `
-                    <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay">
-                        <div>
-                            <span class="text-red-500 font-medium text-sm tracking-wider">${item.category.toUpperCase()}</span>
-                            <h3 class="text-white font-semibold mt-1">${escapeHtml(item.title)}</h3>
-                        </div>
-                    </div>
-                `;
-                
-                grid.appendChild(div);
-                
-                div.addEventListener('mouseenter', function() {
-                    if (window.matchMedia('(hover: hover)').matches) {
-                        this.classList.add('hover-active');
-                        playSound('hover');
-                    }
-                });
-                div.addEventListener('mouseleave', function() {
-                    this.classList.remove('hover-active');
-                });
-            });
+            if (itemsInCategory.length > 0) {
+                if (categoryToCheck === item.category) {
+                    // Same category - insert after the last one
+                    const lastItem = itemsInCategory[itemsInCategory.length - 1];
+                    lastItem.after(div);
+                    inserted = true;
+                    break;
+                } else {
+                    // Later category - insert before first one
+                    const firstItem = itemsInCategory[0];
+                    grid.insertBefore(div, firstItem);
+                    inserted = true;
+                    break;
+                }
+            }
         }
+        
+        // If no items found in same or later categories, append to end
+        if (!inserted) {
+            grid.appendChild(div);
+        }
+        
+        // Add event listeners
+        div.addEventListener('mouseenter', function() {
+            if (window.matchMedia('(hover: hover)').matches) {
+                this.classList.add('hover-active');
+                playSound('hover');
+            }
+        });
+        div.addEventListener('mouseleave', function() {
+            this.classList.remove('hover-active');
+        });
+    });
+}
         
         // Webhook with cooldown
         function testWebhook() {
