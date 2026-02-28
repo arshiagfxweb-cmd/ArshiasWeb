@@ -979,7 +979,7 @@
         let isAdmin = false;
         let orders = [];
         let portfolioItems = [];
-        let reviewsList = []; // NEW
+        let reviewsList = [];
         let audioContext;
         let currentCurrency = 'AUD';
         let isMuted = false;
@@ -1020,8 +1020,8 @@
             initServiceDropdown();
             validateSession();
             loadDataFromDatabase();
-            checkAuth(); // NEW: Discord Auth
-            loadReviews(); // NEW: Fetch Reviews
+            checkAuth();
+            loadReviews();
             
             if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                 document.getElementById('audioControls').style.display = 'flex';
@@ -1029,7 +1029,7 @@
         });
 
         // -----------------------------------------
-        // NEW: AUTH & REVIEWS LOGIC
+        // AUTH & REVIEWS LOGIC
         // -----------------------------------------
         async function checkAuth() {
             try {
@@ -1170,10 +1170,10 @@
             const items = document.querySelectorAll('.portfolio-item');
             const visibleItems = [];
             
-            // Kill existing GSAP animations
             if (typeof gsap !== 'undefined') gsap.killTweensOf(items);
             
             items.forEach(item => {
+                item.style.transition = 'none'; // 1. Disable CSS transitions instantly
                 const shouldShow = cat === 'all' || item.dataset.category === cat;
                 if (shouldShow) {
                     item.style.display = 'block';
@@ -1183,16 +1183,31 @@
                 }
             });
             
+            void document.body.offsetHeight; // Force repaint
+            
             if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
                 gsap.fromTo(visibleItems, 
-                    { clearProps: "all", opacity: 0, scale: 0.9, y: 20 }, 
-                    { opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out" }
+                    { opacity: 0, scale: 0.9, y: 20 }, 
+                    { 
+                        opacity: 1, 
+                        scale: 1, 
+                        y: 0, 
+                        duration: 0.4, 
+                        stagger: 0.05, 
+                        ease: "power2.out",
+                        onComplete: function() {
+                            // 2. Re-enable CSS transitions when done
+                            visibleItems.forEach(item => item.style.transition = '');
+                            // 3. Clear GSAP inline styles so 3D hover works again
+                            gsap.set(visibleItems, { clearProps: "transform,opacity" });
+                        }
+                    }
                 );
             }
         }
 
         // -----------------------------------------
-        // ORIGINAL FUNCTIONS RE-ADDED BELOW
+        // ORIGINAL LOGIC
         // -----------------------------------------
         async function validateSession() {
             const token = sessionStorage.getItem('adminToken');
