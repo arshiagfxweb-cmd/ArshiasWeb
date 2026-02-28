@@ -33,6 +33,47 @@
             user-select: none;
         }
         
+        /* Smooth, scrolling cyber-grid background */
+        @keyframes moveGrid {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+        .grid-bg-container {
+            position: fixed; top: -50px; left: 0; width: 100%; height: calc(100% + 50px);
+            z-index: -1; pointer-events: none; overflow: hidden;
+        }
+        .grid-bg {
+            position: absolute; top: -50px; left: 0; width: 100%; height: 200%;
+            background-image: linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 3s linear infinite;
+        }
+        
+        /* Pulsing Glow for Discord Buttons */
+        @keyframes discordPulse {
+            0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.7); transform: scale(1.02); }
+            100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
+        }
+        .discord-btn-glow {
+            animation: discordPulse 2.5s infinite ease-in-out;
+        }
+        .discord-btn-glow:hover {
+            animation: none;
+            box-shadow: 0 0 40px rgba(88, 101, 242, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Ambient glowing orbs */
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            50% { transform: translate(30px, -30px) scale(1.2); opacity: 0.8; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        }
+        .ambient-orb { animation: floatOrb 10s infinite ease-in-out alternate; }
+        .ambient-orb-2 { animation: floatOrb 12s infinite ease-in-out alternate-reverse; }
+
         @media (pointer: coarse) {
             body { cursor: auto !important; }
             .cursor-dot, .cursor-outline { display: none !important; }
@@ -40,42 +81,28 @@
         
         .font-display { font-family: 'Space Grotesk', sans-serif; }
         
+        /* Custom Cursor */
         .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
         }
-        
         .cursor-dot { width: 5px; height: 5px; background-color: var(--primary-red); }
         .cursor-outline {
-            width: 30px; height: 30px;
-            border: 2px solid rgba(220, 38, 38, 0.5);
+            width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5);
             transition: width 0.15s, height 0.15s, background-color 0.15s;
         }
-        
         .cursor-outline.hover {
-            width: 50px; height: 50px;
-            background-color: rgba(220, 38, 38, 0.1);
-            border-color: var(--primary-red);
+            width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red);
         }
         
+        /* Portfolio Items */
         .portfolio-item {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            background: var(--card-black);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; border-radius: 24px; overflow: hidden;
+            background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
-                        box-shadow 0.4s ease, 
-                        border-color 0.4s ease;
-            cursor: pointer;
-            will-change: transform;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            cursor: pointer; will-change: transform;
         }
-        
         .portfolio-item.thumbnail { aspect-ratio: 16/9; }
         .portfolio-item.poster { aspect-ratio: 3/4; }
         .portfolio-item.banner { aspect-ratio: 21/9; }
@@ -90,85 +117,73 @@
         @media (hover: hover) {
             .portfolio-item.hover-active {
                 transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(220, 38, 38, 0.3);
-                border-color: rgba(220, 38, 38, 0.5); z-index: 10;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(220, 38, 38, 0.4);
+                border-color: rgba(220, 38, 38, 0.8); z-index: 10;
             }
         }
-        
-        @media (hover: none) {
-            .portfolio-item:active { transform: scale(0.98); }
-        }
+        @media (hover: none) { .portfolio-item:active { transform: scale(0.98); } }
         
         .portfolio-item.hover-active img { transform: scale(1.1); }
-        
         .portfolio-item::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
             transition: left 0.7s ease; pointer-events: none; z-index: 5;
         }
-        
         .portfolio-item.hover-active::after { left: 100%; }
         
         .portfolio-overlay {
-            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
-            opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px; z-index: 3; pointer-events: none;
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px;
+            z-index: 3; pointer-events: none;
         }
-        
         .portfolio-item.hover-active .portfolio-overlay { opacity: 1; }
+        @media (hover: none) { .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); } }
         
-        @media (hover: none) {
-            .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); }
-        }
-        
+        /* Glass Cards */
         .glass-card {
-            background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            display: flex; flex-direction: column;
+            background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column;
         }
-        
         .glass-card::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
             transition: left 0.7s; z-index: 1; pointer-events: none;
         }
-        
         .glass-card:hover::before { left: 100%; }
-        
         @media (hover: hover) {
             .glass-card:hover {
-                transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.3);
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(220, 38, 38, 0.2);
+                transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.4);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(220, 38, 38, 0.25);
             }
         }
         
+        /* Nav */
         .main-nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        
         @media (max-width: 768px) {
             .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
             .main-nav .hidden.md\:flex { display: none; }
-            .main-nav .flex.items-center.gap-4 { gap: 0.5rem; }
             .logo-img { height: 32px; }
             .font-display.text-xl { font-size: 1rem; }
         }
-        
         .logo-img { height: 40px; width: auto; object-fit: contain; pointer-events: none; }
         
+        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 1rem 2rem;
             border-radius: 12px; font-weight: 600; transition: all 0.3s; position: relative; overflow: hidden;
             cursor: pointer; border: none; touch-action: manipulation;
         }
-        
         .btn-primary::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s;
         }
-        
         .btn-primary:hover::before { left: 100%; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.5); }
         .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;}
         
@@ -177,12 +192,10 @@
             border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; position: relative;
             overflow: hidden; touch-action: manipulation;
         }
-        
         .btn-secondary::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s;
         }
-        
         .btn-secondary:hover::before { left: 100%; }
         .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); transform: translateY(-2px); }
         .btn-secondary:active { transform: translateY(0); }
@@ -193,6 +206,7 @@
         }
         .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
         
+        /* Inputs & Form */
         .form-input {
             background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
             padding: 1rem 1.25rem; color: white; width: 100%; transition: all 0.3s; font-size: 16px;
@@ -205,8 +219,7 @@
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem;
             border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation;
         }
-        .filter-btn:hover, .filter-btn.active { border-color: var(--primary-red); color: var(--primary-red); background: rgba(220, 38, 38, 0.1); }
-        
+        .filter-btn:hover, .filter-btn.active { border-color: var(--primary-red); color: var(--primary-red); background: rgba(220, 38, 38, 0.15); box-shadow: 0 0 15px rgba(220,38,38,0.2); }
         @media (max-width: 640px) { .filter-btn { padding: 0.5rem 1rem; font-size: 0.875rem; } }
         
         .custom-checkbox {
@@ -216,27 +229,31 @@
         .custom-checkbox:checked { background: var(--primary-red); border-color: var(--primary-red); }
         .custom-checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 12px; }
         
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--void-black); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
         
+        /* Toast */
         .toast {
             position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(17, 17, 17, 0.95);
-            border: 1px solid rgba(255,255,255,0.1); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0;
-            transition: all 0.3s; max-width: 90vw; text-align: center;
+            border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 90vw; text-align: center; box-shadow: 0 10px 30px rgba(220,38,38,0.2);
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
+        /* Admin Panel */
         .admin-panel {
             position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh;
             background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1);
-            z-index: 2000; transform: translateX(100%); transition: transform 0.4s; overflow-y: auto;
+            z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.5);
         }
         @media (max-width: 640px) { .admin-panel { max-width: 100%; } }
         .admin-panel.active { transform: translateX(0); }
         
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         
         .corner-ribbon { position: absolute; top: 0; right: 0; width: 150px; height: 150px; overflow: hidden; z-index: 10; pointer-events: none; }
@@ -249,14 +266,9 @@
         .coming-soon-text { font-size: 2.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; text-align: center; margin-top: 20px; text-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
         @media (max-width: 640px) { .coming-soon-text { font-size: 1.5rem; } }
         
-        .grid-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px; pointer-events: none; z-index: -1;
-        }
-        
         .orders-list { max-height: 300px; overflow-y: auto; }
-        .order-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+        .order-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-bottom: 8px; transition: all 0.2s;}
+        .order-item:hover { border-color: rgba(255,255,255,0.3); }
         .order-item.pending { border-left: 3px solid #DC2626; }
         .order-item.contacted { border-left: 3px solid #fbbf24; }
         .order-item.completed { border-left: 3px solid #22c55e; }
@@ -336,7 +348,10 @@
 <body>
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
-    <div class="grid-bg"></div>
+    
+    <div class="grid-bg-container">
+        <div class="grid-bg"></div>
+    </div>
     
     <div class="audio-controls" id="audioControls" style="display: none;">
         <button onclick="toggleMute()" class="mute-btn" id="muteBtn" title="Toggle Sound">
@@ -382,16 +397,16 @@
                 </div>
                 
                 <div id="authContainer" class="relative">
-                    <a href="/api/auth?action=login" id="loginBtn" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                    <a href="/api/auth?action=login" id="loginBtn" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 discord-btn-glow">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
                         SIGN IN
                     </a>
                     
                     <div id="userProfile" class="hidden flex items-center gap-3 cursor-pointer" onclick="document.getElementById('userMenu').classList.toggle('hidden')">
-                        <img id="userAvatar" src="" class="w-10 h-10 rounded-full border-2 border-[#5865F2] hover:scale-105 transition-transform">
+                        <img id="userAvatar" src="" class="w-10 h-10 rounded-full border-2 border-[#5865F2] hover:scale-105 transition-transform shadow-[0_0_15px_rgba(88,101,242,0.4)]">
                         <div id="userMenu" class="absolute top-12 right-0 bg-neutral-900 border border-white/10 rounded-xl p-2 hidden min-w-[150px] shadow-2xl">
                             <div class="px-3 py-2 text-sm text-gray-400 border-b border-white/10 mb-1 truncate" id="userNameDisplay">Username</div>
-                            <button onclick="logoutDiscord()" class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded-lg">Logout</button>
+                            <button onclick="logoutDiscord()" class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded-lg transition-colors">Logout</button>
                         </div>
                     </div>
                 </div>
@@ -400,17 +415,17 @@
     </nav>
     
     <section id="hero" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden px-6">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-red-900/20 rounded-full blur-[100px]"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/15 rounded-full blur-[120px] ambient-orb"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-red-900/25 rounded-full blur-[100px] ambient-orb-2"></div>
         
         <div class="text-center px-6 max-w-5xl mx-auto relative z-10">
             <div class="mb-6 reveal">
-                <span class="inline-block px-6 py-3 rounded-full border border-red-500/30 text-red-500 text-sm font-medium tracking-wider bg-red-500/5">
+                <span class="inline-block px-6 py-3 rounded-full border border-red-500/30 text-red-500 text-sm font-medium tracking-wider bg-red-500/5 backdrop-blur-sm shadow-[0_0_20px_rgba(220,38,38,0.1)]">
                     GFX DESIGNER & VISUAL ARTIST
                 </span>
             </div>
-            <h1 class="text-7xl md:text-9xl font-display font-bold mb-6 tracking-tight reveal">
-                ARSHIA<span class="text-red-600">.</span>
+            <h1 class="text-7xl md:text-9xl font-display font-bold mb-6 tracking-tight reveal" style="text-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                ARSHIA<span class="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]">.</span>
             </h1>
             <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto reveal">
                 Creating <span class="text-white font-semibold">visual identities</span> that demand attention. Professional GFX for content creators, esports teams, and brands.
@@ -425,8 +440,8 @@
         </div>
     </section>
     
-    <section id="work" class="py-24 px-6">
-        <div class="max-w-7xl mx-auto">
+    <section id="work" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto relative z-10">
             <div class="mb-16 text-center reveal">
                 <h2 class="text-5xl md:text-6xl font-display font-bold mb-4">
                     SELECTED <span class="text-red-600">WORK</span>
@@ -649,12 +664,12 @@
             <div id="reviewsContainer" class="grid gap-6 mb-12 text-left reveal">
                 </div>
 
-            <div class="glass-card p-8 max-w-xl mx-auto reveal border border-red-500/20 bg-gradient-to-b from-red-900/10 to-transparent">
+            <div class="glass-card p-8 max-w-xl mx-auto reveal border border-red-500/20 bg-gradient-to-b from-red-900/10 to-transparent shadow-[0_0_30px_rgba(220,38,38,0.05)]">
                 <h3 class="text-2xl font-bold mb-2">Loved our work?</h3>
                 <p class="text-gray-400 text-sm mb-6">Join the community and share your experience.</p>
                 
                 <div id="reviewLoginState" class="text-center">
-                    <a href="/api/auth?action=login" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-6 py-3 rounded-xl font-bold transition-all inline-flex items-center gap-2 w-full justify-center shadow-lg shadow-[#5865F2]/20">
+                    <a href="/api/auth?action=login" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-6 py-3 rounded-xl font-bold transition-all inline-flex items-center gap-2 w-full justify-center discord-btn-glow">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
                         Sign in with Discord to Review
                     </a>
@@ -663,7 +678,7 @@
                 <div id="reviewFormState" class="hidden text-left">
                     <div class="mb-4">
                         <label class="text-sm text-gray-400 block mb-2">Rating</label>
-                        <select id="reviewRating" class="form-input bg-neutral-900">
+                        <select id="reviewRating" class="form-input bg-neutral-900 border-white/10 text-white focus:border-red-500">
                             <option value="5">★★★★★ (5/5)</option>
                             <option value="4">★★★★☆ (4/5)</option>
                             <option value="3">★★★☆☆ (3/5)</option>
@@ -673,16 +688,16 @@
                     </div>
                     <div class="mb-4">
                         <label class="text-sm text-gray-400 block mb-2">Your Review</label>
-                        <textarea id="reviewText" rows="3" class="form-input bg-neutral-900" placeholder="Tell us about your experience..."></textarea>
+                        <textarea id="reviewText" rows="3" class="form-input bg-neutral-900 border-white/10 text-white focus:border-red-500" placeholder="Tell us about your experience..."></textarea>
                     </div>
-                    <button onclick="submitReview()" id="submitReviewBtn" class="btn-secondary w-full text-sm">Submit Review</button>
+                    <button onclick="submitReview()" id="submitReviewBtn" class="btn-secondary w-full text-sm hover:border-red-500 hover:text-white transition-all duration-300">Submit Review</button>
                 </div>
             </div>
         </div>
     </section>
     
-    <section id="order" class="py-24 px-6">
-        <div class="max-w-2xl mx-auto">
+    <section id="order" class="py-24 px-6 relative">
+        <div class="max-w-2xl mx-auto relative z-10">
             <div class="mb-12 text-center reveal">
                 <h2 class="text-5xl md:text-6xl font-display font-bold mb-4">
                     PLACE <span class="text-red-600">ORDER</span>
@@ -700,7 +715,7 @@
                 <p class="text-gray-400 mb-8 max-w-md mx-auto text-sm leading-relaxed">
                     To ensure secure communication and prevent spam, you must link your Discord account before placing an order.
                 </p>
-                <a href="/api/auth?action=login" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-4 rounded-xl font-bold transition-all inline-flex items-center gap-3 shadow-lg shadow-[#5865F2]/20 hover:scale-105">
+                <a href="/api/auth?action=login" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-4 rounded-xl font-bold transition-all inline-flex items-center gap-3 discord-btn-glow">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
                     SIGN IN WITH DISCORD
                 </a>
@@ -710,8 +725,8 @@
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Select Services *</label>
                     <div class="multi-select-container">
-                        <div class="multi-select-trigger" id="serviceTrigger" onclick="toggleServiceDropdown()">
-                            <span id="triggerText" class="placeholder-text">Click to select services...</span>
+                        <div class="multi-select-trigger border-white/10 hover:border-red-500" id="serviceTrigger" onclick="toggleServiceDropdown()">
+                            <span id="triggerText" class="placeholder-text text-gray-400">Click to select services...</span>
                             <svg class="w-5 h-5 text-gray-400 transition-transform" id="triggerArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
@@ -756,39 +771,39 @@
                     <label class="block text-sm font-medium mb-2 text-gray-300">
                         Discord Username * <span class="text-[#5865F2] text-xs font-normal ml-2">(Auto-linked securely)</span>
                     </label>
-                    <input type="text" id="discordUser" required class="form-input bg-black/50 text-gray-400 cursor-not-allowed" placeholder="username#0000" maxlength="50" readonly>
+                    <input type="text" id="discordUser" required class="form-input bg-black/40 border-white/5 text-gray-400 cursor-not-allowed focus:border-white/5 focus:box-shadow-none shadow-inner" placeholder="username#0000" maxlength="50" readonly>
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Email *</label>
-                    <input type="email" id="emailUser" required class="form-input" placeholder="your@email.com" maxlength="100">
+                    <input type="email" id="emailUser" required class="form-input border-white/10 text-white focus:border-red-500" placeholder="your@email.com" maxlength="100">
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Description *</label>
-                    <textarea id="description" required rows="4" class="form-input" placeholder="Describe what you're looking for... Include style preferences, colors, text, etc." maxlength="2000"></textarea>
+                    <textarea id="description" required rows="4" class="form-input border-white/10 text-white focus:border-red-500" placeholder="Describe what you're looking for... Include style preferences, colors, text, etc." maxlength="2000"></textarea>
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Reference Links (Optional)</label>
-                    <input type="text" id="references" class="form-input" placeholder="Paste any reference images or links..." maxlength="500">
+                    <input type="text" id="references" class="form-input border-white/10 text-white focus:border-red-500" placeholder="Paste any reference images or links..." maxlength="500">
                 </div>
                 
                 <div class="flex items-start gap-3 mb-8">
                     <input type="checkbox" id="terms" required class="custom-checkbox mt-1">
-                    <label for="terms" class="text-sm text-gray-400 leading-relaxed">
+                    <label for="terms" class="text-sm text-gray-400 leading-relaxed cursor-pointer select-none">
                         I agree that payment is required upfront before work begins. I understand that revisions are included as specified in the pricing. *
                     </label>
                 </div>
                 
-                <div class="flex items-center justify-between mb-6 p-4 bg-white/5 rounded-xl">
+                <div class="flex items-center justify-between mb-6 p-5 bg-black/40 border border-white/5 rounded-xl shadow-inner">
                     <span class="text-gray-400">Total:</span>
-                    <span class="text-2xl font-bold text-red-600">$<span id="orderTotal">0</span> <span class="text-lg text-gray-500 font-normal currency-label">AUD</span></span>
+                    <span class="text-3xl font-bold text-red-500" style="text-shadow: 0 0 15px rgba(220,38,38,0.4);">$<span id="orderTotal">0</span> <span class="text-lg text-gray-500 font-normal currency-label">AUD</span></span>
                 </div>
                 
-                <button type="submit" id="submitBtn" class="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <button type="submit" id="submitBtn" class="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_10px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_10px_40px_rgba(220,38,38,0.6)]" disabled>
                     SUBMIT ORDER
-                    <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <svg class="w-5 h-5 inline-block ml-2 transition-transform duration-300 transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </button>
             </form>
         </div>
@@ -796,16 +811,16 @@
     
     <section id="contact" class="py-24 px-6 bg-neutral-950 border-t border-white/5">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-5xl md:text-6xl font-display font-bold mb-8 reveal">
-                LET'S <span class="text-red-600">CREATE</span>
+            <h2 class="text-5xl md:text-6xl font-display font-bold mb-8 reveal text-white" style="text-shadow: 0 5px 20px rgba(0,0,0,0.5);">
+                LET'S <span class="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">CREATE</span>
             </h2>
             <p class="text-xl text-gray-400 mb-12 reveal">Ready to elevate your brand? Get in touch.</p>
             
-            <div class="flex justify-center gap-4 mb-12 reveal">
-                <a href="https://x.com/arshiapsd " target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
+            <div class="flex justify-center gap-6 mb-12 reveal">
+                <a href="https://x.com/arshiapsd " target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group shadow-lg">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
-                <a href="https://www.behance.net/arshiagfx " target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group">
+                <a href="https://www.behance.net/arshiagfx " target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group shadow-lg">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg>
                 </a>
             </div>
@@ -817,140 +832,175 @@
     </section>
     
     <div id="adminPanel" class="admin-panel">
-        <div class="p-6 border-b border-white/10 flex justify-between items-center">
-            <h3 class="text-xl font-display font-bold">ADMIN PANEL</h3>
-            <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-10">
+            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PANEL</h3>
+            <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white transition-colors focus:outline-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
         
         <div class="p-6 space-y-6">
-            <div id="adminLogin">
-                <p class="text-sm text-gray-400 mb-4">Enter password to access admin features</p>
-                <input type="password" id="adminPassword" class="form-input mb-4" placeholder="Password" autocomplete="off">
-                <button onclick="checkAdminPassword()" class="btn-primary w-full">LOGIN</button>
-                <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
+            <div id="adminLogin" class="mt-4">
+                <p class="text-sm text-gray-400 mb-4">Enter master password to access system config</p>
+                <input type="password" id="adminPassword" class="form-input mb-4 border-white/10 focus:border-red-500 transition-colors" placeholder="••••••••" autocomplete="off">
+                <button onclick="checkAdminPassword()" class="btn-primary w-full text-sm py-3">AUTHENTICATE</button>
+                <p id="loginError" class="text-red-500 text-sm mt-3 hidden text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20">Incorrect password</p>
             </div>
             
             <div id="adminControls" class="hidden space-y-6">
-                <div class="bg-red-600/10 border border-red-600/30 rounded-lg p-4">
-                    <p class="text-sm text-red-400 font-medium">✓ Admin Access Granted</p>
+                <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-center">
+                    <p class="text-sm text-emerald-400 font-medium tracking-wide">✓ SYSTEM ACCESS GRANTED</p>
                 </div>
                 
                 <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Manage Reviews</h4>
+                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        Manage Reviews
+                    </h4>
                     <div id="adminReviewsList" class="orders-list">
                         <p class="text-gray-500 text-sm italic">Loading reviews...</p>
                     </div>
                 </div>
 
                 <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Change Password</h4>
-                    <input type="password" id="currentPassword" class="form-input text-sm mb-2" placeholder="Current Password" autocomplete="off">
-                    <input type="password" id="newPassword" class="form-input text-sm mb-2" placeholder="New Password" autocomplete="off">
-                    <input type="password" id="confirmPassword" class="form-input text-sm mb-2" placeholder="Confirm New Password" autocomplete="off">
-                    <button onclick="changePassword()" class="btn-secondary w-full text-sm">UPDATE PASSWORD</button>
-                    <p id="passwordError" class="text-red-500 text-sm mt-2 hidden"></p>
-                    <p id="passwordSuccess" class="text-green-500 text-sm mt-2 hidden">Password updated successfully!</p>
+                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                        Security
+                    </h4>
+                    <input type="password" id="currentPassword" class="form-input text-sm mb-2 border-white/5 bg-black/40" placeholder="Current Password" autocomplete="off">
+                    <input type="password" id="newPassword" class="form-input text-sm mb-2 border-white/5 bg-black/40" placeholder="New Password" autocomplete="off">
+                    <input type="password" id="confirmPassword" class="form-input text-sm mb-3 border-white/5 bg-black/40" placeholder="Confirm New Password" autocomplete="off">
+                    <button onclick="changePassword()" class="btn-secondary w-full text-sm hover:border-red-500 hover:text-red-400">UPDATE PASSWORD</button>
+                    <p id="passwordError" class="text-red-500 text-sm mt-2 hidden text-center"></p>
+                    <p id="passwordSuccess" class="text-emerald-500 text-sm mt-2 hidden text-center">Password updated successfully!</p>
                 </div>
                 
                 <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Orders Management</h4>
-                    <div id="ordersList" class="orders-list">
-                        <p class="text-gray-500 text-sm italic">No pending orders</p>
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Add Portfolio Item</h4>
-                    <input type="text" id="newImageUrl" class="form-input text-sm mb-2" placeholder="Image URL">
-                    <input type="text" id="newImageTitle" class="form-input text-sm mb-2" placeholder="Title (e.g., Championship Poster)">
-                    <select id="newImageCategory" class="form-input text-sm mb-2 bg-neutral-900">
-                        <option value="thumbnails">Thumbnails (16:9)</option>
-                        <option value="posters">Posters (3:4)</option>
-                        <option value="banners">Banners (21:9)</option>
-                        <option value="combos">Combos (16:9)</option>
-                    </select>
-                    <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm">ADD ITEM</button>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Portfolio Items</h4>
-                    <div id="portfolioItemsList" class="orders-list">
-                        <p class="text-gray-500 text-sm italic">No custom items added</p>
+                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        Incoming Orders
+                    </h4>
+                    <div id="ordersList" class="orders-list bg-black/20 p-2 rounded-xl border border-white/5">
+                        <p class="text-gray-500 text-sm italic text-center py-4">No pending orders</p>
                     </div>
                 </div>
                 
                 <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Edit Service Prices</h4>
-                    <div class="space-y-2">
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Logo:</span><input type="number" id="admin-price-logo" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">PFP:</span><input type="number" id="admin-price-pfp" value="15" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Banner:</span><input type="number" id="admin-price-banner" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Banner+PFP:</span><input type="number" id="admin-price-banner-pfp" value="40" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Poster:</span><input type="number" id="admin-price-poster" value="30" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Thumbnails:</span><input type="number" id="admin-price-thumbnails" value="20" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                        <div class="service-edit-item"><span class="text-sm text-gray-400 w-24">Bundle:</span><input type="number" id="admin-price-bundle" value="45" class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm"></div>
-                    </div>
-                    <button onclick="updateServicePrices()" class="btn-secondary w-full text-sm mt-3">UPDATE PRICES</button>
-                </div>
-                
-                <div class="admin-section bg-red-500/5 border border-red-500/20 rounded-lg p-4">
-                    <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-red-400">Asset Pack Editor</h4>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-sm text-gray-300">Show Corner Ribbon</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="editShowRibbon" checked onchange="updateAssetPackPreview()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="mb-4"><label class="admin-label">Ribbon Text</label><input type="text" id="editRibbonText" class="form-input text-sm" value="COMING SOON" onchange="updateAssetPackPreview()"></div>
-                    <div class="mb-4"><label class="admin-label">Pack Title</label><input type="text" id="editPackTitle" class="form-input text-sm" value="ALL-IN-ONE ASSET PACK" onchange="updateAssetPackPreview()"></div>
-                    <div class="mb-4"><label class="admin-label">Price (leave empty for TBA)</label><input type="text" id="editPackPrice" class="form-input text-sm" placeholder="99" onchange="updateAssetPackPreview()"></div>
-                    <div class="mb-4"><label class="admin-label">Description</label><input type="text" id="editPackDesc" class="form-input text-sm" value="Complete GFX Asset Collection" onchange="updateAssetPackPreview()"></div>
-                    <div class="mb-4">
-                        <label class="admin-label">Features (click × to remove)</label>
-                        <div id="featuresEditor" class="space-y-2 mb-2"></div>
-                        <div class="flex gap-2">
-                            <input type="text" id="newFeature" class="form-input text-sm flex-1" placeholder="Add new feature...">
-                            <button onclick="addFeature()" class="btn-secondary text-sm px-3">+</button>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="admin-label">Status</label>
-                        <select id="editPackStatus" class="form-input text-sm bg-neutral-900" onchange="updateAssetPackPreview()">
-                            <option value="coming_soon">Coming Soon</option>
-                            <option value="available">Available Now</option>
+                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Add Portfolio Item
+                    </h4>
+                    <div class="bg-black/30 p-4 rounded-xl border border-white/5 space-y-3">
+                        <input type="text" id="newImageUrl" class="form-input text-sm border-white/10" placeholder="Image Direct URL (e.g., https://...)">
+                        <input type="text" id="newImageTitle" class="form-input text-sm border-white/10" placeholder="Title (e.g., FNCS Championship Poster)">
+                        <select id="newImageCategory" class="form-input text-sm border-white/10 bg-neutral-900 text-white">
+                            <option value="thumbnails">Thumbnails (16:9 Ratio)</option>
+                            <option value="posters">Posters (3:4 Ratio)</option>
+                            <option value="banners">Banners (21:9 Ratio)</option>
+                            <option value="combos">Combos (16:9 Ratio)</option>
                         </select>
+                        <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm hover:bg-white/10">INJECT ITEM TO GRID</button>
                     </div>
-                    <div class="bg-black/30 rounded-lg p-3 mb-4">
-                        <p class="text-xs text-gray-500 mb-2">Preview:</p>
-                        <div class="text-xs text-gray-300 space-y-1">
-                            <p>Title: <span id="previewTitle" class="text-white">ALL-IN-ONE ASSET PACK</span></p>
-                            <p>Price: <span id="previewPrice" class="text-white">TBA</span></p>
-                            <p>Features: <span id="previewFeatures" class="text-white">4 items</span></p>
-                        </div>
-                    </div>
-                    <button onclick="saveAssetPackChanges()" class="btn-primary w-full text-sm">SAVE ASSET PACK CHANGES</button>
                 </div>
                 
                 <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Actions</h4>
-                    <button onclick="saveToDatabase()" class="btn-primary w-full text-sm mb-2">SAVE ALL CHANGES</button>
-                    <button onclick="testWebhook()" class="btn-secondary w-full text-sm" id="testWebhookBtn">TEST WEBHOOK</button>
-                    <p class="webhook-cooldown" id="webhookCooldown"></p>
+                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400">Custom Portfolio Elements</h4>
+                    <div id="portfolioItemsList" class="orders-list bg-black/20 p-2 rounded-xl border border-white/5">
+                        <p class="text-gray-500 text-sm italic text-center py-4">No custom items added</p>
+                    </div>
                 </div>
                 
-                <button onclick="logoutAdmin()" class="w-full py-2 text-gray-500 hover:text-white text-sm border border-white/10 rounded-lg">LOGOUT</button>
+                <div class="admin-section">
+                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Service Pricing (AUD Base)
+                    </h4>
+                    <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5">
+                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 pb-3"><span class="text-sm text-gray-400 w-24">Logo:</span><input type="number" id="admin-price-logo" value="20" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">PFP:</span><input type="number" id="admin-price-pfp" value="15" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Banner:</span><input type="number" id="admin-price-banner" value="30" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Banner+PFP:</span><input type="number" id="admin-price-banner-pfp" value="40" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Poster:</span><input type="number" id="admin-price-poster" value="30" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Thumbnails:</span><input type="number" id="admin-price-thumbnails" value="20" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                        <div class="service-edit-item bg-transparent rounded-none mb-0 pt-3"><span class="text-sm text-gray-400 w-24">Bundle:</span><input type="number" id="admin-price-bundle" value="45" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
+                    </div>
+                    <button onclick="updateServicePrices()" class="btn-secondary w-full text-sm mt-4 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-white hover:border-red-500">APPLY PRICING UPDATES</button>
+                </div>
+                
+                <div class="admin-section bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 rounded-xl p-5 shadow-[0_0_20px_rgba(220,38,38,0.05)]">
+                    <h4 class="font-bold mb-5 text-sm uppercase tracking-wider text-red-500 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                        Asset Pack Controller
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-white/5">
+                            <span class="text-sm text-gray-300 font-medium">Show Corner Ribbon</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="editShowRibbon" checked onchange="updateAssetPackPreview()">
+                                <span class="toggle-slider border border-white/10 shadow-inner"></span>
+                            </label>
+                        </div>
+                        
+                        <div><label class="admin-label">Ribbon Text</label><input type="text" id="editRibbonText" class="form-input text-sm bg-black/40 border-white/10" value="COMING SOON" onchange="updateAssetPackPreview()"></div>
+                        <div><label class="admin-label">Pack Title</label><input type="text" id="editPackTitle" class="form-input text-sm bg-black/40 border-white/10" value="ALL-IN-ONE ASSET PACK" onchange="updateAssetPackPreview()"></div>
+                        <div><label class="admin-label">Price (leave empty for TBA)</label><input type="text" id="editPackPrice" class="form-input text-sm bg-black/40 border-white/10" placeholder="99" onchange="updateAssetPackPreview()"></div>
+                        <div><label class="admin-label">Description</label><input type="text" id="editPackDesc" class="form-input text-sm bg-black/40 border-white/10" value="Complete GFX Asset Collection" onchange="updateAssetPackPreview()"></div>
+                        
+                        <div>
+                            <label class="admin-label">Features List</label>
+                            <div id="featuresEditor" class="space-y-2 mb-3 bg-black/20 p-3 rounded-lg border border-white/5"></div>
+                            <div class="flex gap-2">
+                                <input type="text" id="newFeature" class="form-input text-sm flex-1 bg-black/40 border-white/10" placeholder="Type new feature here...">
+                                <button onclick="addFeature()" class="bg-red-600 hover:bg-red-500 text-white rounded-lg px-4 text-lg font-bold transition-colors">+</button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="admin-label">Sales Status</label>
+                            <select id="editPackStatus" class="form-input text-sm bg-neutral-900 border-white/10 text-white" onchange="updateAssetPackPreview()">
+                                <option value="coming_soon">Coming Soon (Locked)</option>
+                                <option value="available">Available Now (Purchasable)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-black/60 rounded-lg p-4 mt-2 border border-dashed border-white/20">
+                            <p class="text-xs text-red-500/80 uppercase font-bold tracking-widest mb-2">Live Preview</p>
+                            <div class="text-sm text-gray-300 space-y-2 font-medium">
+                                <p class="flex justify-between border-b border-white/5 pb-1">Title: <span id="previewTitle" class="text-white">ALL-IN-ONE ASSET PACK</span></p>
+                                <p class="flex justify-between border-b border-white/5 pb-1">Price: <span id="previewPrice" class="text-green-400">TBA</span></p>
+                                <p class="flex justify-between pb-1">Features: <span id="previewFeatures" class="text-blue-400">4 items</span></p>
+                            </div>
+                        </div>
+                        
+                        <button onclick="saveAssetPackChanges()" class="bg-red-600/20 border border-red-500/50 hover:bg-red-600 hover:border-red-600 text-red-400 hover:text-white w-full py-3 rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(220,38,38,0.1)]">COMMIT ASSET PACK CHANGES</button>
+                    </div>
+                </div>
+                
+                <div class="admin-section border-t-2 border-white/10 mt-8 pt-6">
+                    <h4 class="font-bold mb-4 text-sm uppercase tracking-wider text-white text-center">Master Database Controls</h4>
+                    <button onclick="saveToDatabase()" class="btn-primary w-full text-base py-4 mb-3 shadow-[0_10px_30px_rgba(220,38,38,0.4)]">SAVE ALL CONFIGURATIONS</button>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="testWebhook()" class="btn-secondary flex-1 text-xs border-white/10 hover:border-[#5865F2] hover:text-[#5865F2]" id="testWebhookBtn">TEST DISCORD WEBHOOK</button>
+                        <button onclick="logoutAdmin()" class="bg-transparent border border-white/10 hover:bg-white/5 hover:text-white text-gray-500 text-xs px-4 rounded-lg transition-colors">LOCK SYSTEM</button>
+                    </div>
+                    <p class="webhook-cooldown text-center mt-2 text-xs" id="webhookCooldown"></p>
+                </div>
+                
             </div>
         </div>
     </div>
     
-    <div id="toast" class="toast"><span id="toastMessage">Message</span></div>
+    <div id="toast" class="toast">
+        <span id="toastMessage" class="font-medium tracking-wide">Message</span>
+    </div>
 
     <script>
+        // CONFIGURATION
         const CONFIG = { apiUrl: '/api/save-data' };
         
+        // STATE VARIABLES
         let isAdmin = false;
         let orders = [];
         let portfolioItems = [];
@@ -985,9 +1035,9 @@
         
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
         
+        // INITIALIZATION
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
-            initAudio();
             initScrollReveal();
             initFormValidation();
             initPortfolioHover();
@@ -998,18 +1048,24 @@
             checkAuth();
             loadReviews();
             
+            // Audio context requires user interaction to start in modern browsers
             if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                 document.getElementById('audioControls').style.display = 'flex';
+                // Wait for first click anywhere to initialize audio to bypass browser block
+                document.addEventListener('click', initAudioOnFirstInteraction, { once: true });
             }
         });
 
         // -----------------------------------------
-        // NEW: SECRET ADMIN SHORTCUT (CTRL + Y)
+        // SECRET ADMIN SHORTCUT (CTRL + Y)
         // -----------------------------------------
         document.addEventListener('keydown', function(e) {
+            // BUG FIX: Don't trigger if the user is typing their order description!
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
             // Checks if Ctrl (Windows) or Cmd (Mac) is held down and 'y' is pressed
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
-                e.preventDefault(); // Stop the browser from doing its default "redo" action
+                e.preventDefault(); 
                 toggleAdmin();
             }
         });
@@ -1023,7 +1079,6 @@
                 const data = await response.json();
                 
                 if (data.authenticated) {
-                    // Update Top Nav
                     document.getElementById('loginBtn').classList.add('hidden');
                     document.getElementById('userProfile').classList.remove('hidden');
                     
@@ -1034,16 +1089,13 @@
                     document.getElementById('userAvatar').src = avatarUrl;
                     document.getElementById('userNameDisplay').textContent = data.user.username;
                     
-                    // Unlock Reviews Form
                     document.getElementById('reviewLoginState').classList.add('hidden');
                     document.getElementById('reviewFormState').classList.remove('hidden');
 
-                    // Unlock Orders Form
                     document.getElementById('orderLoginState').classList.add('hidden');
                     const orderForm = document.getElementById('orderForm');
                     orderForm.classList.remove('hidden');
                     
-                    // Auto-fill and lock Discord Username in the form
                     const discordInput = document.getElementById('discordUser');
                     if (discordInput) {
                         discordInput.value = data.user.username;
@@ -1052,7 +1104,7 @@
 
                     const urlParams = new URLSearchParams(window.location.search);
                     if(urlParams.get('login') === 'success') {
-                        showToast(`Welcome back, ${data.user.username}!`);
+                        showToast(`Authentication successful, ${data.user.username}!`);
                         window.history.replaceState({}, document.title, window.location.pathname);
                     }
                 }
@@ -1071,7 +1123,7 @@
                 const container = document.getElementById('reviewsContainer');
                 
                 if (reviews.length === 0) {
-                    container.innerHTML = '<p class="text-gray-500 italic">No reviews yet. Be the first!</p>';
+                    container.innerHTML = '<p class="text-gray-500 italic text-center">No reviews yet. Be the first to share your experience!</p>';
                     return;
                 }
 
@@ -1079,14 +1131,17 @@
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const avatarUrl = r.avatar ? `https://cdn.discordapp.com/avatars/${r.userId}/${r.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
                     return `
-                    <div class="glass-card p-8 border border-white/10">
-                        <div class="text-yellow-500 text-2xl mb-4">${stars}</div>
-                        <p class="text-gray-300 italic mb-6">"${escapeHtml(r.text)}"</p>
-                        <div class="flex items-center gap-3">
-                            <img src="${avatarUrl}" class="w-10 h-10 rounded-full border border-[#5865F2]/50">
+                    <div class="glass-card p-8 border border-white/5 hover:border-red-500/30 transition-all duration-300">
+                        <div class="text-yellow-500 text-2xl mb-4 drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]">${stars}</div>
+                        <p class="text-gray-300 italic mb-6 leading-relaxed">"${escapeHtml(r.text)}"</p>
+                        <div class="flex items-center gap-4">
+                            <img src="${avatarUrl}" class="w-12 h-12 rounded-full border-2 border-[#5865F2]/50 shadow-[0_0_10px_rgba(88,101,242,0.2)]">
                             <div>
-                                <div class="text-white font-semibold text-sm">${escapeHtml(r.username)}</div>
-                                <div class="text-gray-500 text-xs">Verified Client</div>
+                                <div class="text-white font-semibold tracking-wide">${escapeHtml(r.username)}</div>
+                                <div class="text-emerald-500/80 text-xs flex items-center gap-1 mt-0.5">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    Verified Client
+                                </div>
                             </div>
                         </div>
                     </div>`;
@@ -1099,10 +1154,10 @@
             const rating = document.getElementById('reviewRating').value;
             const text = document.getElementById('reviewText').value.trim();
             
-            if (!text) return showToast('Please write a review first');
+            if (!text) return showToast('Please write a review before submitting.');
             
             btn.disabled = true;
-            btn.textContent = 'Submitting...';
+            btn.innerHTML = 'PROCESSING...';
 
             try {
                 const res = await fetch('/api/reviews', {
@@ -1115,7 +1170,7 @@
                 if (data.success) {
                     document.getElementById('reviewText').value = '';
                     if (data.flagged) {
-                        showToast('Review submitted! It is pending admin approval.');
+                        showToast('Review submitted. Pending admin approval due to system filters.');
                     } else {
                         showToast('Review posted successfully!');
                         loadReviews();
@@ -1124,28 +1179,28 @@
                     showToast(data.error || 'Failed to post review');
                 }
             } catch(e) {
-                showToast('Server error');
+                showToast('Server connection error. Try again later.');
             }
             btn.disabled = false;
-            btn.textContent = 'Submit Review';
+            btn.innerHTML = 'Submit Review';
         }
 
         function renderAdminReviews() {
             const container = document.getElementById('adminReviewsList');
             if (!container) return;
             if (reviewsList.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic">No reviews found.</p>';
+                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4 bg-black/20 rounded-xl border border-white/5">System clear. No reviews found.</p>';
                 return;
             }
             container.innerHTML = reviewsList.map(r => `
-                <div class="order-item ${r.flagged ? 'border-red-500' : 'border-white/10'}">
-                    <div class="flex justify-between items-start mb-2">
+                <div class="order-item relative overflow-hidden ${r.flagged ? 'border-red-500/50 bg-red-900/10' : 'border-white/5 bg-black/30'}">
+                    ${r.flagged ? '<div class="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">FLAGGED</div>' : ''}
+                    <div class="flex justify-between items-start mb-2 pr-12">
                         <span class="font-bold text-white text-sm">${escapeHtml(r.username)}</span>
                         <span class="text-xs text-yellow-500">${'★'.repeat(r.rating)}</span>
                     </div>
-                    <p class="text-xs text-gray-400 mb-2">${escapeHtml(r.text)}</p>
-                    ${r.flagged ? '<span class="text-xs text-red-500 block mb-2">⚠️ Flagged by auto-filter</span>' : ''}
-                    <button onclick="deleteReview('${r.id}')" class="btn-danger w-full text-xs py-1">DELETE REVIEW</button>
+                    <p class="text-xs text-gray-300 mb-3 bg-black/40 p-2 rounded border border-white/5 italic">"${escapeHtml(r.text)}"</p>
+                    <button onclick="deleteReview('${r.id}')" class="btn-danger w-full text-xs py-1.5 opacity-80 hover:opacity-100">DELETE RECORD</button>
                 </div>
             `).join('');
         }
@@ -1153,9 +1208,9 @@
         async function deleteReview(id) {
             reviewsList = reviewsList.filter(r => r.id !== id);
             renderAdminReviews();
-            await saveToDatabase(); // Wait for save to complete
-            loadReviews(); // Refresh public UI
-            showToast('Review deleted');
+            await saveToDatabase();
+            loadReviews();
+            showToast('Review purged from database');
         }
 
         // -----------------------------------------
@@ -1173,7 +1228,7 @@
             if (typeof gsap !== 'undefined') gsap.killTweensOf(items);
             
             items.forEach(item => {
-                item.style.transition = 'none'; // Temporarily disable CSS transitions
+                item.style.transition = 'none'; 
                 const shouldShow = cat === 'all' || item.dataset.category === cat;
                 if (shouldShow) {
                     item.style.display = 'block';
@@ -1183,21 +1238,16 @@
                 }
             });
             
-            void document.body.offsetHeight; // Force DOM repaint
+            void document.body.offsetHeight; 
             
             if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
                 gsap.fromTo(visibleItems, 
                     { opacity: 0, scale: 0.9, y: 20 }, 
                     { 
-                        opacity: 1, 
-                        scale: 1, 
-                        y: 0, 
-                        duration: 0.4, 
-                        stagger: 0.05, 
-                        ease: "power2.out",
+                        opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out",
                         onComplete: function() {
                             visibleItems.forEach(item => item.style.transition = '');
-                            gsap.set(visibleItems, { clearProps: "transform,opacity" }); // Clear inline styles
+                            gsap.set(visibleItems, { clearProps: "transform,opacity" }); 
                         }
                     }
                 );
@@ -1241,6 +1291,7 @@
             } else {
                 dropdown.classList.add('active');
                 trigger.classList.add('active');
+                trigger.classList.add('border-red-500');
                 arrow.style.transform = 'rotate(180deg)';
                 playSound('click');
             }
@@ -1251,7 +1302,10 @@
             const trigger = document.getElementById('serviceTrigger');
             const arrow = document.getElementById('triggerArrow');
             if(dropdown) dropdown.classList.remove('active');
-            if(trigger) trigger.classList.remove('active');
+            if(trigger) {
+                trigger.classList.remove('active');
+                trigger.classList.remove('border-red-500');
+            }
             if(arrow) arrow.style.transform = 'rotate(0deg)';
         }
         
@@ -1280,18 +1334,20 @@
             
             if (selectedServices.length === 0) {
                 container.innerHTML = '';
-                triggerText.textContent = 'Click to select services...';
-                triggerText.classList.add('placeholder-text');
+                triggerText.innerHTML = 'Click to select services...';
+                triggerText.classList.add('text-gray-400');
+                triggerText.classList.remove('text-white');
                 input.value = '';
                 document.getElementById('submitBtn').disabled = true;
                 return;
             }
             
-            triggerText.textContent = `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`;
-            triggerText.classList.remove('placeholder-text');
+            triggerText.innerHTML = `<span class="bg-red-600/20 text-red-500 px-2 py-0.5 rounded mr-2 font-bold">${selectedServices.length}</span> services selected`;
+            triggerText.classList.remove('text-gray-400');
+            triggerText.classList.add('text-white');
             
             container.innerHTML = selectedServices.map(service => `
-                <div class="selected-service-tag">
+                <div class="selected-service-tag shadow-md">
                     ${escapeHtml(service.name)} - $${service.currentPrice}
                     <button type="button" onclick="removeService('${escapeHtml(service.name)}')" title="Remove">×</button>
                 </div>
@@ -1318,7 +1374,22 @@
         
         function updateOrderTotal() {
             const total = selectedServices.reduce((sum, s) => sum + s.currentPrice, 0);
-            document.getElementById('orderTotal').textContent = total;
+            
+            // GSAP counter animation for price
+            const totalEl = document.getElementById('orderTotal');
+            const startVal = parseInt(totalEl.textContent) || 0;
+            
+            if (typeof gsap !== 'undefined') {
+                gsap.to(totalEl, {
+                    innerHTML: total,
+                    duration: 0.5,
+                    snap: { innerHTML: 1 },
+                    ease: "power2.out"
+                });
+            } else {
+                totalEl.textContent = total;
+            }
+            
             document.getElementById('totalPriceInput').value = total;
         }
         
@@ -1384,7 +1455,7 @@
                     audioContext.resume();
                 }
             }
-            showToast(isMuted ? 'Sound muted' : 'Sound on');
+            showToast(isMuted ? 'Audio System Offline' : 'Audio System Online');
         }
         
         function updateVolume(value) {
@@ -1426,13 +1497,20 @@
             });
         }
         
+        // BUG FIX: Ensure audio context only creates after user interacts to prevent console errors
+        function initAudioOnFirstInteraction() {
+            if (!audioContext) {
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) {
+                        audioContext = new AudioContextClass();
+                    }
+                } catch(e) {}
+            }
+        }
+
         function initAudio() { 
-            try {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (AudioContextClass) {
-                    audioContext = new AudioContextClass();
-                }
-            } catch(e) {}
+            // Called on load, but actual context creation is deferred to first interaction above
         }
         
         function playSound(type) {
@@ -1451,20 +1529,23 @@
                 
                 if (type === 'hover') { 
                     osc.frequency.value = 600; 
-                    gain.gain.value = 0.03 * baseVolume; 
+                    osc.type = 'sine';
+                    gain.gain.value = 0.02 * baseVolume; 
                     osc.start(); 
                     osc.stop(audioContext.currentTime + 0.05); 
                 } else if (type === 'click') { 
-                    osc.frequency.value = 800; 
-                    gain.gain.value = 0.05 * baseVolume; 
+                    osc.frequency.value = 800;
+                    osc.type = 'triangle'; 
+                    gain.gain.value = 0.04 * baseVolume; 
                     osc.start(); 
                     osc.stop(audioContext.currentTime + 0.08); 
                 } else if (type === 'success') { 
-                    osc.frequency.value = 1000; 
-                    gain.gain.value = 0.08 * baseVolume; 
+                    osc.frequency.value = 800; 
+                    osc.type = 'sine';
+                    gain.gain.value = 0.06 * baseVolume; 
                     osc.start(); 
-                    osc.frequency.exponentialRampToValueAtTime(1500, audioContext.currentTime + 0.2); 
-                    osc.stop(audioContext.currentTime + 0.3); 
+                    osc.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1); 
+                    osc.stop(audioContext.currentTime + 0.2); 
                 }
             } catch(e) {}
         }
@@ -1473,9 +1554,12 @@
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { 
-                    if (entry.isIntersecting) entry.target.classList.add('active'); 
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); 
+                        observer.unobserve(entry.target); // Only animate once
+                    }
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
             reveals.forEach(el => observer.observe(el));
         }
         
@@ -1485,6 +1569,7 @@
             if (terms && submitBtn) {
                 terms.addEventListener('change', (e) => {
                     submitBtn.disabled = !e.target.checked || selectedServices.length === 0 || isSubmitting;
+                    if(!submitBtn.disabled) playSound('success');
                 });
             }
         }
@@ -1510,7 +1595,7 @@
             document.querySelectorAll('.currency-label').forEach(l => l.textContent = ' ' + c);
             
             playSound('click'); 
-            showToast(`Currency: ${c}`);
+            showToast(`Currency synced to ${c}`);
         }
         
         function addPortfolioItem() {
@@ -1580,7 +1665,7 @@
                 document.getElementById('newImageTitle').value = '';
                 
                 playSound('success'); 
-                showToast('Item added to ' + cat + ' section - Click SAVE ALL CHANGES to persist');
+                showToast(`Asset injected to ${cat.toUpperCase()}`);
                 updatePortfolioItemsList();
                 
                 div.addEventListener('mouseenter', function() {
@@ -1604,18 +1689,18 @@
             if (!container) return;
             
             if (portfolioItems.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic">No custom items added</p>';
+                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4 bg-black/20 rounded-xl border border-white/5">No custom items detected</p>';
                 return;
             }
             
             container.innerHTML = portfolioItems.map(item => `
-                <div class="order-item">
+                <div class="order-item bg-black/30 border border-white/10 hover:border-red-500/50">
                     <div class="flex justify-between items-start mb-2">
                         <span class="font-bold text-white text-sm">${escapeHtml(item.title)}</span>
-                        <span class="text-xs text-gray-500">${item.category}</span>
+                        <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 uppercase">${item.category}</span>
                     </div>
-                    <p class="text-xs text-gray-400 truncate mb-2">${escapeHtml(item.url)}</p>
-                    <button onclick="removePortfolioItem('${item.id}')" class="btn-danger w-full text-xs py-1">REMOVE</button>
+                    <p class="text-xs text-gray-500 truncate mb-3 bg-black/50 p-1.5 rounded">${escapeHtml(item.url)}</p>
+                    <button onclick="removePortfolioItem('${item.id}')" class="btn-danger w-full text-xs py-1.5 opacity-80 hover:opacity-100">REMOVE ASSET</button>
                 </div>
             `).join('');
         }
@@ -1628,7 +1713,7 @@
                 if (el) el.remove();
                 updatePortfolioItemsList();
                 playSound('click');
-                showToast('Item removed - Save to persist');
+                showToast('Asset completely removed. Save to persist.');
             }
         }
         
@@ -1640,7 +1725,7 @@
             
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = 'SUBMITTING...';
+            submitBtn.innerHTML = 'TRANSMITTING...';
             
             playSound('success');
             
@@ -1668,17 +1753,19 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        content: '@everyone NEW ORDER!',
+                        content: '@everyone 🚨 NEW SECURE ORDER RECEIVED 🚨',
                         embeds: [{
-                            title: '🎨 NEW ORDER #' + orderData.id,
+                            title: '📝 ORDER INVOICE #' + orderData.id,
                             color: 0xDC2626,
                             fields: [
-                                { name: 'Discord', value: orderData.discord.substring(0, 100), inline: true },
-                                { name: 'Email', value: orderData.email.substring(0, 100), inline: true },
-                                { name: 'Services', value: servicesText.substring(0, 1000) },
-                                { name: 'Total', value: '$' + orderData.total + ' ' + currentCurrency, inline: true },
-                                { name: 'Description', value: orderData.description.substring(0, 1024) || 'No description' }
+                                { name: 'Client Discord', value: orderData.discord.substring(0, 100), inline: true },
+                                { name: 'Client Email', value: orderData.email.substring(0, 100), inline: true },
+                                { name: 'Total Value', value: '**$' + orderData.total + ' ' + currentCurrency + '**', inline: true },
+                                { name: 'Requested Services', value: '```' + servicesText.substring(0, 1000) + '```' },
+                                { name: 'Project Brief', value: orderData.description.substring(0, 1024) || 'No description provided' },
+                                { name: 'Assets/Links', value: orderData.references.substring(0, 1024) || 'None' }
                             ],
+                            footer: { text: "Arshia GFX Automated System" },
                             timestamp: orderData.timestamp
                         }]
                     })
@@ -1694,7 +1781,7 @@
                 }
             }, 24 * 60 * 60 * 1000);
             
-            showToast('Order submitted successfully!');
+            showToast('Transmission Successful! Order logged.');
             e.target.reset();
             selectedServices = [];
             updateSelectedServicesDisplay();
@@ -1712,14 +1799,13 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        content: '@everyone REMINDER: Order #' + orderId + ' has not been contacted yet!',
+                        content: '@everyone ⏰ **SLA REMINDER:** Order #' + orderId + ' has not been contacted in 24 hours!',
                         embeds: [{
-                            title: '⏰ ORDER REMINDER #' + orderId,
+                            title: '⚠️ PENDING ORDER ALERT',
                             color: 0xffa500,
                             fields: [
-                                { name: 'Discord', value: order.discord.substring(0, 100), inline: true },
-                                { name: 'Services', value: order.services.map(s => s.name).join(', ').substring(0, 1000) },
-                                { name: 'Status', value: 'Awaiting contact' }
+                                { name: 'Client', value: order.discord.substring(0, 100), inline: true },
+                                { name: 'Status', value: 'Awaiting initial contact', inline: true }
                             ]
                         }]
                     })
@@ -1732,28 +1818,34 @@
             if (!container) return;
             
             if (orders.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic">No pending orders</p>';
+                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4">No pending orders in queue</p>';
                 return;
             }
             
             container.innerHTML = orders.map(order => `
-                <div class="order-item ${order.contacted ? 'contacted' : 'pending'}">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="font-bold text-white">#${order.id}</span>
-                        <span class="text-xs ${order.contacted ? 'text-yellow-500' : 'text-red-500'}">
-                            ${order.contacted ? 'CONTACTED' : 'PENDING'}
+                <div class="order-item relative overflow-hidden ${order.contacted ? 'bg-yellow-500/5 border-yellow-500/30' : 'bg-red-500/5 border-red-500/30'}">
+                    <div class="absolute top-0 left-0 w-1 h-full ${order.contacted ? 'bg-yellow-500' : 'bg-red-500'}"></div>
+                    <div class="flex justify-between items-start mb-2 pl-2">
+                        <span class="font-bold text-white tracking-wide">#${order.id}</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${order.contacted ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}">
+                            ${order.contacted ? 'IN PROGRESS' : 'ACTION REQ.'}
                         </span>
                     </div>
-                    <p class="text-sm text-gray-400 mb-1">${escapeHtml(order.discord)}</p>
-                    <p class="text-sm text-gray-500 mb-1">${order.services.map(s => escapeHtml(s.name)).join(', ')}</p>
-                    <p class="text-sm text-red-400 mb-2">$${order.total} ${order.currency || 'AUD'}</p>
+                    <div class="pl-2 space-y-1 mb-3">
+                        <p class="text-sm text-white font-medium flex items-center gap-2">
+                            <svg class="w-3 h-3 text-[#5865F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                            ${escapeHtml(order.discord)}
+                        </p>
+                        <p class="text-xs text-gray-400 break-words">${order.services.map(s => escapeHtml(s.name)).join(' • ')}</p>
+                        <p class="text-sm font-bold text-green-400 mt-1">$${order.total} <span class="text-xs font-normal text-gray-500">${order.currency || 'AUD'}</span></p>
+                    </div>
                     ${!order.contacted ? `
-                        <button onclick="markAsContacted(${order.id})" class="btn-primary w-full text-xs py-2">
-                            MARK AS CONTACTED
+                        <button onclick="markAsContacted(${order.id})" class="bg-yellow-500/20 hover:bg-yellow-500 text-yellow-400 hover:text-black font-bold w-full text-[10px] tracking-widest py-2 transition-colors">
+                            MARK CLIENT CONTACTED
                         </button>
                     ` : `
-                        <button onclick="markAsCompleted(${order.id})" class="btn-secondary w-full text-xs py-2">
-                            MARK COMPLETED
+                        <button onclick="markAsCompleted(${order.id})" class="bg-green-500/20 hover:bg-green-500 text-green-400 hover:text-black font-bold w-full text-[10px] tracking-widest py-2 transition-colors">
+                            MARK AS DELIVERED & CLEAR
                         </button>
                     `}
                 </div>
@@ -1787,21 +1879,22 @@
                     updatePortfolioItemsList();
                     renderAdminReviews();
                     playSound('success'); 
-                    showToast('Admin access granted');
+                    showToast('System Master Access Granted');
                     
                     if (data.token) {
                         sessionStorage.setItem('adminToken', data.token);
                     }
                 } else {
                     const errorEl = document.getElementById('loginError');
-                    errorEl.textContent = data.error || 'Incorrect password';
+                    errorEl.textContent = 'ACCESS DENIED';
                     errorEl.classList.remove('hidden');
+                    playSound('hover'); // Play a dull sound for error
                     setTimeout(() => {
                         errorEl.classList.add('hidden');
                     }, 3000);
                 }
             } catch (e) {
-                showToast('Auth server error - check console');
+                showToast('Authentication server offline');
                 console.error(e);
             }
         }
@@ -1821,6 +1914,8 @@
             document.getElementById('adminLogin').classList.remove('hidden');
             document.getElementById('adminControls').classList.add('hidden');
             document.getElementById('adminPassword').value = '';
+            showToast('System Locked');
+            toggleAdmin(); // Auto close panel
         }
         
         async function changePassword() {
@@ -1834,12 +1929,12 @@
             successEl.classList.add('hidden');
             
             if (newPass.length < 6) {
-                errorEl.textContent = 'New password must be at least 6 characters';
+                errorEl.textContent = 'Code must be at least 6 characters';
                 errorEl.classList.remove('hidden');
                 return;
             }
             if (newPass !== confirm) {
-                errorEl.textContent = 'Passwords do not match';
+                errorEl.textContent = 'Verification mismatch';
                 errorEl.classList.remove('hidden');
                 return;
             }
@@ -1864,14 +1959,14 @@
                     document.getElementById('confirmPassword').value = '';
                     successEl.classList.remove('hidden');
                     playSound('success');
-                    showToast('Password updated! Please login again.');
+                    showToast('Security credentials updated. Re-authenticating...');
                     setTimeout(() => { logoutAdmin(); }, 2000);
                 } else {
-                    errorEl.textContent = data.error || 'Failed to update password';
+                    errorEl.textContent = data.error || 'Update failed';
                     errorEl.classList.remove('hidden');
                 }
             } catch (e) {
-                errorEl.textContent = 'Server error';
+                errorEl.textContent = 'Server linkage failed';
                 errorEl.classList.remove('hidden');
             }
         }
@@ -1893,7 +1988,7 @@
             }
             
             updateAllPrices();
-            showToast('Prices updated - Save to persist');
+            showToast('Price indices updated in local cache. Save config to broadcast.');
         }
         
         function initAssetPackEditor() {
@@ -1905,9 +2000,9 @@
             const container = document.getElementById('featuresEditor');
             if (!container) return;
             container.innerHTML = assetPackData.features.map((feature, index) => `
-                <div class="feature-item">
-                    <input type="text" value="${escapeHtml(feature)}" onchange="updateFeature(${index}, this.value)">
-                    <button onclick="removeFeature(${index})">×</button>
+                <div class="feature-item bg-black/40 p-2 rounded border border-white/5">
+                    <input type="text" class="bg-transparent border-none focus:outline-none text-white text-sm w-full" value="${escapeHtml(feature)}" onchange="updateFeature(${index}, this.value)">
+                    <button class="text-red-500 hover:text-white px-2" onclick="removeFeature(${index})">✕</button>
                 </div>
             `).join('');
         }
@@ -1948,7 +2043,7 @@
             
             if (previewTitle) previewTitle.textContent = assetPackData.title;
             if (previewPrice) previewPrice.textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
-            if (previewFeatures) previewFeatures.textContent = assetPackData.features.length + ' items';
+            if (previewFeatures) previewFeatures.textContent = assetPackData.features.length + ' active nodes';
             
             updateAssetPackDisplay();
         }
@@ -1987,13 +2082,13 @@
                     comingSoonText.textContent = 'COMING SOON';
                     btn.disabled = true;
                     btn.textContent = 'NOTIFY ME';
-                    btn.className = 'w-full py-3 border border-gray-700 rounded-lg text-gray-500 cursor-not-allowed mt-auto';
+                    btn.className = 'w-full py-3 border border-gray-700 bg-black/50 rounded-lg text-gray-500 cursor-not-allowed mt-auto';
                     btn.onclick = null;
                 } else {
                     comingSoonText.style.display = 'none';
                     btn.disabled = false;
                     btn.textContent = assetPackData.price ? `BUY NOW - $${assetPackData.price}` : 'BUY NOW';
-                    btn.className = 'w-full btn-primary mt-auto';
+                    btn.className = 'w-full btn-primary mt-auto shadow-[0_5px_20px_rgba(220,38,38,0.3)]';
                     btn.onclick = () => {
                         const basePrice = parseInt(assetPackData.price) || 0;
                         toggleService('All-in-One Asset Pack', basePrice);
@@ -2006,7 +2101,7 @@
         function saveAssetPackChanges() {
             updateAssetPackPreview();
             saveToDatabase();
-            showToast('Asset Pack updated!');
+            showToast('Module staged. Pushing to master database...');
         }
         
         async function markAsContacted(orderId) {
@@ -2016,20 +2111,20 @@
                 order.contactTime = new Date().toISOString();
                 updateOrdersList();
                 playSound('success');
-                showToast('Order marked as contacted');
+                showToast('Client status updated to IN PROGRESS');
                 
                 try {
                     await fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud ', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            content: `Order #${orderId} has been contacted by the artist.`,
+                            content: `Status Update: Order #${orderId} is now in production.`,
                             embeds: [{
-                                title: '✅ ORDER CONTACTED',
+                                title: '✅ WORK COMMENCED',
                                 color: 0x22c55e,
                                 fields: [
-                                    { name: 'Order ID', value: '#' + orderId },
-                                    { name: 'Discord', value: order.discord.substring(0, 100) }
+                                    { name: 'Invoice ID', value: '#' + orderId, inline: true },
+                                    { name: 'Client', value: order.discord.substring(0, 100), inline: true }
                                 ]
                             }]
                         })
@@ -2044,11 +2139,14 @@
             orders = orders.filter(o => o.id !== orderId);
             updateOrdersList();
             playSound('success');
-            showToast('Order completed and removed');
+            showToast('Order archived and cleared from queue');
             saveToDatabase();
         }
         
         async function saveToDatabase() {
+            const saveBtn = document.querySelector('button[onclick="saveToDatabase()"]');
+            if(saveBtn) saveBtn.innerHTML = 'SYNCING TO CLOUD...';
+            
             try {
                 const response = await fetch(CONFIG.apiUrl, {
                     method: 'POST',
@@ -2077,16 +2175,18 @@
                 
                 if (response.ok) { 
                     playSound('success'); 
-                    showToast('Changes saved to database!'); 
+                    showToast('All configurations successfully synced to master DB'); 
                 } else if (response.status === 401) {
-                    showToast('Session expired - please login again');
+                    showToast('Security token expired. Please re-authenticate');
                     logoutAdmin();
                 } else {
-                    showToast('Failed to save: ' + (data.error || 'Unknown error'));
+                    showToast('Database write failed: ' + (data.error || 'Unknown sector error'));
                 }
             } catch (e) { 
-                showToast('Error saving - server may be offline'); 
+                showToast('CRITICAL: Master database unreachable'); 
             }
+            
+            if(saveBtn) saveBtn.innerHTML = 'SAVE ALL CONFIGURATIONS';
         }
         
         async function loadDataFromDatabase() {
@@ -2139,7 +2239,7 @@
                     updateOrdersList();
                 }
             } catch (e) {
-                console.log('Could not load from database');
+                console.log('Database fetch failed');
             }
         }
         
@@ -2214,7 +2314,7 @@
             
             if (timeSinceLast < WEBHOOK_COOLDOWN) {
                 const remaining = Math.ceil((WEBHOOK_COOLDOWN - timeSinceLast) / 1000);
-                showToast(`Please wait ${remaining} seconds`);
+                showToast(`Webhook on cooldown. Please wait ${remaining}s`);
                 return;
             }
             
@@ -2225,19 +2325,20 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    content: '@everyone Test from Admin Panel', 
-                    embeds: [{ title: 'Test', description: 'Working!', color: 0xDC2626 }] 
+                    content: '@everyone 🔧 **SYSTEM TEST INITIATED**', 
+                    embeds: [{ title: 'Diagnostics Normal', description: 'Server-to-Discord pipeline is fully operational.', color: 0x3b82f6 }] 
                 })
             }).then(() => {
-                showToast('Test sent');
+                showToast('Test packet transmitted');
                 startCooldownTimer();
-            }).catch(() => showToast('Failed'));
+            }).catch(() => showToast('Transmission failed'));
         }
         
         function startCooldownTimer() {
             const cooldownEl = document.getElementById('webhookCooldown');
             const btn = document.getElementById('testWebhookBtn');
             btn.disabled = true;
+            btn.classList.add('opacity-50');
             
             const interval = setInterval(() => {
                 const remaining = WEBHOOK_COOLDOWN - (Date.now() - lastWebhookTime);
@@ -2246,17 +2347,18 @@
                     clearInterval(interval);
                     cooldownEl.textContent = '';
                     btn.disabled = false;
+                    btn.classList.remove('opacity-50');
                     return;
                 }
                 
                 const seconds = Math.ceil(remaining / 1000);
-                cooldownEl.textContent = `Cooldown: ${seconds}s`;
+                cooldownEl.textContent = `Relay Cooling: ${seconds}s`;
             }, 1000);
         }
         
         function updateWebhookCooldown() {
             const cooldownEl = document.getElementById('webhookCooldown');
-            cooldownEl.textContent = 'Cooldown: 30s';
+            cooldownEl.textContent = 'Relay Cooling: 30s';
         }
         
         function showToast(m) {
