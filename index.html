@@ -440,7 +440,7 @@
                     </div>
                 </div>
                 
-                <button onclick="toggleAdmin()" class="text-xs border border-white/10 px-4 py-2 rounded-xl hover:border-red-500/50 hover:text-red-500 transition-all">Admin</button>
+                <button onclick="toggleAdmin()" class="text-[10px] text-white/20 hover:text-white/60 transition-colors uppercase tracking-widest bg-transparent border-none ml-2 focus:outline-none">Admin</button>
             </div>
         </div>
     </nav>
@@ -865,7 +865,7 @@
     <div id="adminPanel" class="admin-panel">
         <div class="p-6 border-b border-white/10 flex justify-between items-center">
             <h3 class="text-xl font-display font-bold">ADMIN PANEL</h3>
-            <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white">
+            <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
@@ -1085,7 +1085,9 @@
                         discordInput.readOnly = true;
                     }
 
-                    if(window.location.search.includes('login=success')) {
+                    // FIXED: Safer URL parsing for login success toast
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if(urlParams.get('login') === 'success') {
                         showToast(`Welcome back, ${data.user.username}!`);
                         window.history.replaceState({}, document.title, window.location.pathname);
                     }
@@ -1187,8 +1189,8 @@
         async function deleteReview(id) {
             reviewsList = reviewsList.filter(r => r.id !== id);
             renderAdminReviews();
-            saveToDatabase();
-            loadReviews();
+            await saveToDatabase(); // Wait for save to complete
+            loadReviews(); // Refresh public UI
             showToast('Review deleted');
         }
 
@@ -1207,7 +1209,7 @@
             if (typeof gsap !== 'undefined') gsap.killTweensOf(items);
             
             items.forEach(item => {
-                item.style.transition = 'none';
+                item.style.transition = 'none'; // Temporarily disable CSS transitions
                 const shouldShow = cat === 'all' || item.dataset.category === cat;
                 if (shouldShow) {
                     item.style.display = 'block';
@@ -1217,7 +1219,7 @@
                 }
             });
             
-            void document.body.offsetHeight;
+            void document.body.offsetHeight; // Force DOM repaint
             
             if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
                 gsap.fromTo(visibleItems, 
@@ -1231,7 +1233,7 @@
                         ease: "power2.out",
                         onComplete: function() {
                             visibleItems.forEach(item => item.style.transition = '');
-                            gsap.set(visibleItems, { clearProps: "transform,opacity" });
+                            gsap.set(visibleItems, { clearProps: "transform,opacity" }); // Clear inline styles
                         }
                     }
                 );
