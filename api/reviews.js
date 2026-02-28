@@ -5,7 +5,10 @@ const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Basic negative word filter - if these are found, it gets flagged and hidden from public
+// The webhook URL you provided for New Reviews
+const REVIEW_WEBHOOK_URL = "https://discord.com/api/webhooks/1477448069610995885/TmI4TUl7e8rR19KAFRqI95U4i58Sn5GaKTbo7yIu1EZe36MfhhRQqMr0KE5VLRI0vSTO";
+
+// Basic negative word filter
 const badWords = ['scam', 'terrible', 'awful', 'trash', 'garbage', 'fake', 'worst', 'stole', 'bad'];
 
 export default async function handler(req, res) {
@@ -18,7 +21,6 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const data = await collection.findOne({ _id: 'main' });
       const reviews = data?.reviews || [];
-      // Only return reviews that aren't flagged as negative
       const publicReviews = reviews.filter(r => !r.flagged);
       return res.status(200).json(publicReviews);
     }
@@ -39,7 +41,6 @@ export default async function handler(req, res) {
       const { rating, text } = req.body;
       if (!rating || !text) return res.status(400).json({ error: 'Missing rating or text' });
 
-      // Check for negative words
       const lowerText = text.toLowerCase();
       const isFlagged = badWords.some(word => lowerText.includes(word));
 
@@ -51,7 +52,7 @@ export default async function handler(req, res) {
         rating: Number(rating),
         text: text,
         date: new Date().toISOString(),
-        flagged: isFlagged // If flagged, only admin sees it
+        flagged: isFlagged
       };
 
       await collection.updateOne(
@@ -59,6 +60,33 @@ export default async function handler(req, res) {
         { $push: { reviews: newReview } },
         { upsert: true }
       );
+
+      // --- DISCORD WEBHOOK LOGIC ---
+      try {
+        const starDisplay = '★'.repeat(Number(rating)) + '☆'.repeat(5 - Number(rating));
+        await fetch(REVIEW_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: '@everyone 🌟 **NEW CLIENT REVIEW SUBMITTED!**',
+            embeds: [{
+              title: '📝 Feedback Logged',
+              color: isFlagged ? 0xDC2626 : 0xFFD700, // Red if flagged, Gold if public
+              thumbnail: { url: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png' },
+              fields: [
+                { name: '👤 Client', value: `\`${user.username}\``, inline: true },
+                { name: '⭐ Rating', value: starDisplay, inline: true },
+                { name: '🛡️ Status', value: isFlagged ? '⚠️ **FLAGGED (Hidden)**' : '✅ **PUBLIC**', inline: true },
+                { name: '💬 Review Text', value: `>>> ${text.substring(0, 1024)}` }
+              ],
+              footer: { text: "Arshia GFX Automated System" },
+              timestamp: new Date().toISOString()
+            }]
+          })
+        });
+      } catch (webhookErr) {
+        console.error('Discord webhook failed', webhookErr);
+      }
 
       return res.status(200).json({ success: true, review: newReview, flagged: isFlagged });
     }
