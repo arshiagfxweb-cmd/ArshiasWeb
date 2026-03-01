@@ -5,10 +5,7 @@ const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// The webhook URL you provided for New Reviews
 const REVIEW_WEBHOOK_URL = "https://discord.com/api/webhooks/1477448069610995885/TmI4TUl7e8rR19KAFRqI95U4i58Sn5GaKTbo7yIu1EZe36MfhhRQqMr0KE5VLRI0vSTO";
-
-// Basic negative word filter
 const badWords = ['scam', 'terrible', 'awful', 'trash', 'garbage', 'fake', 'worst', 'stole', 'bad'];
 
 export default async function handler(req, res) {
@@ -17,7 +14,6 @@ export default async function handler(req, res) {
     const db = client.db('arshia_gfx');
     const collection = db.collection('site_data');
 
-    // GET: Fetch reviews
     if (req.method === 'GET') {
       const data = await collection.findOne({ _id: 'main' });
       const reviews = data?.reviews || [];
@@ -25,7 +21,6 @@ export default async function handler(req, res) {
       return res.status(200).json(publicReviews);
     }
 
-    // POST: Add a new review
     if (req.method === 'POST') {
       const cookie = req.headers.cookie || '';
       const tokenMatch = cookie.match(/auth_token=([^;]+)/);
@@ -34,9 +29,7 @@ export default async function handler(req, res) {
       let user;
       try {
         user = jwt.verify(tokenMatch[1], JWT_SECRET);
-      } catch (e) {
-        return res.status(401).json({ error: 'Invalid session' });
-      }
+      } catch (e) { return res.status(401).json({ error: 'Invalid session' }); }
 
       const { rating, text } = req.body;
       if (!rating || !text) return res.status(400).json({ error: 'Missing rating or text' });
@@ -46,22 +39,12 @@ export default async function handler(req, res) {
 
       const newReview = {
         id: Date.now().toString(),
-        userId: user.id,
-        username: user.username,
-        avatar: user.avatar,
-        rating: Number(rating),
-        text: text,
-        date: new Date().toISOString(),
-        flagged: isFlagged
+        userId: user.id, username: user.username, avatar: user.avatar,
+        rating: Number(rating), text: text, date: new Date().toISOString(), flagged: isFlagged
       };
 
-      await collection.updateOne(
-        { _id: 'main' },
-        { $push: { reviews: newReview } },
-        { upsert: true }
-      );
+      await collection.updateOne({ _id: 'main' }, { $push: { reviews: newReview } }, { upsert: true });
 
-      // --- DISCORD WEBHOOK LOGIC ---
       try {
         const starDisplay = '★'.repeat(Number(rating)) + '☆'.repeat(5 - Number(rating));
         await fetch(REVIEW_WEBHOOK_URL, {
@@ -71,7 +54,7 @@ export default async function handler(req, res) {
             content: '@everyone 🌟 **NEW CLIENT REVIEW SUBMITTED!**',
             embeds: [{
               title: '📝 Feedback Logged',
-              color: isFlagged ? 0xDC2626 : 0xFFD700, // Red if flagged, Gold if public
+              color: isFlagged ? 0xDC2626 : 0xFFD700,
               thumbnail: { url: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png' },
               fields: [
                 { name: '👤 Client', value: `\`${user.username}\``, inline: true },
@@ -84,9 +67,7 @@ export default async function handler(req, res) {
             }]
           })
         });
-      } catch (webhookErr) {
-        console.error('Discord webhook failed', webhookErr);
-      }
+      } catch (webhookErr) { console.error('Discord webhook failed', webhookErr); }
 
       return res.status(200).json({ success: true, review: newReview, flagged: isFlagged });
     }
