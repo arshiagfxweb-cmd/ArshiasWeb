@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARSHIA — Admin Dashboard</title>
+    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary-red: #DC2626; --void-black: #050505; --card-black: #111111; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--void-black); color: white; margin: 0; padding: 0; }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        
+        .glass-card { background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 24px; position: relative; }
+        .form-input { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 14px; color: white; width: 100%; transition: all 0.3s; font-size: 14px; }
+        .form-input:focus { outline: none; border-color: var(--primary-red); }
+        .btn-primary { background: var(--primary-red); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: pointer; border: none; text-align: center; }
+        .btn-primary:hover { background: #b91c1c; box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: pointer; text-align: center; }
+        .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); }
+        .btn-danger { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: #ff6b6b; padding: 8px 16px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
+        .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
+        
+        .orders-list { max-height: 400px; overflow-y: auto; }
+        .order-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+        .order-item.pending { border-left: 3px solid #DC2626; }
+        .order-item.contacted { border-left: 3px solid #fbbf24; }
+        .order-item.completed { border-left: 3px solid #22c55e; }
+        
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: #DC2626; }
+        input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
+
+        .toast { position: fixed; bottom: 40px; right: 40px; background: rgba(17, 17, 17, 0.95); border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0; transition: all 0.4s; transform: translateY(20px); box-shadow: 0 10px 30px rgba(220,38,38,0.2); }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        
+        #loadingOverlay { position: fixed; inset: 0; background: var(--void-black); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--primary-red); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-[#050505] min-h-screen">
+
+    <div id="loadingOverlay">
+        <div class="spinner mb-4"></div>
+        <p class="text-gray-400 font-display tracking-widest text-sm uppercase">Authenticating Secure Connection...</p>
+    </div>
+
+    <nav class="bg-[#0a0a0a] border-b border-white/5 sticky top-0 z-50">
+        <div class="max-w-[1600px] mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp" alt="Logo" class="h-8">
+                <span class="font-display font-bold tracking-widest text-lg">MASTER DASHBOARD</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="saveToDatabase()" id="globalSaveBtn" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all">
+                    SAVE ALL CHANGES
+                </button>
+                <div class="w-px h-6 bg-white/10 mx-2"></div>
+                <button onclick="window.location.href='/'" class="text-gray-400 hover:text-white text-sm transition-colors">View Site</button>
+                <button onclick="logoutAdmin()" class="text-red-500 hover:text-red-400 text-sm font-semibold transition-colors">Lock System</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-[1600px] mx-auto px-6 py-8" style="display: none;" id="dashboardContent">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            
+            <div class="space-y-6">
+                <div class="glass-card">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        Incoming Orders
+                    </h2>
+                    <div id="ordersList" class="orders-list">
+                        <p class="text-gray-500 text-sm italic py-4">No pending orders</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        Manage Reviews
+                    </h2>
+                    <div id="adminReviewsList" class="orders-list">
+                        <p class="text-gray-500 text-sm italic py-4">Loading reviews...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="glass-card">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Portfolio Injection
+                    </h2>
+                    <div class="space-y-3 mb-6">
+                        <input type="text" id="newImageUrl" class="form-input" placeholder="Image Direct URL (e.g., https://...)">
+                        <input type="text" id="newImageTitle" class="form-input" placeholder="Title (e.g., FNCS Championship)">
+                        <select id="newImageCategory" class="form-input bg-[#111]">
+                            <option value="thumbnails">Thumbnails (16:9)</option>
+                            <option value="posters">Posters (3:4)</option>
+                            <option value="banners">Banners (21:9)</option>
+                            <option value="combos">Combos (16:9)</option>
+                        </select>
+                        <button onclick="addPortfolioItem()" class="btn-secondary w-full">Inject to Site Grid</button>
+                    </div>
+                    
+                    <h3 class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-3">Custom Active Items</h3>
+                    <div id="portfolioItemsList" class="orders-list border border-white/5 rounded-lg p-2 bg-black/30">
+                        <p class="text-gray-500 text-sm italic text-center py-2">No custom items</p>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-gradient-to-br from-red-900/10 to-transparent border-red-500/20">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                        Asset Pack Controller
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-white/5">
+                            <span class="text-sm text-gray-300">Show Corner Ribbon</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="editShowRibbon" onchange="updateAssetPackData()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div><label class="text-xs text-gray-500 uppercase font-bold mb-1 block">Ribbon Text</label><input type="text" id="editRibbonText" class="form-input" onchange="updateAssetPackData()"></div>
+                        <div><label class="text-xs text-gray-500 uppercase font-bold mb-1 block">Title</label><input type="text" id="editPackTitle" class="form-input" onchange="updateAssetPackData()"></div>
+                        <div><label class="text-xs text-gray-500 uppercase font-bold mb-1 block">Price</label><input type="text" id="editPackPrice" class="form-input" placeholder="TBA" onchange="updateAssetPackData()"></div>
+                        <div><label class="text-xs text-gray-500 uppercase font-bold mb-1 block">Description</label><input type="text" id="editPackDesc" class="form-input" onchange="updateAssetPackData()"></div>
+                        
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase font-bold mb-1 block">Features</label>
+                            <div id="featuresEditor" class="space-y-2 mb-3 bg-black/40 p-3 rounded-lg border border-white/5"></div>
+                            <div class="flex gap-2">
+                                <input type="text" id="newFeature" class="form-input flex-1" placeholder="New feature...">
+                                <button onclick="addFeature()" class="btn-secondary px-4">+</button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase font-bold mb-1 block">Status</label>
+                            <select id="editPackStatus" class="form-input bg-[#111]" onchange="updateAssetPackData()">
+                                <option value="coming_soon">Coming Soon (Locked)</option>
+                                <option value="available">Available Now (Purchasable)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="glass-card">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Service Pricing (AUD Base)
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400">Logo:</span><input type="number" id="admin-price-logo" class="form-input py-1" onchange="flagUnsavedChanges()"></div>
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400">PFP:</span><input type="number" id="admin-price-pfp" class="form-input py-1" onchange="flagUnsavedChanges()"></div>
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400">Banner:</span><input type="number" id="admin-price-banner" class="form-input py-1" onchange="flagUnsavedChanges()"></div>
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400">Banner+PFP:</span><input type="number" id="admin-price-banner-pfp" class="form-input py-1" onchange="flagUnsavedChanges()"></div>
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400">Poster:</span><input type="number" id="admin-price-poster" class="form-input py-1" onchange="flagUnsavedChanges()"></div>
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400">Thumbnails:</span><input type="number" id="admin-price-thumbnails" class="form-input py-1" onchange="flagUnsavedChanges()"></div>
+                        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-400 text-red-400 font-bold">Bundle:</span><input type="number" id="admin-price-bundle" class="form-input py-1 border-red-500/30" onchange="flagUnsavedChanges()"></div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-white">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        System Security
+                    </h2>
+                    <div class="space-y-3 mb-6 pb-6 border-b border-white/10">
+                        <input type="password" id="currentPassword" class="form-input" placeholder="Current Password">
+                        <input type="password" id="newPassword" class="form-input" placeholder="New Password">
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm New Password">
+                        <button onclick="changePassword()" class="btn-secondary w-full">Update Password</button>
+                        <p id="passwordError" class="text-red-500 text-sm hidden"></p>
+                    </div>
+                    
+                    <button onclick="testWebhook()" class="btn-secondary w-full mb-2 flex items-center justify-center gap-2" id="testWebhookBtn">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        Test Discord Webhook
+                    </button>
+                    <p id="webhookCooldown" class="text-xs text-center text-gray-500 h-4"></p>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="toast" class="toast">
+        <span id="toastMessage" class="font-medium tracking-wide">Message</span>
+    </div>
+
+    <script>
+        const CONFIG = { apiUrl: '/api/save-data' };
+        
+        let orders = [];
+        let portfolioItems = [];
+        let reviewsList = [];
+        let assetPackData = { showRibbon: true, ribbonText: 'COMING SOON', title: 'ALL-IN-ONE ASSET PACK', price: '', description: 'Complete GFX Asset Collection', features: ['Commercial License'], status: 'coming_soon' };
+        
+        let lastWebhookTime = 0;
+        const WEBHOOK_COOLDOWN = 30000;
+        let unsavedChanges = false;
+
+        window.onload = verifyAuth;
+
+        async function verifyAuth() {
+            const token = sessionStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/'; 
+                return;
+            }
+
+            try {
+                const response = await fetch(CONFIG.apiUrl + '?token=' + encodeURIComponent(token));
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    
+                    if (data.orders) orders = data.orders;
+                    if (data.reviews) reviewsList = data.reviews;
+                    if (data.portfolio) portfolioItems = data.portfolio;
+                    if (data.assetPackData) assetPackData = { ...assetPackData, ...data.assetPackData };
+                    
+                    if (data.servicePrices) {
+                        document.getElementById('admin-price-logo').value = data.servicePrices.logo || 20;
+                        document.getElementById('admin-price-pfp').value = data.servicePrices.pfp || 15;
+                        document.getElementById('admin-price-banner').value = data.servicePrices.banner || 30;
+                        document.getElementById('admin-price-banner-pfp').value = data.servicePrices.banner_pfp || 40;
+                        document.getElementById('admin-price-poster').value = data.servicePrices.poster || 30;
+                        document.getElementById('admin-price-thumbnails').value = data.servicePrices.thumbnails || 20;
+                        document.getElementById('admin-price-bundle').value = data.servicePrices.bundle || 45;
+                    }
+                    
+                    populateDashboard();
+                } else {
+                    sessionStorage.removeItem('adminToken');
+                    window.location.href = '/';
+                }
+            } catch (e) {
+                console.error("Auth check error", e);
+                window.location.href = '/';
+            }
+        }
+
+        function populateDashboard() {
+            updateOrdersList();
+            renderAdminReviews();
+            updatePortfolioItemsList();
+            
+            document.getElementById('editShowRibbon').checked = assetPackData.showRibbon;
+            document.getElementById('editRibbonText').value = assetPackData.ribbonText || '';
+            document.getElementById('editPackTitle').value = assetPackData.title || '';
+            document.getElementById('editPackPrice').value = assetPackData.price || '';
+            document.getElementById('editPackDesc').value = assetPackData.description || '';
+            document.getElementById('editPackStatus').value = assetPackData.status || 'coming_soon';
+            
+            renderFeaturesEditor();
+        }
+
+        function flagUnsavedChanges() {
+            unsavedChanges = true;
+            document.getElementById('globalSaveBtn').classList.add('animate-pulse');
+        }
+
+        function escapeHtml(text) {
+            if (typeof text !== 'string') return '';
+            const div = document.createElement('div'); div.textContent = text; return div.innerHTML;
+        }
+
+        function showToast(m) {
+            const t = document.getElementById('toast'), msg = document.getElementById('toastMessage');
+            if (t && msg) { msg.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        }
+
+        // --- DASHBOARD FUNCTIONS ---
+
+        function updateOrdersList() {
+            const container = document.getElementById('ordersList');
+            if (!orders || orders.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm italic py-4 text-center">Queue is empty</p>';
+                return;
+            }
+            container.innerHTML = orders.map(o => `
+                <div class="order-item ${o.completed ? 'completed' : (o.contacted ? 'contacted' : 'pending')}">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-bold text-white text-sm">#${o.id || 'N/A'}</span>
+                        <span class="text-xs text-red-500 font-bold">$${o.total || 0} AUD</span>
+                    </div>
+                    <p class="text-xs text-gray-300 mb-2 truncate">Client: ${escapeHtml(o.discordUser || o.email || 'Unknown')}</p>
+                    <div class="flex gap-2 mt-2">
+                        ${!o.contacted ? `<button class="btn-secondary px-2 py-1 text-[10px] w-full" onclick="markAsContacted('${o.id}')">MARK CONTACTED</button>` : ''}
+                        ${!o.completed ? `<button class="btn-primary px-2 py-1 text-[10px] w-full" onclick="markAsCompleted('${o.id}')">COMPLETE</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminReviews() {
+            const container = document.getElementById('adminReviewsList');
+            if (!reviewsList || reviewsList.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4">No reviews found.</p>';
+                return;
+            }
+            container.innerHTML = reviewsList.map(r => `
+                <div class="order-item ${r.flagged ? 'border-red-500 bg-red-900/20' : ''}">
+                    ${r.flagged ? '<div class="text-[10px] text-red-500 font-bold mb-1">FLAGGED</div>' : ''}
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="font-bold text-white text-xs">${escapeHtml(r.username)}</span>
+                        <span class="text-xs text-yellow-500">${'★'.repeat(r.rating)}</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mb-2 italic truncate">"${escapeHtml(r.text)}"</p>
+                    <button onclick="deleteReview('${r.id}')" class="btn-danger w-full text-[10px] py-1">DELETE</button>
+                </div>
+            `).join('');
+        }
+
+        async function markAsContacted(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                order.contacted = true;
+                updateOrdersList(); flagUnsavedChanges();
+            }
+        }
+
+        async function markAsCompleted(id) {
+            orders = orders.filter(o => o.id !== id);
+            updateOrdersList(); flagUnsavedChanges(); showToast('Order archived');
+        }
+
+        function deleteReview(id) {
+            reviewsList = reviewsList.filter(r => r.id !== id);
+            renderAdminReviews(); flagUnsavedChanges(); showToast('Review deleted');
+        }
+
+        function addPortfolioItem() {
+            const url = document.getElementById('newImageUrl').value.trim();
+            const title = document.getElementById('newImageTitle').value.trim() || 'New Work';
+            const cat = document.getElementById('newImageCategory').value;
+            
+            if (!url) { showToast('URL required'); return; }
+            portfolioItems.push({ id: 'custom_' + Date.now(), url, category: cat, title });
+            
+            document.getElementById('newImageUrl').value = '';
+            document.getElementById('newImageTitle').value = '';
+            
+            updatePortfolioItemsList(); flagUnsavedChanges(); showToast('Asset staged');
+        }
+
+        function updatePortfolioItemsList() {
+            const container = document.getElementById('portfolioItemsList');
+            if (portfolioItems.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-2">No custom items</p>';
+                return;
+            }
+            container.innerHTML = portfolioItems.map(item => `
+                <div class="bg-black/40 border border-white/5 p-2 rounded mb-2 flex justify-between items-center">
+                    <div class="overflow-hidden mr-2">
+                        <p class="text-xs text-white font-bold truncate">${escapeHtml(item.title)}</p>
+                        <p class="text-[9px] text-red-500 uppercase">${item.category}</p>
+                    </div>
+                    <button onclick="removePortfolioItem('${item.id}')" class="text-red-500 hover:text-white px-2 py-1 bg-white/5 rounded text-xs">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removePortfolioItem(id) {
+            portfolioItems = portfolioItems.filter(item => item.id !== id);
+            updatePortfolioItemsList(); flagUnsavedChanges();
+        }
+
+        function updateAssetPackData() {
+            assetPackData.showRibbon = document.getElementById('editShowRibbon').checked;
+            assetPackData.ribbonText = document.getElementById('editRibbonText').value;
+            assetPackData.title = document.getElementById('editPackTitle').value;
+            assetPackData.price = document.getElementById('editPackPrice').value;
+            assetPackData.description = document.getElementById('editPackDesc').value;
+            assetPackData.status = document.getElementById('editPackStatus').value;
+            flagUnsavedChanges();
+        }
+
+        function renderFeaturesEditor() {
+            const container = document.getElementById('featuresEditor');
+            container.innerHTML = assetPackData.features.map((feature, index) => `
+                <div class="flex items-center gap-2 mb-2">
+                    <input type="text" class="form-input py-1 text-xs" value="${escapeHtml(feature)}" onchange="updateFeature(${index}, this.value)">
+                    <button class="text-red-500 hover:text-white" onclick="removeFeature(${index})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function updateFeature(index, val) { assetPackData.features[index] = val; flagUnsavedChanges(); }
+        function removeFeature(index) { assetPackData.features.splice(index, 1); renderFeaturesEditor(); flagUnsavedChanges(); }
+        function addFeature() {
+            const input = document.getElementById('newFeature');
+            if (input.value.trim()) {
+                assetPackData.features.push(input.value.trim());
+                input.value = ''; renderFeaturesEditor(); flagUnsavedChanges();
+            }
+        }
+
+        async function changePassword() {
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const errorEl = document.getElementById('passwordError');
+            
+            errorEl.classList.add('hidden');
+            if (newPass.length < 6 || newPass !== confirm) {
+                errorEl.textContent = 'Invalid or mismatched inputs';
+                errorEl.classList.remove('hidden'); return;
+            }
+            
+            try {
+                const response = await fetch(CONFIG.apiUrl, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'changePassword', currentPassword: current, newPassword: newPass, token: sessionStorage.getItem('adminToken') })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('Password updated. Re-authenticating...');
+                    setTimeout(() => logoutAdmin(), 2000);
+                } else {
+                    errorEl.textContent = data.error || 'Update failed';
+                    errorEl.classList.remove('hidden');
+                }
+            } catch (e) { errorEl.textContent = 'Server connection failed'; errorEl.classList.remove('hidden'); }
+        }
+
+        async function saveToDatabase() {
+            const btn = document.getElementById('globalSaveBtn');
+            btn.innerText = 'SYNCING...';
+            
+            try {
+                const response = await fetch(CONFIG.apiUrl, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'saveData', token: sessionStorage.getItem('adminToken'),
+                        assetPackData: assetPackData, orders: orders, portfolio: portfolioItems, reviews: reviewsList,
+                        servicePrices: {
+                            logo: document.getElementById('admin-price-logo').value, pfp: document.getElementById('admin-price-pfp').value,
+                            banner: document.getElementById('admin-price-banner').value, banner_pfp: document.getElementById('admin-price-banner-pfp').value,
+                            poster: document.getElementById('admin-price-poster').value, thumbnails: document.getElementById('admin-price-thumbnails').value,
+                            bundle: document.getElementById('admin-price-bundle').value
+                        }
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed');
+                
+                unsavedChanges = false;
+                btn.classList.remove('animate-pulse');
+                showToast('Master Database Synced');
+            } catch (e) { showToast('CRITICAL: Database connection failed'); }
+            
+            btn.innerText = 'SAVE ALL CHANGES';
+        }
+
+        function testWebhook() {
+            const now = Date.now();
+            if (now - lastWebhookTime < WEBHOOK_COOLDOWN) return;
+            lastWebhookTime = now;
+            
+            fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: '@everyone 🔧 **SYSTEM TEST INITIATED**', embeds: [{ title: 'Diagnostics Normal', description: 'Server-to-Discord pipeline is fully operational.', color: 0x3b82f6 }] })
+            }).then(() => { showToast('Test packet transmitted'); startCooldownTimer(); });
+        }
+
+        function startCooldownTimer() {
+            const el = document.getElementById('webhookCooldown');
+            const btn = document.getElementById('testWebhookBtn');
+            btn.disabled = true; btn.classList.add('opacity-50');
+            const int = setInterval(() => {
+                const rem = WEBHOOK_COOLDOWN - (Date.now() - lastWebhookTime);
+                if (rem <= 0) { clearInterval(int); el.textContent = ''; btn.disabled = false; btn.classList.remove('opacity-50'); return; }
+                el.textContent = `Cooldown: ${Math.ceil(rem / 1000)}s`;
+            }, 1000);
+        }
+
+        function logoutAdmin() {
+            fetch(CONFIG.apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'logout', token: sessionStorage.getItem('adminToken') }) });
+            sessionStorage.removeItem('adminToken');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

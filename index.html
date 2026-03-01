@@ -4,289 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARSHIA — GFX Designer</title>
-    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp ">
-    <script src="https://cdn.tailwindcss.com "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
+    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary-red: #DC2626;
-            --dark-red: #991B1B;
-            --void-black: #050505;
-            --card-black: #111111;
-        }
-        
+        :root { --primary-red: #DC2626; --dark-red: #991B1B; --void-black: #050505; --card-black: #111111; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--void-black);
-            color: white;
-            overflow-x: hidden;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        @keyframes moveGrid {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
-        }
-        .grid-bg-container {
-            position: fixed; top: -50px; left: 0; width: 100%; height: calc(100% + 50px);
-            z-index: -1; pointer-events: none; overflow: hidden;
-        }
-        .grid-bg {
-            position: absolute; top: -50px; left: 0; width: 100%; height: 200%;
-            background-image: linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveGrid 3s linear infinite;
-        }
-        
-        @keyframes discordPulse {
-            0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.7); transform: scale(1.02); }
-            100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
-        }
-        .discord-btn-glow {
-            animation: discordPulse 2.5s infinite ease-in-out;
-        }
-        .discord-btn-glow:hover {
-            animation: none;
-            box-shadow: 0 0 40px rgba(88, 101, 242, 0.9);
-            transform: scale(1.05);
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-            50% { transform: translate(30px, -30px) scale(1.2); opacity: 0.8; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--void-black); color: white; overflow-x: hidden; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        @keyframes moveGrid { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
+        .grid-bg-container { position: fixed; top: -50px; left: 0; width: 100%; height: calc(100% + 50px); z-index: -1; pointer-events: none; overflow: hidden; }
+        .grid-bg { position: absolute; top: -50px; left: 0; width: 100%; height: 200%; background-image: linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px); background-size: 50px 50px; animation: moveGrid 3s linear infinite; }
+        @keyframes discordPulse { 0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); } 50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.7); transform: scale(1.02); } 100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); } }
+        .discord-btn-glow { animation: discordPulse 2.5s infinite ease-in-out; }
+        .discord-btn-glow:hover { animation: none; box-shadow: 0 0 40px rgba(88, 101, 242, 0.9); transform: scale(1.05); }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); opacity: 0.5; } 50% { transform: translate(30px, -30px) scale(1.2); opacity: 0.8; } 100% { transform: translate(0, 0) scale(1); opacity: 0.5; } }
         .ambient-orb { animation: floatOrb 10s infinite ease-in-out alternate; }
         .ambient-orb-2 { animation: floatOrb 12s infinite ease-in-out alternate-reverse; }
-
-        @media (pointer: coarse) {
-            body { cursor: auto !important; }
-            .cursor-dot, .cursor-outline { display: none !important; }
-        }
-        
+        @media (pointer: coarse) { body { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; } }
         .font-display { font-family: 'Space Grotesk', sans-serif; }
-        
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-            border-radius: 50%; z-index: 9999; pointer-events: none;
-        }
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; z-index: 9999; pointer-events: none; }
         .cursor-dot { width: 5px; height: 5px; background-color: var(--primary-red); }
-        .cursor-outline {
-            width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5);
-            transition: width 0.15s, height 0.15s, background-color 0.15s;
-        }
-        .cursor-outline.hover {
-            width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red);
-        }
-        
-        .portfolio-item {
-            position: relative; border-radius: 24px; overflow: hidden;
-            background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-            cursor: pointer; will-change: transform;
-        }
-        .portfolio-item.thumbnail { aspect-ratio: 16/9; }
-        .portfolio-item.poster { aspect-ratio: 3/4; }
-        .portfolio-item.banner { aspect-ratio: 21/9; }
-        .portfolio-item.combo { aspect-ratio: 16/9; }
-        
-        .portfolio-item img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform 0.6s ease; pointer-events: none; -webkit-user-drag: none;
-            background-color: var(--card-black);
-        }
-        
-        @media (hover: hover) {
-            .portfolio-item.hover-active {
-                transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(220, 38, 38, 0.4);
-                border-color: rgba(220, 38, 38, 0.8); z-index: 10;
-            }
-        }
+        .cursor-outline { width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5); transition: width 0.15s, height 0.15s, background-color 0.15s; }
+        .cursor-outline.hover { width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red); }
+        .portfolio-item { position: relative; border-radius: 24px; overflow: hidden; background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1); transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease; cursor: pointer; will-change: transform; }
+        .portfolio-item.thumbnail { aspect-ratio: 16/9; } .portfolio-item.poster { aspect-ratio: 3/4; } .portfolio-item.banner { aspect-ratio: 21/9; } .portfolio-item.combo { aspect-ratio: 16/9; }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; pointer-events: none; -webkit-user-drag: none; background-color: var(--card-black); }
+        @media (hover: hover) { .portfolio-item.hover-active { transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(220, 38, 38, 0.4); border-color: rgba(220, 38, 38, 0.8); z-index: 10; } }
         @media (hover: none) { .portfolio-item:active { transform: scale(0.98); } }
-        
         .portfolio-item.hover-active img { transform: scale(1.1); }
-        .portfolio-item::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-            transition: left 0.7s ease; pointer-events: none; z-index: 5;
-        }
+        .portfolio-item::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%); transition: left 0.7s ease; pointer-events: none; z-index: 5; }
         .portfolio-item.hover-active::after { left: 100%; }
-        
-        .portfolio-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
-            opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px;
-            z-index: 3; pointer-events: none;
-        }
+        .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%); opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px; z-index: 3; pointer-events: none; }
         .portfolio-item.hover-active .portfolio-overlay { opacity: 1; }
         @media (hover: none) { .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); } }
-        
-        .glass-card {
-            background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative;
-            overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column;
-        }
-        .glass-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.7s; z-index: 1; pointer-events: none;
-        }
+        .glass-card { background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column; }
+        .glass-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.7s; z-index: 1; pointer-events: none; }
         .glass-card:hover::before { left: 100%; }
-        @media (hover: hover) {
-            .glass-card:hover {
-                transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.4);
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(220, 38, 38, 0.25);
-            }
-        }
-        
-        .main-nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        @media (max-width: 768px) {
-            .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
-            .main-nav .hidden.md\:flex { display: none; }
-            .logo-img { height: 32px; }
-            .font-display.text-xl { font-size: 1rem; }
-        }
+        @media (hover: hover) { .glass-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.4); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(220, 38, 38, 0.25); } }
+        .main-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        @media (max-width: 768px) { .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; } .main-nav .hidden.md\:flex { display: none; } .logo-img { height: 32px; } .font-display.text-xl { font-size: 1rem; } }
         .logo-img { height: 40px; width: auto; object-fit: contain; pointer-events: none; }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 1rem 2rem;
-            border-radius: 12px; font-weight: 600; transition: all 0.3s; position: relative; overflow: hidden;
-            cursor: pointer; border: none; touch-action: manipulation;
-        }
-        .btn-primary::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s;
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; transition: all 0.3s; position: relative; overflow: hidden; cursor: pointer; border: none; touch-action: manipulation; }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
         .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.5); }
         .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;}
-        
-        .btn-secondary {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem 2rem;
-            border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; position: relative;
-            overflow: hidden; touch-action: manipulation;
-        }
-        .btn-secondary::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s;
-        }
+        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; touch-action: manipulation; }
+        .btn-secondary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
         .btn-secondary:hover::before { left: 100%; }
         .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); transform: translateY(-2px); }
         .btn-secondary:active { transform: translateY(0); }
-        
-        .btn-danger {
-            background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: #ff6b6b; padding: 0.75rem 1.5rem;
-            border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer;
-        }
-        .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
-        
-        .form-input {
-            background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-            padding: 1rem 1.25rem; color: white; width: 100%; transition: all 0.3s; font-size: 16px;
-        }
+        .form-input { background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem 1.25rem; color: white; width: 100%; transition: all 0.3s; font-size: 16px; }
         .form-input:focus { outline: none; border-color: var(--primary-red); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
-        
         .currency-dropdown { background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
-        
-        .filter-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem;
-            border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation;
-        }
+        .filter-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
         .filter-btn:hover, .filter-btn.active { border-color: var(--primary-red); color: var(--primary-red); background: rgba(220, 38, 38, 0.15); box-shadow: 0 0 15px rgba(220,38,38,0.2); }
         @media (max-width: 640px) { .filter-btn { padding: 0.5rem 1rem; font-size: 0.875rem; } }
-        
-        .custom-checkbox {
-            appearance: none; width: 20px; height: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 4px; cursor: pointer; position: relative; transition: all 0.3s; flex-shrink: 0;
-        }
+        .custom-checkbox { appearance: none; width: 20px; height: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer; position: relative; transition: all 0.3s; flex-shrink: 0; }
         .custom-checkbox:checked { background: var(--primary-red); border-color: var(--primary-red); }
         .custom-checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 12px; }
-        
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--void-black); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
-        
-        .toast {
-            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(17, 17, 17, 0.95);
-            border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 90vw; text-align: center; box-shadow: 0 10px 30px rgba(220,38,38,0.2);
-            pointer-events: none;
-        }
+        ::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-track { background: var(--void-black); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(17, 17, 17, 0.95); border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 90vw; text-align: center; box-shadow: 0 10px 30px rgba(220,38,38,0.2); pointer-events: none;}
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        
-        .admin-panel {
-            position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh;
-            background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1);
-            z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto;
-            box-shadow: -20px 0 50px rgba(0,0,0,0.5);
-        }
+        .admin-panel { position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh; background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
         @media (max-width: 640px) { .admin-panel { max-width: 100%; } }
         .admin-panel.active { transform: translateX(0); }
-        
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); } .reveal.active { opacity: 1; transform: translateY(0); }
         .corner-ribbon { position: absolute; top: 0; right: 0; width: 150px; height: 150px; overflow: hidden; z-index: 10; pointer-events: none; }
-        .corner-ribbon span {
-            position: absolute; display: block; width: 225px; padding: 8px 0; background: var(--primary-red);
-            box-shadow: 0 5px 10px rgba(0,0,0,.1); color: #fff; font-size: 12px; font-weight: 700;
-            text-transform: uppercase; text-align: center; left: -25px; top: 30px; transform: rotate(45deg); letter-spacing: 1px;
-        }
-        
+        .corner-ribbon span { position: absolute; display: block; width: 225px; padding: 8px 0; background: var(--primary-red); box-shadow: 0 5px 10px rgba(0,0,0,.1); color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; text-align: center; left: -25px; top: 30px; transform: rotate(45deg); letter-spacing: 1px; }
         .coming-soon-text { font-size: 2.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; text-align: center; margin-top: 20px; text-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
         @media (max-width: 640px) { .coming-soon-text { font-size: 1.5rem; } }
-        
-        .orders-list { max-height: 300px; overflow-y: auto; }
-        .order-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; margin-bottom: 8px; transition: all 0.2s;}
-        .order-item:hover { border-color: rgba(255,255,255,0.3); }
-        .order-item.pending { border-left: 3px solid #DC2626; }
-        .order-item.contacted { border-left: 3px solid #fbbf24; }
-        .order-item.completed { border-left: 3px solid #22c55e; }
-
-        .admin-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-top: 16px; }
-        .admin-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; margin-bottom: 0.5rem; display: block; }
-        
-        .feature-item { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-        .feature-item input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px; color: white; font-size: 0.875rem; }
-        .feature-item button { background: rgba(220, 38, 38, 0.2); border: none; color: #ef4444; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.875rem; }
-        .feature-item button:hover { background: rgba(220, 38, 38, 0.4); }
-
-        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
-        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .toggle-slider { background-color: #DC2626; }
-        input:checked + .toggle-slider:before { transform: translateX(24px); }
-
-        .service-edit-item { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; margin-bottom: 8px; }
-        .service-edit-item input { background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 6px 10px; border-radius: 6px; color: white; font-size: 0.875rem; }
-        .service-edit-item input[name="serviceName"] { flex: 1; }
-        .service-edit-item input[name="servicePrice"] { width: 70px; text-align: center; }
-        .service-edit-item button { background: rgba(220, 38, 38, 0.2); border: none; color: #ef4444; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.875rem; }
-
-        .audio-controls {
-            position: fixed; bottom: 20px; left: 20px; z-index: 1001; background: rgba(5, 5, 5, 0.95); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px; padding: 12px; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; transition: all 0.3s;
-        }
+        .audio-controls { position: fixed; bottom: 20px; left: 20px; z-index: 1001; background: rgba(5, 5, 5, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; transition: all 0.3s; }
         @media (max-width: 640px) { .audio-controls { bottom: 10px; left: 10px; padding: 8px; gap: 8px; } .volume-slider { width: 60px; } }
         .audio-controls:hover { border-color: rgba(220, 38, 38, 0.5); }
         .mute-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
@@ -296,7 +89,6 @@
         .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; background: #DC2626; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
         .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 10px rgba(220, 38, 38, 0.5); }
         .volume-label { font-size: 0.75rem; color: #666; min-width: 35px; text-align: right; }
-
         .multi-select-container { position: relative; width: 100%; }
         .multi-select-trigger { background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem 1.25rem; color: white; width: 100%; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; font-size: 16px; }
         .multi-select-trigger:hover { border-color: rgba(220, 38, 38, 0.5); }
@@ -310,27 +102,14 @@
         .multi-select-option .service-info { flex: 1; display: flex; justify-content: space-between; align-items: center; }
         .multi-select-option .service-name { font-weight: 500; }
         .multi-select-option .service-price { color: #DC2626; font-weight: 600; }
-        
         .selected-services { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .selected-service-tag { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.875rem; display: flex; align-items: center; gap: 8px; animation: tagPop 0.3s ease; }
         @keyframes tagPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .selected-service-tag button { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px; line-height: 1; padding: 0; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; }
         .selected-service-tag button:hover { background: rgba(255,255,255,0.1); }
-        
-        .webhook-cooldown { font-size: 0.75rem; color: #666; margin-top: 4px; }
         .placeholder-text { color: #666; }
-        
-        @media (max-width: 768px) {
-            #hero h1 { font-size: 4rem !important; }
-            #hero p { font-size: 1rem !important; }
-            .btn-primary, .btn-secondary { padding: 0.875rem 1.5rem; font-size: 0.875rem; }
-            #portfolioGrid { grid-template-columns: 1fr !important; }
-        }
-        @media (max-width: 640px) {
-            section { padding-left: 1rem !important; padding-right: 1rem !important; }
-            .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
-            #services .grid { grid-template-columns: 1fr !important; }
-        }
+        @media (max-width: 768px) { #hero h1 { font-size: 4rem !important; } #hero p { font-size: 1rem !important; } .btn-primary, .btn-secondary { padding: 0.875rem 1.5rem; font-size: 0.875rem; } #portfolioGrid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 640px) { section { padding-left: 1rem !important; padding-right: 1rem !important; } .max-w-7xl { padding-left: 1rem; padding-right: 1rem; } #services .grid { grid-template-columns: 1fr !important; } }
         .no-select { -webkit-user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
@@ -447,74 +226,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" id="portfolioGrid">
-                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb1">
-                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg " alt="Thumbnail 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Gaming Thumbnail</h3></div></div>
                 </div>
-                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb2">
-                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg " alt="Thumbnail 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Esports Thumbnail</h3></div></div>
-                </div>
-                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb3">
-                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg " alt="Thumbnail 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Fortnite Thumbnail</h3></div></div>
-                </div>
-                
-                <div class="portfolio-item poster" data-category="posters" data-id="poster1">
-                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp " alt="Poster 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Event Poster</h3></div></div>
-                </div>
-                <div class="portfolio-item poster" data-category="posters" data-id="poster2">
-                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp " alt="Poster 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Tournament Poster</h3></div></div>
-                </div>
-                <div class="portfolio-item poster" data-category="posters" data-id="poster3">
-                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp " alt="Poster 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Team Poster</h3></div></div>
-                </div>
-                <div class="portfolio-item poster" data-category="posters" data-id="poster4">
-                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp " alt="Poster 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Championship Poster</h3></div></div>
-                </div>
-                <div class="portfolio-item poster" data-category="posters" data-id="poster5">
-                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp " alt="Poster 5" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Match Poster</h3></div></div>
-                </div>
-                <div class="portfolio-item poster" data-category="posters" data-id="poster6">
-                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp " alt="Poster 6" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Finals Poster</h3></div></div>
-                </div>
-                
-                <div class="portfolio-item banner" data-category="banners" data-id="banner1">
-                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg " alt="Banner 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">Twitter Header</h3></div></div>
-                </div>
-                <div class="portfolio-item banner" data-category="banners" data-id="banner2">
-                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg " alt="Banner 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">YouTube Banner</h3></div></div>
-                </div>
-                <div class="portfolio-item banner" data-category="banners" data-id="banner3">
-                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg " alt="Banner 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">Esports Banner</h3></div></div>
-                </div>
-                
-                <div class="portfolio-item combo" data-category="combos" data-id="combo1">
-                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg " alt="Combo 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Branding Package</h3></div></div>
-                </div>
-                <div class="portfolio-item combo" data-category="combos" data-id="combo2">
-                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg " alt="Combo 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Streamer Package</h3></div></div>
-                </div>
-                <div class="portfolio-item combo" data-category="combos" data-id="combo3">
-                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg " alt="Combo 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Creator Package</h3></div></div>
-                </div>
-                <div class="portfolio-item combo" data-category="combos" data-id="combo4">
-                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg " alt="Combo 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Pro Package</h3></div></div>
-                </div>
-            </div>
         </div>
     </section>
     
@@ -628,11 +340,7 @@
                         <p class="text-gray-400 mb-4" id="assetPackDesc">Complete GFX Asset Collection</p>
                         
                         <ul class="space-y-2 text-gray-400 text-sm mb-6 flex-grow" id="assetPackFeatures">
-                            <li class="flex items-center gap-2"><span class="text-red-600">→</span> Commercial License</li>
-                            <li class="flex items-center gap-2"><span class="text-red-600">→</span> 50+ Thumbnails</li>
-                            <li class="flex items-center gap-2"><span class="text-red-600">→</span> Stream Overlays</li>
-                            <li class="flex items-center gap-2"><span class="text-red-600">→</span> Transition Pack</li>
-                        </ul>
+                            </ul>
                         
                         <div class="coming-soon-text" id="comingSoonText">COMING SOON</div>
                         
@@ -650,8 +358,7 @@
             <h2 class="text-4xl md:text-5xl font-display font-bold mb-4 reveal">CLIENT <span class="text-red-600">REVIEWS</span></h2>
             <p class="text-gray-400 mb-12 reveal">What people say about my work</p>
 
-            <div id="reviewsContainer" class="grid gap-6 mb-12 text-left reveal">
-                </div>
+            <div id="reviewsContainer" class="grid gap-6 mb-12 text-left reveal"></div>
 
             <div class="glass-card p-8 max-w-xl mx-auto reveal border border-red-500/20 bg-gradient-to-b from-red-900/10 to-transparent shadow-[0_0_30px_rgba(220,38,38,0.05)]">
                 <h3 class="text-2xl font-bold mb-2">Loved our work?</h3>
@@ -822,14 +529,13 @@
     
     <div id="adminPanel" class="admin-panel">
         <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-10">
-            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PANEL</h3>
+            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PORTAL</h3>
             <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white transition-colors focus:outline-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
         
         <div class="p-6 space-y-6">
-            
             <div id="adminDiscordWarning" class="hidden text-center bg-red-500/10 border border-red-500/30 p-5 rounded-xl shadow-lg mt-4">
                 <svg class="w-10 h-10 text-red-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 <h4 class="text-white font-bold mb-2">Authentication Required</h4>
@@ -846,149 +552,6 @@
                 <button onclick="checkAdminPassword()" class="btn-primary w-full text-sm py-3 tracking-widest">AUTHENTICATE</button>
                 <p id="loginError" class="text-red-500 text-sm mt-3 hidden text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20">ACCESS DENIED</p>
             </div>
-            
-            <div id="adminControls" class="hidden space-y-6">
-                <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-center">
-                    <p class="text-sm text-emerald-400 font-medium tracking-wide">✓ SYSTEM ACCESS GRANTED</p>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                        Manage Reviews
-                    </h4>
-                    <div id="adminReviewsList" class="orders-list">
-                        <p class="text-gray-500 text-sm italic">Loading reviews...</p>
-                    </div>
-                </div>
-
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-                        Security
-                    </h4>
-                    <input type="password" id="currentPassword" class="form-input text-sm mb-2 border-white/5 bg-black/40" placeholder="Current Password" autocomplete="off">
-                    <input type="password" id="newPassword" class="form-input text-sm mb-2 border-white/5 bg-black/40" placeholder="New Password" autocomplete="off">
-                    <input type="password" id="confirmPassword" class="form-input text-sm mb-3 border-white/5 bg-black/40" placeholder="Confirm New Password" autocomplete="off">
-                    <button onclick="changePassword()" class="btn-secondary w-full text-sm hover:border-red-500 hover:text-red-400">UPDATE PASSWORD</button>
-                    <p id="passwordError" class="text-red-500 text-sm mt-2 hidden text-center"></p>
-                    <p id="passwordSuccess" class="text-emerald-500 text-sm mt-2 hidden text-center">Password updated successfully!</p>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                        Incoming Orders
-                    </h4>
-                    <div id="ordersList" class="orders-list bg-black/20 p-2 rounded-xl border border-white/5">
-                        <p class="text-gray-500 text-sm italic text-center py-4">No pending orders</p>
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        Add Portfolio Item
-                    </h4>
-                    <div class="bg-black/30 p-4 rounded-xl border border-white/5 space-y-3">
-                        <input type="text" id="newImageUrl" class="form-input text-sm border-white/10" placeholder="Image Direct URL (e.g., https://...)">
-                        <input type="text" id="newImageTitle" class="form-input text-sm border-white/10" placeholder="Title (e.g., FNCS Championship Poster)">
-                        <select id="newImageCategory" class="form-input text-sm border-white/10 bg-neutral-900 text-white">
-                            <option value="thumbnails">Thumbnails (16:9 Ratio)</option>
-                            <option value="posters">Posters (3:4 Ratio)</option>
-                            <option value="banners">Banners (21:9 Ratio)</option>
-                            <option value="combos">Combos (16:9 Ratio)</option>
-                        </select>
-                        <button onclick="addPortfolioItem()" class="btn-secondary w-full text-sm hover:bg-white/10">INJECT ITEM TO GRID</button>
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400">Custom Portfolio Elements</h4>
-                    <div id="portfolioItemsList" class="orders-list bg-black/20 p-2 rounded-xl border border-white/5">
-                        <p class="text-gray-500 text-sm italic text-center py-4">No custom items added</p>
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h4 class="font-semibold mb-3 text-xs uppercase tracking-wider text-gray-400 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Service Pricing (AUD Base)
-                    </h4>
-                    <div class="space-y-2 bg-black/20 p-4 rounded-xl border border-white/5">
-                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 pb-3"><span class="text-sm text-gray-400 w-24">Logo:</span><input type="number" id="admin-price-logo" value="20" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">PFP:</span><input type="number" id="admin-price-pfp" value="15" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Banner:</span><input type="number" id="admin-price-banner" value="30" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Banner+PFP:</span><input type="number" id="admin-price-banner-pfp" value="40" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Poster:</span><input type="number" id="admin-price-poster" value="30" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                        <div class="service-edit-item bg-transparent border-b border-white/5 rounded-none mb-0 py-3"><span class="text-sm text-gray-400 w-24">Thumbnails:</span><input type="number" id="admin-price-thumbnails" value="20" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                        <div class="service-edit-item bg-transparent rounded-none mb-0 pt-3"><span class="text-sm text-gray-400 w-24">Bundle:</span><input type="number" id="admin-price-bundle" value="45" class="flex-1 bg-black/40 border border-white/10 rounded px-3 py-2 text-sm focus:border-red-500"></div>
-                    </div>
-                    <button onclick="updateServicePrices()" class="btn-secondary w-full text-sm mt-4 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-white hover:border-red-500">APPLY PRICING UPDATES</button>
-                </div>
-                
-                <div class="admin-section bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 rounded-xl p-5 shadow-[0_0_20px_rgba(220,38,38,0.05)]">
-                    <h4 class="font-bold mb-5 text-sm uppercase tracking-wider text-red-500 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-                        Asset Pack Controller
-                    </h4>
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-white/5">
-                            <span class="text-sm text-gray-300 font-medium">Show Corner Ribbon</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="editShowRibbon" checked onchange="updateAssetPackPreview()">
-                                <span class="toggle-slider border border-white/10 shadow-inner"></span>
-                            </label>
-                        </div>
-                        
-                        <div><label class="admin-label">Ribbon Text</label><input type="text" id="editRibbonText" class="form-input text-sm bg-black/40 border-white/10" value="COMING SOON" onchange="updateAssetPackPreview()"></div>
-                        <div><label class="admin-label">Pack Title</label><input type="text" id="editPackTitle" class="form-input text-sm bg-black/40 border-white/10" value="ALL-IN-ONE ASSET PACK" onchange="updateAssetPackPreview()"></div>
-                        <div><label class="admin-label">Price (leave empty for TBA)</label><input type="text" id="editPackPrice" class="form-input text-sm bg-black/40 border-white/10" placeholder="99" onchange="updateAssetPackPreview()"></div>
-                        <div><label class="admin-label">Description</label><input type="text" id="editPackDesc" class="form-input text-sm bg-black/40 border-white/10" value="Complete GFX Asset Collection" onchange="updateAssetPackPreview()"></div>
-                        
-                        <div>
-                            <label class="admin-label">Features List</label>
-                            <div id="featuresEditor" class="space-y-2 mb-3 bg-black/20 p-3 rounded-lg border border-white/5"></div>
-                            <div class="flex gap-2">
-                                <input type="text" id="newFeature" class="form-input text-sm flex-1 bg-black/40 border-white/10" placeholder="Type new feature here...">
-                                <button onclick="addFeature()" class="bg-red-600 hover:bg-red-500 text-white rounded-lg px-4 text-lg font-bold transition-colors">+</button>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="admin-label">Sales Status</label>
-                            <select id="editPackStatus" class="form-input text-sm bg-neutral-900 border-white/10 text-white" onchange="updateAssetPackPreview()">
-                                <option value="coming_soon">Coming Soon (Locked)</option>
-                                <option value="available">Available Now (Purchasable)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="bg-black/60 rounded-lg p-4 mt-2 border border-dashed border-white/20">
-                            <p class="text-xs text-red-500/80 uppercase font-bold tracking-widest mb-2">Live Preview</p>
-                            <div class="text-sm text-gray-300 space-y-2 font-medium">
-                                <p class="flex justify-between border-b border-white/5 pb-1">Title: <span id="previewTitle" class="text-white">ALL-IN-ONE ASSET PACK</span></p>
-                                <p class="flex justify-between border-b border-white/5 pb-1">Price: <span id="previewPrice" class="text-green-400">TBA</span></p>
-                                <p class="flex justify-between pb-1">Features: <span id="previewFeatures" class="text-blue-400">4 items</span></p>
-                            </div>
-                        </div>
-                        
-                        <button onclick="saveAssetPackChanges()" class="bg-red-600/20 border border-red-500/50 hover:bg-red-600 hover:border-red-600 text-red-400 hover:text-white w-full py-3 rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(220,38,38,0.1)]">COMMIT ASSET PACK CHANGES</button>
-                    </div>
-                </div>
-                
-                <div class="admin-section border-t-2 border-white/10 mt-8 pt-6">
-                    <h4 class="font-bold mb-4 text-sm uppercase tracking-wider text-white text-center">Master Database Controls</h4>
-                    <button onclick="saveToDatabase()" class="btn-primary w-full text-base py-4 mb-3 shadow-[0_10px_30px_rgba(220,38,38,0.4)]">SAVE ALL CONFIGURATIONS</button>
-                    
-                    <div class="flex gap-2">
-                        <button onclick="testWebhook()" class="btn-secondary flex-1 text-xs border-white/10 hover:border-[#5865F2] hover:text-[#5865F2]" id="testWebhookBtn">TEST DISCORD WEBHOOK</button>
-                        <button onclick="logoutAdmin()" class="bg-transparent border border-white/10 hover:bg-white/5 hover:text-white text-gray-500 text-xs px-4 rounded-lg transition-colors">LOCK SYSTEM</button>
-                    </div>
-                    <p class="webhook-cooldown text-center mt-2 text-xs" id="webhookCooldown"></p>
-                </div>
-                
-            </div>
         </div>
     </div>
     
@@ -999,38 +562,16 @@
     <script>
         const CONFIG = { apiUrl: '/api/save-data' };
         
-        let isAdmin = false;
         let currentUserData = null; 
-        let orders = [];
         let portfolioItems = [];
-        let reviewsList = [];
         let audioContext;
         let currentCurrency = 'AUD';
         let isMuted = false;
         let volumeLevel = 0.5;
         let selectedServices = [];
-        let lastWebhookTime = 0;
-        const WEBHOOK_COOLDOWN = 30000;
         let isSubmitting = false;
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
-        
-        let assetPackData = {
-            showRibbon: true, ribbonText: 'COMING SOON', title: 'ALL-IN-ONE ASSET PACK',
-            price: '', description: 'Complete GFX Asset Collection',
-            features: ['Commercial License', '50+ Thumbnails', 'Stream Overlays', 'Transition Pack'],
-            status: 'coming_soon'
-        };
-        
-        const serviceDefinitions = [
-            { id: 'logo', name: 'Logo', basePrice: 20 },
-            { id: 'pfp', name: 'PFP', basePrice: 15 },
-            { id: 'banner', name: 'Banner', basePrice: 30 },
-            { id: 'banner-pfp', name: 'Banner + PFP', basePrice: 40 },
-            { id: 'poster', name: 'Poster', basePrice: 30 },
-            { id: 'thumbnails', name: 'Thumbnails', basePrice: 20 },
-            { id: 'bundle', name: 'Complete Brand Bundle', basePrice: 45 }
-        ];
         
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
         
@@ -1039,9 +580,7 @@
             initScrollReveal();
             initFormValidation();
             initPortfolioHover();
-            initAssetPackEditor();
             initServiceDropdown();
-            validateSession();
             loadDataFromDatabase();
             checkAuth();
             loadReviews();
@@ -1054,7 +593,6 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
                 e.preventDefault(); 
                 toggleAdmin();
@@ -1159,7 +697,7 @@
                 if (data.success) {
                     document.getElementById('reviewText').value = '';
                     if (data.flagged) {
-                        showToast('Review submitted. Pending admin approval due to system filters.');
+                        showToast('Review submitted. Pending admin approval.');
                     } else {
                         showToast('Review posted successfully!');
                         loadReviews();
@@ -1172,34 +710,6 @@
             }
             btn.disabled = false;
             btn.innerHTML = 'Submit Review';
-        }
-
-        function renderAdminReviews() {
-            const container = document.getElementById('adminReviewsList');
-            if (!container) return;
-            if (reviewsList.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4 bg-black/20 rounded-xl border border-white/5">System clear. No reviews found.</p>';
-                return;
-            }
-            container.innerHTML = reviewsList.map(r => `
-                <div class="order-item relative overflow-hidden ${r.flagged ? 'border-red-500/50 bg-red-900/10' : 'border-white/5 bg-black/30'}">
-                    ${r.flagged ? '<div class="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">FLAGGED</div>' : ''}
-                    <div class="flex justify-between items-start mb-2 pr-12">
-                        <span class="font-bold text-white text-sm">${escapeHtml(r.username)}</span>
-                        <span class="text-xs text-yellow-500">${'★'.repeat(r.rating)}</span>
-                    </div>
-                    <p class="text-xs text-gray-300 mb-3 bg-black/40 p-2 rounded border border-white/5 italic">"${escapeHtml(r.text)}"</p>
-                    <button onclick="deleteReview('${r.id}')" class="btn-danger w-full text-xs py-1.5 opacity-80 hover:opacity-100">DELETE RECORD</button>
-                </div>
-            `).join('');
-        }
-
-        async function deleteReview(id) {
-            reviewsList = reviewsList.filter(r => r.id !== id);
-            renderAdminReviews();
-            await saveToDatabase();
-            loadReviews();
-            showToast('Review purged from database');
         }
 
         function filterWork(cat) {
@@ -1240,21 +750,6 @@
             }
         }
 
-        async function validateSession() {
-            const token = sessionStorage.getItem('adminToken');
-            if (token) {
-                try {
-                    const response = await fetch(CONFIG.apiUrl + '?token=' + encodeURIComponent(token));
-                    const data = await response.json();
-                    if (!data.authenticated) {
-                        sessionStorage.removeItem('adminToken');
-                    }
-                } catch (e) {
-                    sessionStorage.removeItem('adminToken');
-                }
-            }
-        }
-        
         function initServiceDropdown() {
             document.addEventListener('click', (e) => {
                 const container = document.querySelector('.multi-select-container');
@@ -1489,8 +984,6 @@
                 } catch(e) {}
             }
         }
-
-        function initAudio() {}
         
         function playSound(type) {
             if (!audioContext || isMuted) return;
@@ -1577,116 +1070,6 @@
             showToast(`Currency synced to ${c}`);
         }
         
-        function addPortfolioItem() {
-            const url = document.getElementById('newImageUrl').value.trim();
-            const title = document.getElementById('newImageTitle').value.trim() || 'New Work';
-            const cat = document.getElementById('newImageCategory').value;
-            
-            if (!url) { showToast('Please enter an image URL'); return; }
-            try { new URL(url); } catch { showToast('Please enter a valid URL'); return; }
-            
-            let aspectClass = 'thumbnail';
-            if (cat === 'posters') aspectClass = 'poster';
-            else if (cat === 'banners') aspectClass = 'banner';
-            else if (cat === 'combos') aspectClass = 'combo';
-            
-            const id = 'custom_' + Date.now();
-            
-            const div = document.createElement('div');
-            div.className = `portfolio-item ${aspectClass}`;
-            div.dataset.category = cat;
-            div.dataset.id = id;
-            div.dataset.custom = 'true';
-            div.innerHTML = `
-                <img src="${escapeHtml(url)}" alt="${escapeHtml(title)}" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
-                <div class="portfolio-overlay">
-                    <div>
-                        <span class="text-red-500 font-medium text-sm tracking-wider">${cat.toUpperCase()}</span>
-                        <h3 class="text-white font-semibold mt-1">${escapeHtml(title)}</h3>
-                    </div>
-                </div>
-            `;
-            
-            const grid = document.getElementById('portfolioGrid');
-            if (grid) {
-                const targetCategoryIndex = CATEGORY_ORDER.indexOf(cat);
-                const allItems = Array.from(grid.querySelectorAll('.portfolio-item'));
-                
-                let inserted = false;
-                for (let i = targetCategoryIndex; i < CATEGORY_ORDER.length; i++) {
-                    const categoryToCheck = CATEGORY_ORDER[i];
-                    const itemsInCategory = allItems.filter(item => item.dataset.category === categoryToCheck);
-                    
-                    if (itemsInCategory.length > 0) {
-                        if (categoryToCheck === cat) {
-                            const lastItem = itemsInCategory[itemsInCategory.length - 1];
-                            lastItem.after(div);
-                            inserted = true;
-                            break;
-                        } else {
-                            const firstItemOfNextCategory = itemsInCategory[0];
-                            grid.insertBefore(div, firstItemOfNextCategory);
-                            inserted = true;
-                            break;
-                        }
-                    }
-                }
-                
-                if (!inserted) grid.appendChild(div);
-                portfolioItems.push({ id: id, url: url, category: cat, title: title });
-                
-                document.getElementById('newImageUrl').value = '';
-                document.getElementById('newImageTitle').value = '';
-                
-                playSound('success'); 
-                showToast(`Asset injected to ${cat.toUpperCase()}`);
-                updatePortfolioItemsList();
-                
-                div.addEventListener('mouseenter', function() {
-                    if (window.matchMedia('(hover: hover)').matches) {
-                        this.classList.add('hover-active');
-                        playSound('hover');
-                    }
-                });
-                div.addEventListener('mouseleave', function() { this.classList.remove('hover-active'); });
-                
-                if (typeof gsap !== 'undefined') gsap.fromTo(div, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4 });
-            }
-        }
-        
-        function updatePortfolioItemsList() {
-            const container = document.getElementById('portfolioItemsList');
-            if (!container) return;
-            
-            if (portfolioItems.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4 bg-black/20 rounded-xl border border-white/5">No custom items detected</p>';
-                return;
-            }
-            
-            container.innerHTML = portfolioItems.map(item => `
-                <div class="order-item bg-black/30 border border-white/10 hover:border-red-500/50">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="font-bold text-white text-sm">${escapeHtml(item.title)}</span>
-                        <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 uppercase">${item.category}</span>
-                    </div>
-                    <p class="text-xs text-gray-500 truncate mb-3 bg-black/50 p-1.5 rounded">${escapeHtml(item.url)}</p>
-                    <button onclick="removePortfolioItem('${item.id}')" class="btn-danger w-full text-xs py-1.5 opacity-80 hover:opacity-100">REMOVE ASSET</button>
-                </div>
-            `).join('');
-        }
-        
-        function removePortfolioItem(id) {
-            const index = portfolioItems.findIndex(item => item.id === id);
-            if (index > -1) {
-                portfolioItems.splice(index, 1);
-                const el = document.querySelector(`.portfolio-item[data-id="${id}"]`);
-                if (el) el.remove();
-                updatePortfolioItemsList();
-                playSound('click');
-                showToast('Asset completely removed. Save to persist.');
-            }
-        }
-        
         function toggleAdmin() { 
             const panel = document.getElementById('adminPanel');
             panel.classList.toggle('active'); 
@@ -1729,8 +1112,7 @@
                 });
                 
                 if (!response.ok) {
-                    console.error("Server returned status:", response.status);
-                    showToast('API Error: Is MongoDB connected in Vercel?');
+                    showToast('API Error: Connection failed.');
                     btn.innerHTML = originalText;
                     return;
                 }
@@ -1738,18 +1120,15 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    isAdmin = true;
-                    document.getElementById('adminLogin').classList.add('hidden');
-                    document.getElementById('adminControls').classList.remove('hidden');
-                    
-                    updateOrdersList();
-                    updatePortfolioItemsList();
-                    renderAdminReviews();
-                    
                     playSound('success'); 
-                    showToast('System Master Access Granted');
-                    
+                    showToast('Access Granted. Redirecting...');
                     if (data.token) sessionStorage.setItem('adminToken', data.token);
+                    
+                    // REDIRECT TO NEW ADMIN PAGE
+                    setTimeout(() => {
+                        window.location.href = '/admin.html';
+                    }, 500);
+                    
                 } else {
                     const errorEl = document.getElementById('loginError');
                     errorEl.classList.remove('hidden');
@@ -1757,324 +1136,63 @@
                     setTimeout(() => errorEl.classList.add('hidden'), 3000);
                 }
             } catch (e) {
-                console.error("Login Fetch Error:", e);
                 showToast('Authentication server offline. Check logs.');
             }
             btn.innerHTML = originalText;
         }
 
-        function updateOrdersList() {
-            const container = document.getElementById('ordersList');
-            if (!container) return;
-            
-            if (!orders || orders.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4 bg-black/20 rounded-xl border border-white/5">No pending orders</p>';
-                return;
-            }
-            
-            container.innerHTML = orders.map(o => `
-                <div class="order-item relative overflow-hidden bg-black/30 border border-white/5 p-3 rounded-lg mb-2 ${o.completed ? 'completed' : (o.contacted ? 'contacted' : 'pending')}">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="font-bold text-white text-sm">Order #${o.id || 'N/A'}</span>
-                        <span class="text-xs text-red-500 font-bold">$${o.total || 0} AUD</span>
-                    </div>
-                    <p class="text-xs text-gray-300 mb-2">Client: ${escapeHtml(o.discordUser || o.email || 'Unknown')}</p>
-                    <div class="flex gap-2 mt-2">
-                        ${!o.contacted ? `<button class="btn-secondary text-[10px] w-full py-1.5 opacity-80 hover:opacity-100" onclick="markAsContacted('${o.id}')">MARK CONTACTED</button>` : ''}
-                        ${!o.completed ? `<button class="btn-primary text-[10px] w-full py-1.5 opacity-80 hover:opacity-100" onclick="markAsCompleted('${o.id}')">COMPLETE</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function logoutAdmin() {
-            const token = sessionStorage.getItem('adminToken');
-            if (token) {
-                fetch(CONFIG.apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'logout', token: token })
-                }).catch(() => {});
-            }
-            
-            isAdmin = false;
-            sessionStorage.removeItem('adminToken');
-            document.getElementById('adminLogin').classList.remove('hidden');
-            document.getElementById('adminControls').classList.add('hidden');
-            document.getElementById('adminPassword').value = '';
-            showToast('System Locked');
-            toggleAdmin(); 
-        }
-
-        async function changePassword() {
-            const current = document.getElementById('currentPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
-            const errorEl = document.getElementById('passwordError');
-            const successEl = document.getElementById('passwordSuccess');
-            
-            errorEl.classList.add('hidden');
-            successEl.classList.add('hidden');
-            
-            if (newPass.length < 6) {
-                errorEl.textContent = 'Code must be at least 6 characters';
-                errorEl.classList.remove('hidden');
-                return;
-            }
-            if (newPass !== confirm) {
-                errorEl.textContent = 'Verification mismatch';
-                errorEl.classList.remove('hidden');
-                return;
-            }
-            
-            try {
-                const response = await fetch(CONFIG.apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        action: 'changePassword',
-                        currentPassword: current,
-                        newPassword: newPass,
-                        token: sessionStorage.getItem('adminToken')
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    document.getElementById('currentPassword').value = '';
-                    document.getElementById('newPassword').value = '';
-                    document.getElementById('confirmPassword').value = '';
-                    successEl.classList.remove('hidden');
-                    playSound('success');
-                    showToast('Security credentials updated. Re-authenticating...');
-                    setTimeout(() => { logoutAdmin(); }, 2000);
-                } else {
-                    errorEl.textContent = data.error || 'Update failed';
-                    errorEl.classList.remove('hidden');
-                }
-            } catch (e) {
-                errorEl.textContent = 'Server linkage failed';
-                errorEl.classList.remove('hidden');
-            }
-        }
-        
-        function updateServicePrices(silent = false) {
-            const prices = {
-                logo: document.getElementById('admin-price-logo').value,
-                pfp: document.getElementById('admin-price-pfp').value,
-                banner: document.getElementById('admin-price-banner').value,
-                banner_pfp: document.getElementById('admin-price-banner-pfp').value,
-                poster: document.getElementById('admin-price-poster').value,
-                thumbnails: document.getElementById('admin-price-thumbnails').value,
-                bundle: document.getElementById('admin-price-bundle').value
-            };
-            for (const [key, value] of Object.entries(prices)) {
-                const el = document.querySelector(`.service-price[data-service="${key}"]`);
-                if (el) el.dataset.basePrice = value;
-            }
-            updateAllPrices();
-            if (!silent) showToast('Price indices updated in local cache. Save config to broadcast.');
-        }
-        
-        function initAssetPackEditor() { renderFeaturesEditor(); updateAssetPackPreview(); }
-        
-        function renderFeaturesEditor() {
-            const container = document.getElementById('featuresEditor');
-            if (!container) return;
-            container.innerHTML = assetPackData.features.map((feature, index) => `
-                <div class="feature-item bg-black/40 p-2 rounded border border-white/5">
-                    <input type="text" class="bg-transparent border-none focus:outline-none text-white text-sm w-full" value="${escapeHtml(feature)}" onchange="updateFeature(${index}, this.value)">
-                    <button class="text-red-500 hover:text-white px-2" onclick="removeFeature(${index})">✕</button>
-                </div>
-            `).join('');
-        }
-        
-        function updateFeature(index, value) { assetPackData.features[index] = value; updateAssetPackPreview(); }
-        function removeFeature(index) { assetPackData.features.splice(index, 1); renderFeaturesEditor(); updateAssetPackPreview(); }
-        function addFeature() {
-            const input = document.getElementById('newFeature');
-            const value = input.value.trim();
-            if (value) { assetPackData.features.push(value); input.value = ''; renderFeaturesEditor(); updateAssetPackPreview(); }
-        }
-        
-        function updateAssetPackPreview() {
-            assetPackData.showRibbon = document.getElementById('editShowRibbon').checked;
-            assetPackData.ribbonText = document.getElementById('editRibbonText').value;
-            assetPackData.title = document.getElementById('editPackTitle').value;
-            assetPackData.price = document.getElementById('editPackPrice').value;
-            assetPackData.description = document.getElementById('editPackDesc').value;
-            assetPackData.status = document.getElementById('editPackStatus').value;
-            
-            const previewTitle = document.getElementById('previewTitle');
-            const previewPrice = document.getElementById('previewPrice');
-            const previewFeatures = document.getElementById('previewFeatures');
-            
-            if (previewTitle) previewTitle.textContent = assetPackData.title;
-            if (previewPrice) previewPrice.textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
-            if (previewFeatures) previewFeatures.textContent = assetPackData.features.length + ' active nodes';
-            
-            updateAssetPackDisplay();
-        }
-        
-        function updateAssetPackDisplay() {
-            const ribbon = document.getElementById('assetPackRibbon');
-            if (ribbon) {
-                if (assetPackData.showRibbon) { ribbon.style.display = 'block'; document.getElementById('ribbonText').textContent = assetPackData.ribbonText; } 
-                else { ribbon.style.display = 'none'; }
-            }
-            
-            const titleEl = document.getElementById('assetPackTitle');
-            const priceEl = document.getElementById('assetPackPrice');
-            const descEl = document.getElementById('assetPackDesc');
-            const featuresList = document.getElementById('assetPackFeatures');
-            const comingSoonText = document.getElementById('comingSoonText');
-            const btn = document.getElementById('assetPackBtn');
-            
-            if (titleEl) titleEl.textContent = assetPackData.title;
-            if (priceEl) priceEl.textContent = assetPackData.price ? '$' + assetPackData.price : 'TBA';
-            if (descEl) descEl.textContent = assetPackData.description;
-            
-            if (featuresList) {
-                featuresList.innerHTML = assetPackData.features.map(f => `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${escapeHtml(f)}</li>`).join('');
-            }
-            
-            if (comingSoonText && btn) {
-                if (assetPackData.status === 'coming_soon') {
-                    comingSoonText.style.display = 'block'; comingSoonText.textContent = 'COMING SOON';
-                    btn.disabled = true; btn.textContent = 'NOTIFY ME'; btn.className = 'w-full py-3 border border-gray-700 bg-black/50 rounded-lg text-gray-500 cursor-not-allowed mt-auto'; btn.onclick = null;
-                } else {
-                    comingSoonText.style.display = 'none'; btn.disabled = false; btn.textContent = assetPackData.price ? `BUY NOW - $${assetPackData.price}` : 'BUY NOW';
-                    btn.className = 'w-full btn-primary mt-auto shadow-[0_5px_20px_rgba(220,38,38,0.3)]';
-                    btn.onclick = () => { toggleService('All-in-One Asset Pack', parseInt(assetPackData.price) || 0); document.getElementById('order').scrollIntoView(); };
-                }
-            }
-        }
-        
-        function saveAssetPackChanges() { updateAssetPackPreview(); saveToDatabase(); showToast('Module staged. Pushing to master database...'); }
-        
-        async function markAsContacted(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                order.contacted = true;
-                order.contactTime = new Date().toISOString();
-                updateOrdersList();
-                playSound('success');
-                showToast('Client status updated to IN PROGRESS');
-                
-                try {
-                    await fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            content: `Status Update: Order #${orderId} is now in production.`,
-                            embeds: [{
-                                title: '✅ WORK COMMENCED', color: 0x22c55e,
-                                fields: [{ name: 'Invoice ID', value: '#' + orderId, inline: true }, { name: 'Client', value: order.discord.substring(0, 100), inline: true }]
-                            }]
-                        })
-                    });
-                } catch (e) {}
-                saveToDatabase();
-            }
-        }
-        
-        async function markAsCompleted(orderId) {
-            orders = orders.filter(o => o.id !== orderId);
-            updateOrdersList();
-            playSound('success');
-            showToast('Order archived and cleared from queue');
-            saveToDatabase();
-        }
-        
-        async function saveToDatabase() {
-            const saveBtn = document.querySelector('button[onclick="saveToDatabase()"]');
-            if(saveBtn) saveBtn.innerHTML = 'SYNCING TO CLOUD...';
-            
-            try {
-                const response = await fetch(CONFIG.apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'saveData', token: sessionStorage.getItem('adminToken'), assetPackData: assetPackData,
-                        orders: orders, portfolio: portfolioItems, reviews: reviewsList,
-                        servicePrices: {
-                            logo: document.getElementById('admin-price-logo').value, pfp: document.getElementById('admin-price-pfp').value,
-                            banner: document.getElementById('admin-price-banner').value, banner_pfp: document.getElementById('admin-price-banner-pfp').value,
-                            poster: document.getElementById('admin-price-poster').value, thumbnails: document.getElementById('admin-price-thumbnails').value,
-                            bundle: document.getElementById('admin-price-bundle').value
-                        },
-                        timestamp: new Date().toISOString()
-                    })
-                });
-                
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        showToast('Security token expired. Please re-authenticate');
-                        logoutAdmin();
-                    } else {
-                        showToast('Database write failed. Is Vercel connected to MongoDB?'); 
-                    }
-                    if(saveBtn) saveBtn.innerHTML = 'SAVE ALL CONFIGURATIONS';
-                    return;
-                }
-
-                const data = await response.json();
-                playSound('success'); 
-                showToast('All configurations successfully synced to master DB'); 
-                
-            } catch (e) { 
-                showToast('CRITICAL: Master database unreachable'); 
-            }
-            
-            if(saveBtn) saveBtn.innerHTML = 'SAVE ALL CONFIGURATIONS';
-        }
-        
         async function loadDataFromDatabase() {
             try {
-                const token = sessionStorage.getItem('adminToken');
-                const response = await fetch(CONFIG.apiUrl + (token ? '?token=' + encodeURIComponent(token) : ''));
-                
+                const response = await fetch(CONFIG.apiUrl);
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.orders) orders = data.orders;
-                    if (data.reviews) reviewsList = data.reviews;
                     
                     if (data.portfolio) {
                         portfolioItems = data.portfolio;
                         renderPortfolioItems();
-                        updatePortfolioItemsList();
                     }
                     
                     if (data.assetPackData) {
-                        assetPackData = { ...assetPackData, ...data.assetPackData };
-                        document.getElementById('editShowRibbon').checked = assetPackData.showRibbon;
-                        document.getElementById('editRibbonText').value = assetPackData.ribbonText;
-                        document.getElementById('editPackTitle').value = assetPackData.title;
-                        document.getElementById('editPackPrice').value = assetPackData.price;
-                        document.getElementById('editPackDesc').value = assetPackData.description;
-                        document.getElementById('editPackStatus').value = assetPackData.status;
-                        renderFeaturesEditor(); updateAssetPackDisplay();
+                        const ribbon = document.getElementById('assetPackRibbon');
+                        if (ribbon) {
+                            if (data.assetPackData.showRibbon) { ribbon.style.display = 'block'; document.getElementById('ribbonText').textContent = data.assetPackData.ribbonText; } 
+                            else { ribbon.style.display = 'none'; }
+                        }
+                        
+                        const titleEl = document.getElementById('assetPackTitle');
+                        const priceEl = document.getElementById('assetPackPrice');
+                        const descEl = document.getElementById('assetPackDesc');
+                        const featuresList = document.getElementById('assetPackFeatures');
+                        const comingSoonText = document.getElementById('comingSoonText');
+                        const btn = document.getElementById('assetPackBtn');
+                        
+                        if (titleEl) titleEl.textContent = data.assetPackData.title;
+                        if (priceEl) priceEl.textContent = data.assetPackData.price ? '$' + data.assetPackData.price : 'TBA';
+                        if (descEl) descEl.textContent = data.assetPackData.description;
+                        
+                        if (featuresList && data.assetPackData.features) {
+                            featuresList.innerHTML = data.assetPackData.features.map(f => `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${escapeHtml(f)}</li>`).join('');
+                        }
+                        
+                        if (comingSoonText && btn) {
+                            if (data.assetPackData.status === 'coming_soon') {
+                                comingSoonText.style.display = 'block'; comingSoonText.textContent = 'COMING SOON';
+                                btn.disabled = true; btn.textContent = 'NOTIFY ME'; btn.className = 'w-full py-3 border border-gray-700 bg-black/50 rounded-lg text-gray-500 cursor-not-allowed mt-auto'; btn.onclick = null;
+                            } else {
+                                comingSoonText.style.display = 'none'; btn.disabled = false; btn.textContent = data.assetPackData.price ? `BUY NOW - $${data.assetPackData.price}` : 'BUY NOW';
+                                btn.className = 'w-full btn-primary mt-auto shadow-[0_5px_20px_rgba(220,38,38,0.3)]';
+                                btn.onclick = () => { toggleService('All-in-One Asset Pack', parseInt(data.assetPackData.price) || 0); document.getElementById('order').scrollIntoView(); };
+                            }
+                        }
                     }
                     
                     if (data.servicePrices) {
-                        document.getElementById('admin-price-logo').value = data.servicePrices.logo || 20;
-                        document.getElementById('admin-price-pfp').value = data.servicePrices.pfp || 15;
-                        document.getElementById('admin-price-banner').value = data.servicePrices.banner || 30;
-                        document.getElementById('admin-price-banner-pfp').value = data.servicePrices.banner_pfp || 40;
-                        document.getElementById('admin-price-poster').value = data.servicePrices.poster || 30;
-                        document.getElementById('admin-price-thumbnails').value = data.servicePrices.thumbnails || 20;
-                        document.getElementById('admin-price-bundle').value = data.servicePrices.bundle || 45;
-                        updateServicePrices(true); // <--- THIS SILENT FLAG FIXES THE POPUP ON LOAD
+                        for (const [key, value] of Object.entries(data.servicePrices)) {
+                            const el = document.querySelector(`.service-price[data-service="${key}"]`);
+                            if (el) el.dataset.basePrice = value;
+                        }
+                        updateAllPrices();
                     }
-                    
-                    if (data.authenticated) {
-                        isAdmin = true;
-                        document.getElementById('adminLogin').classList.add('hidden');
-                        document.getElementById('adminControls').classList.remove('hidden');
-                        renderAdminReviews();
-                    }
-                    updateOrdersList();
                 }
             } catch (e) { console.log('Database fetch failed'); }
         }
@@ -2118,40 +1236,6 @@
                 div.addEventListener('mouseleave', function() { this.classList.remove('hover-active'); });
             });
         }
-        
-        function testWebhook() {
-            const now = Date.now();
-            const timeSinceLast = now - lastWebhookTime;
-            
-            if (timeSinceLast < WEBHOOK_COOLDOWN) {
-                const remaining = Math.ceil((WEBHOOK_COOLDOWN - timeSinceLast) / 1000);
-                showToast(`Webhook on cooldown. Please wait ${remaining}s`);
-                return;
-            }
-            
-            lastWebhookTime = now;
-            updateWebhookCooldown();
-            
-            fetch('https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: '@everyone 🔧 **SYSTEM TEST INITIATED**', embeds: [{ title: 'Diagnostics Normal', description: 'Server-to-Discord pipeline is fully operational.', color: 0x3b82f6 }] })
-            }).then(() => { showToast('Test packet transmitted'); startCooldownTimer(); }).catch(() => showToast('Transmission failed'));
-        }
-        
-        function startCooldownTimer() {
-            const cooldownEl = document.getElementById('webhookCooldown');
-            const btn = document.getElementById('testWebhookBtn');
-            btn.disabled = true; btn.classList.add('opacity-50');
-            
-            const interval = setInterval(() => {
-                const remaining = WEBHOOK_COOLDOWN - (Date.now() - lastWebhookTime);
-                if (remaining <= 0) { clearInterval(interval); cooldownEl.textContent = ''; btn.disabled = false; btn.classList.remove('opacity-50'); return; }
-                const seconds = Math.ceil(remaining / 1000);
-                cooldownEl.textContent = `Relay Cooling: ${seconds}s`;
-            }, 1000);
-        }
-        
-        function updateWebhookCooldown() { document.getElementById('webhookCooldown').textContent = 'Relay Cooling: 30s'; }
         
         function showToast(m) {
             const t = document.getElementById('toast'), msg = document.getElementById('toastMessage');
