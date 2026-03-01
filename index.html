@@ -4,82 +4,272 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARSHIA — GFX Designer</title>
-    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp ">
+    <script src="https://cdn.tailwindcss.com "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary-red: #DC2626; --dark-red: #991B1B; --void-black: #050505; --card-black: #111111; }
+        :root {
+            --primary-red: #DC2626;
+            --dark-red: #991B1B;
+            --void-black: #050505;
+            --card-black: #111111;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--void-black); color: white; overflow-x: hidden; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-        @keyframes moveGrid { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
-        .grid-bg-container { position: fixed; top: -50px; left: 0; width: 100%; height: calc(100% + 50px); z-index: -1; pointer-events: none; overflow: hidden; }
-        .grid-bg { position: absolute; top: -50px; left: 0; width: 100%; height: 200%; background-image: linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px); background-size: 50px 50px; animation: moveGrid 3s linear infinite; }
-        @keyframes discordPulse { 0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); } 50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.7); transform: scale(1.02); } 100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); } }
-        .discord-btn-glow { animation: discordPulse 2.5s infinite ease-in-out; }
-        .discord-btn-glow:hover { animation: none; box-shadow: 0 0 40px rgba(88, 101, 242, 0.9); transform: scale(1.05); }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); opacity: 0.5; } 50% { transform: translate(30px, -30px) scale(1.2); opacity: 0.8; } 100% { transform: translate(0, 0) scale(1); opacity: 0.5; } }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--void-black);
+            color: white;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Smooth, scrolling cyber-grid background */
+        @keyframes moveGrid {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+        .grid-bg-container {
+            position: fixed; top: -50px; left: 0; width: 100%; height: calc(100% + 50px);
+            z-index: -1; pointer-events: none; overflow: hidden;
+        }
+        .grid-bg {
+            position: absolute; top: -50px; left: 0; width: 100%; height: 200%;
+            background-image: linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 3s linear infinite;
+        }
+        
+        /* Pulsing Glow for Discord Buttons */
+        @keyframes discordPulse {
+            0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.7); transform: scale(1.02); }
+            100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
+        }
+        .discord-btn-glow {
+            animation: discordPulse 2.5s infinite ease-in-out;
+        }
+        .discord-btn-glow:hover {
+            animation: none;
+            box-shadow: 0 0 40px rgba(88, 101, 242, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Ambient glowing orbs */
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            50% { transform: translate(30px, -30px) scale(1.2); opacity: 0.8; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        }
         .ambient-orb { animation: floatOrb 10s infinite ease-in-out alternate; }
         .ambient-orb-2 { animation: floatOrb 12s infinite ease-in-out alternate-reverse; }
-        @media (pointer: coarse) { body { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; } }
+
+        @media (pointer: coarse) {
+            body { cursor: auto !important; }
+            .cursor-dot, .cursor-outline { display: none !important; }
+        }
+        
         .font-display { font-family: 'Space Grotesk', sans-serif; }
-        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; z-index: 9999; pointer-events: none; }
+        
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
         .cursor-dot { width: 5px; height: 5px; background-color: var(--primary-red); }
-        .cursor-outline { width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5); transition: width 0.15s, height 0.15s, background-color 0.15s; }
-        .cursor-outline.hover { width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red); }
-        .portfolio-item { position: relative; border-radius: 24px; overflow: hidden; background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1); transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease; cursor: pointer; will-change: transform; }
-        .portfolio-item.thumbnail { aspect-ratio: 16/9; } .portfolio-item.poster { aspect-ratio: 3/4; } .portfolio-item.banner { aspect-ratio: 21/9; } .portfolio-item.combo { aspect-ratio: 16/9; }
-        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; pointer-events: none; -webkit-user-drag: none; background-color: var(--card-black); }
-        @media (hover: hover) { .portfolio-item.hover-active { transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(220, 38, 38, 0.4); border-color: rgba(220, 38, 38, 0.8); z-index: 10; } }
+        .cursor-outline {
+            width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5);
+            transition: width 0.15s, height 0.15s, background-color 0.15s;
+        }
+        .cursor-outline.hover {
+            width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red);
+        }
+        
+        /* Portfolio Items */
+        .portfolio-item {
+            position: relative; border-radius: 24px; overflow: hidden;
+            background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            cursor: pointer; will-change: transform;
+        }
+        .portfolio-item.thumbnail { aspect-ratio: 16/9; }
+        .portfolio-item.poster { aspect-ratio: 3/4; }
+        .portfolio-item.banner { aspect-ratio: 21/9; }
+        .portfolio-item.combo { aspect-ratio: 16/9; }
+        
+        .portfolio-item img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.6s ease; pointer-events: none; -webkit-user-drag: none;
+            background-color: var(--card-black);
+        }
+        
+        @media (hover: hover) {
+            .portfolio-item.hover-active {
+                transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(220, 38, 38, 0.4);
+                border-color: rgba(220, 38, 38, 0.8); z-index: 10;
+            }
+        }
         @media (hover: none) { .portfolio-item:active { transform: scale(0.98); } }
+        
         .portfolio-item.hover-active img { transform: scale(1.1); }
-        .portfolio-item::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%); transition: left 0.7s ease; pointer-events: none; z-index: 5; }
+        .portfolio-item::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            transition: left 0.7s ease; pointer-events: none; z-index: 5;
+        }
         .portfolio-item.hover-active::after { left: 100%; }
-        .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%); opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px; z-index: 3; pointer-events: none; }
+        
+        .portfolio-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px;
+            z-index: 3; pointer-events: none;
+        }
         .portfolio-item.hover-active .portfolio-overlay { opacity: 1; }
         @media (hover: none) { .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); } }
-        .glass-card { background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column; }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.7s; z-index: 1; pointer-events: none; }
+        
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column;
+        }
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.7s; z-index: 1; pointer-events: none;
+        }
         .glass-card:hover::before { left: 100%; }
-        @media (hover: hover) { .glass-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.4); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(220, 38, 38, 0.25); } }
-        .main-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        @media (max-width: 768px) { .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; } .main-nav .hidden.md\:flex { display: none; } .logo-img { height: 32px; } .font-display.text-xl { font-size: 1rem; } }
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.4);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(220, 38, 38, 0.25);
+            }
+        }
+        
+        /* Nav */
+        .main-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        @media (max-width: 768px) {
+            .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+            .main-nav .hidden.md\:flex { display: none; }
+            .logo-img { height: 32px; }
+            .font-display.text-xl { font-size: 1rem; }
+        }
         .logo-img { height: 40px; width: auto; object-fit: contain; pointer-events: none; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; transition: all 0.3s; position: relative; overflow: hidden; cursor: pointer; border: none; touch-action: manipulation; }
-        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
+        
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 1rem 2rem;
+            border-radius: 12px; font-weight: 600; transition: all 0.3s; position: relative; overflow: hidden;
+            cursor: pointer; border: none; touch-action: manipulation;
+        }
+        .btn-primary::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s;
+        }
         .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.5); }
         .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;}
-        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; touch-action: manipulation; }
-        .btn-secondary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem 2rem;
+            border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; position: relative;
+            overflow: hidden; touch-action: manipulation;
+        }
+        .btn-secondary::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s;
+        }
         .btn-secondary:hover::before { left: 100%; }
         .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); transform: translateY(-2px); }
         .btn-secondary:active { transform: translateY(0); }
-        .form-input { background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem 1.25rem; color: white; width: 100%; transition: all 0.3s; font-size: 16px; }
+        
+        .btn-danger {
+            background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: #ff6b6b; padding: 0.75rem 1.5rem;
+            border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer;
+        }
+        .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
+        
+        /* Inputs & Form */
+        .form-input {
+            background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            padding: 1rem 1.25rem; color: white; width: 100%; transition: all 0.3s; font-size: 16px;
+        }
         .form-input:focus { outline: none; border-color: var(--primary-red); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
+        
         .currency-dropdown { background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
-        .filter-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation; }
+        
+        .filter-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem;
+            border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation;
+        }
         .filter-btn:hover, .filter-btn.active { border-color: var(--primary-red); color: var(--primary-red); background: rgba(220, 38, 38, 0.15); box-shadow: 0 0 15px rgba(220,38,38,0.2); }
         @media (max-width: 640px) { .filter-btn { padding: 0.5rem 1rem; font-size: 0.875rem; } }
-        .custom-checkbox { appearance: none; width: 20px; height: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer; position: relative; transition: all 0.3s; flex-shrink: 0; }
+        
+        .custom-checkbox {
+            appearance: none; width: 20px; height: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 4px; cursor: pointer; position: relative; transition: all 0.3s; flex-shrink: 0;
+        }
         .custom-checkbox:checked { background: var(--primary-red); border-color: var(--primary-red); }
         .custom-checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 12px; }
-        ::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-track { background: var(--void-black); } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
-        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(17, 17, 17, 0.95); border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 90vw; text-align: center; box-shadow: 0 10px 30px rgba(220,38,38,0.2); pointer-events: none;}
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--void-black); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
+        
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(17, 17, 17, 0.95);
+            border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 90vw; text-align: center; box-shadow: 0 10px 30px rgba(220,38,38,0.2);
+        }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .admin-panel { position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh; background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
+        
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh;
+            background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+        }
         @media (max-width: 640px) { .admin-panel { max-width: 100%; } }
         .admin-panel.active { transform: translateX(0); }
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); } .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
         .corner-ribbon { position: absolute; top: 0; right: 0; width: 150px; height: 150px; overflow: hidden; z-index: 10; pointer-events: none; }
-        .corner-ribbon span { position: absolute; display: block; width: 225px; padding: 8px 0; background: var(--primary-red); box-shadow: 0 5px 10px rgba(0,0,0,.1); color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; text-align: center; left: -25px; top: 30px; transform: rotate(45deg); letter-spacing: 1px; }
+        .corner-ribbon span {
+            position: absolute; display: block; width: 225px; padding: 8px 0; background: var(--primary-red);
+            box-shadow: 0 5px 10px rgba(0,0,0,.1); color: #fff; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; text-align: center; left: -25px; top: 30px; transform: rotate(45deg); letter-spacing: 1px;
+        }
+        
         .coming-soon-text { font-size: 2.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #DC2626; text-align: center; margin-top: 20px; text-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
         @media (max-width: 640px) { .coming-soon-text { font-size: 1.5rem; } }
-        .audio-controls { position: fixed; bottom: 20px; left: 20px; z-index: 1001; background: rgba(5, 5, 5, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; transition: all 0.3s; }
+        
+        .audio-controls {
+            position: fixed; bottom: 20px; left: 20px; z-index: 1001; background: rgba(5, 5, 5, 0.95); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 12px; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; transition: all 0.3s;
+        }
         @media (max-width: 640px) { .audio-controls { bottom: 10px; left: 10px; padding: 8px; gap: 8px; } .volume-slider { width: 60px; } }
         .audio-controls:hover { border-color: rgba(220, 38, 38, 0.5); }
         .mute-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
@@ -89,6 +279,7 @@
         .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; background: #DC2626; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
         .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 10px rgba(220, 38, 38, 0.5); }
         .volume-label { font-size: 0.75rem; color: #666; min-width: 35px; text-align: right; }
+
         .multi-select-container { position: relative; width: 100%; }
         .multi-select-trigger { background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem 1.25rem; color: white; width: 100%; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; font-size: 16px; }
         .multi-select-trigger:hover { border-color: rgba(220, 38, 38, 0.5); }
@@ -102,14 +293,26 @@
         .multi-select-option .service-info { flex: 1; display: flex; justify-content: space-between; align-items: center; }
         .multi-select-option .service-name { font-weight: 500; }
         .multi-select-option .service-price { color: #DC2626; font-weight: 600; }
+        
         .selected-services { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .selected-service-tag { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.875rem; display: flex; align-items: center; gap: 8px; animation: tagPop 0.3s ease; }
         @keyframes tagPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .selected-service-tag button { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px; line-height: 1; padding: 0; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; }
         .selected-service-tag button:hover { background: rgba(255,255,255,0.1); }
+        
         .placeholder-text { color: #666; }
-        @media (max-width: 768px) { #hero h1 { font-size: 4rem !important; } #hero p { font-size: 1rem !important; } .btn-primary, .btn-secondary { padding: 0.875rem 1.5rem; font-size: 0.875rem; } #portfolioGrid { grid-template-columns: 1fr !important; } }
-        @media (max-width: 640px) { section { padding-left: 1rem !important; padding-right: 1rem !important; } .max-w-7xl { padding-left: 1rem; padding-right: 1rem; } #services .grid { grid-template-columns: 1fr !important; } }
+        
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 4rem !important; }
+            #hero p { font-size: 1rem !important; }
+            .btn-primary, .btn-secondary { padding: 0.875rem 1.5rem; font-size: 0.875rem; }
+            #portfolioGrid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+            section { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+            #services .grid { grid-template-columns: 1fr !important; }
+        }
         .no-select { -webkit-user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
@@ -226,7 +429,74 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" id="portfolioGrid">
+                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb1">
+                    <img src="https://i.postimg.cc/B6N8NLMd/HBf6Codb_UAAR6o_N.jpg " alt="Thumbnail 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Gaming Thumbnail</h3></div></div>
                 </div>
+                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb2">
+                    <img src="https://i.postimg.cc/d1n7nk5Q/HBLvbuxak_AIGr_G8.jpg " alt="Thumbnail 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Esports Thumbnail</h3></div></div>
+                </div>
+                <div class="portfolio-item thumbnail" data-category="thumbnails" data-id="thumb3">
+                    <img src="https://i.postimg.cc/gjJx7z7r/l9vxf4p_DOr8_HD.jpg " alt="Thumbnail 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">THUMBNAIL</span><h3 class="text-white font-semibold mt-1">Fortnite Thumbnail</h3></div></div>
+                </div>
+                
+                <div class="portfolio-item poster" data-category="posters" data-id="poster1">
+                    <img src="https://i.postimg.cc/5NQ0QRWM/ase.webp " alt="Poster 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Event Poster</h3></div></div>
+                </div>
+                <div class="portfolio-item poster" data-category="posters" data-id="poster2">
+                    <img src="https://i.postimg.cc/vHxBxNwb/Gw_Hsw_G9W0AA7l_Ks.webp " alt="Poster 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Tournament Poster</h3></div></div>
+                </div>
+                <div class="portfolio-item poster" data-category="posters" data-id="poster3">
+                    <img src="https://i.postimg.cc/4xtmqFWY/IMG_1476.webp " alt="Poster 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Team Poster</h3></div></div>
+                </div>
+                <div class="portfolio-item poster" data-category="posters" data-id="poster4">
+                    <img src="https://i.postimg.cc/YqTvXwzt/IMG_1655.webp " alt="Poster 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Championship Poster</h3></div></div>
+                </div>
+                <div class="portfolio-item poster" data-category="posters" data-id="poster5">
+                    <img src="https://i.postimg.cc/PqQNrvs8/PNG_File_(1).webp " alt="Poster 5" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Match Poster</h3></div></div>
+                </div>
+                <div class="portfolio-item poster" data-category="posters" data-id="poster6">
+                    <img src="https://i.postimg.cc/NMGFyGB2/PNG_File_(2).webp " alt="Poster 6" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">POSTER</span><h3 class="text-white font-semibold mt-1">Finals Poster</h3></div></div>
+                </div>
+                
+                <div class="portfolio-item banner" data-category="banners" data-id="banner1">
+                    <img src="https://i.postimg.cc/tCnTnMGX/G_1Xa_Vcag_AAGUJe.jpg " alt="Banner 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">Twitter Header</h3></div></div>
+                </div>
+                <div class="portfolio-item banner" data-category="banners" data-id="banner2">
+                    <img src="https://i.postimg.cc/hPQjQ5W5/G_2y_j_Eb_EAAazs_E.jpg " alt="Banner 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">YouTube Banner</h3></div></div>
+                </div>
+                <div class="portfolio-item banner" data-category="banners" data-id="banner3">
+                    <img src="https://i.postimg.cc/c4tHtbyz/G_6Smx0XAAAsus_R.jpg " alt="Banner 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER</span><h3 class="text-white font-semibold mt-1">Esports Banner</h3></div></div>
+                </div>
+                
+                <div class="portfolio-item combo" data-category="combos" data-id="combo1">
+                    <img src="https://i.postimg.cc/Sx0K6fmS/G_D174wa4AAnvj_C.jpg " alt="Combo 1" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Branding Package</h3></div></div>
+                </div>
+                <div class="portfolio-item combo" data-category="combos" data-id="combo2">
+                    <img src="https://i.postimg.cc/t40g3N99/G7eqdn8ao_AAaqv.jpg " alt="Combo 2" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Streamer Package</h3></div></div>
+                </div>
+                <div class="portfolio-item combo" data-category="combos" data-id="combo3">
+                    <img src="https://i.postimg.cc/MKfTfFJp/G7UBo_Mpa_IAAJ2e.jpg " alt="Combo 3" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Creator Package</h3></div></div>
+                </div>
+                <div class="portfolio-item combo" data-category="combos" data-id="combo4">
+                    <img src="https://i.postimg.cc/Hs8x8h1Y/G8Ar_ZV5ag_AEAna_S.jpg " alt="Combo 4" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'">
+                    <div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">BANNER + PFP COMBO</span><h3 class="text-white font-semibold mt-1">Pro Package</h3></div></div>
+                </div>
+            </div>
         </div>
     </section>
     
@@ -358,7 +628,8 @@
             <h2 class="text-4xl md:text-5xl font-display font-bold mb-4 reveal">CLIENT <span class="text-red-600">REVIEWS</span></h2>
             <p class="text-gray-400 mb-12 reveal">What people say about my work</p>
 
-            <div id="reviewsContainer" class="grid gap-6 mb-12 text-left reveal"></div>
+            <div id="reviewsContainer" class="grid gap-6 mb-12 text-left reveal">
+                </div>
 
             <div class="glass-card p-8 max-w-xl mx-auto reveal border border-red-500/20 bg-gradient-to-b from-red-900/10 to-transparent shadow-[0_0_30px_rgba(220,38,38,0.05)]">
                 <h3 class="text-2xl font-bold mb-2">Loved our work?</h3>
@@ -417,7 +688,7 @@
                 </a>
             </div>
 
-            <form id="orderForm" class="glass-card p-8 md:p-12 hidden border border-red-500/20 shadow-[0_0_40px_rgba(220,38,38,0.05)]">
+            <form id="orderForm" onsubmit="submitOrder(event)" class="glass-card p-8 md:p-12 hidden border border-red-500/20 shadow-[0_0_40px_rgba(220,38,38,0.05)]">
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2 text-gray-300">Select Services *</label>
                     <div class="multi-select-container">
@@ -529,13 +800,14 @@
     
     <div id="adminPanel" class="admin-panel">
         <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-10">
-            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PORTAL</h3>
+            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PANEL</h3>
             <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white transition-colors focus:outline-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
         
         <div class="p-6 space-y-6">
+            
             <div id="adminDiscordWarning" class="hidden text-center bg-red-500/10 border border-red-500/30 p-5 rounded-xl shadow-lg mt-4">
                 <svg class="w-10 h-10 text-red-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 <h4 class="text-white font-bold mb-2">Authentication Required</h4>
@@ -552,6 +824,7 @@
                 <button onclick="checkAdminPassword()" class="btn-primary w-full text-sm py-3 tracking-widest">AUTHENTICATE</button>
                 <p id="loginError" class="text-red-500 text-sm mt-3 hidden text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20">ACCESS DENIED</p>
             </div>
+            
         </div>
     </div>
     
@@ -562,16 +835,38 @@
     <script>
         const CONFIG = { apiUrl: '/api/save-data' };
         
+        let isAdmin = false;
         let currentUserData = null; 
+        let orders = [];
         let portfolioItems = [];
+        let reviewsList = [];
         let audioContext;
         let currentCurrency = 'AUD';
         let isMuted = false;
         let volumeLevel = 0.5;
         let selectedServices = [];
+        let lastWebhookTime = 0;
+        const WEBHOOK_COOLDOWN = 30000;
         let isSubmitting = false;
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
+        
+        let assetPackData = {
+            showRibbon: true, ribbonText: 'COMING SOON', title: 'ALL-IN-ONE ASSET PACK',
+            price: '', description: 'Complete GFX Asset Collection',
+            features: ['Commercial License', '50+ Thumbnails', 'Stream Overlays', 'Transition Pack'],
+            status: 'coming_soon'
+        };
+        
+        const serviceDefinitions = [
+            { id: 'logo', name: 'Logo', basePrice: 20 },
+            { id: 'pfp', name: 'PFP', basePrice: 15 },
+            { id: 'banner', name: 'Banner', basePrice: 30 },
+            { id: 'banner-pfp', name: 'Banner + PFP', basePrice: 40 },
+            { id: 'poster', name: 'Poster', basePrice: 30 },
+            { id: 'thumbnails', name: 'Thumbnails', basePrice: 20 },
+            { id: 'bundle', name: 'Complete Brand Bundle', basePrice: 45 }
+        ];
         
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
         
@@ -581,6 +876,7 @@
             initFormValidation();
             initPortfolioHover();
             initServiceDropdown();
+            validateSession();
             loadDataFromDatabase();
             checkAuth();
             loadReviews();
@@ -593,6 +889,7 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
                 e.preventDefault(); 
                 toggleAdmin();
@@ -697,7 +994,7 @@
                 if (data.success) {
                     document.getElementById('reviewText').value = '';
                     if (data.flagged) {
-                        showToast('Review submitted. Pending admin approval.');
+                        showToast('Review submitted. Pending admin approval due to system filters.');
                     } else {
                         showToast('Review posted successfully!');
                         loadReviews();
@@ -712,6 +1009,70 @@
             btn.innerHTML = 'Submit Review';
         }
 
+        /* * ==========================================
+         * ORDER WEBHOOK FUNCTION
+         * ==========================================
+         */
+        async function submitOrder(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'TRANSMITTING...';
+
+            const discordUser = document.getElementById('discordUser').value;
+            const email = document.getElementById('emailUser').value;
+            const desc = document.getElementById('description').value;
+            const links = document.getElementById('references').value;
+            const total = document.getElementById('orderTotal').innerText;
+            const services = selectedServices.map(s => s.name).join(', ');
+
+            const payload = {
+                content: "@everyone 🚨 **NEW CLIENT ORDER**",
+                embeds: [{
+                    title: "🛒 Order Details",
+                    color: 0xDC2626,
+                    fields: [
+                        { name: "👤 Client (Discord)", value: discordUser, inline: true },
+                        { name: "📧 Email", value: email, inline: true },
+                        { name: "💰 Total Value", value: `$${total} ${currentCurrency}`, inline: true },
+                        { name: "📦 Services Selected", value: services || "None" },
+                        { name: "📝 Description", value: desc },
+                        { name: "🔗 References", value: links || "None provided" }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                const response = await fetch("https://discord.com/api/webhooks/1476902433543421994/FkN0Vsiub01N7E2Jc9AFFjuJyS9tNDcz8K1ELTMPwSz2lZYUpXDe_iGYS041W4Qoviud", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    showToast('Order transmitted successfully!');
+                    playSound('success');
+                    e.target.reset();
+                    selectedServices = [];
+                    updateSelectedServicesDisplay();
+                    updateOrderTotal();
+                } else {
+                    showToast('Failed to send webhook. Please try again.');
+                }
+            } catch (err) {
+                showToast('Transmission failed. Network error.');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+
+        /* * ==========================================
+         * PERFECTLY PRESERVED GSAP FILTER FUNCTION
+         * ==========================================
+         */
         function filterWork(cat) {
             playSound('click');
             document.querySelectorAll('.filter-btn').forEach(b => {
@@ -750,6 +1111,21 @@
             }
         }
 
+        async function validateSession() {
+            const token = sessionStorage.getItem('adminToken');
+            if (token) {
+                try {
+                    const response = await fetch(CONFIG.apiUrl + '?token=' + encodeURIComponent(token));
+                    const data = await response.json();
+                    if (!data.authenticated) {
+                        sessionStorage.removeItem('adminToken');
+                    }
+                } catch (e) {
+                    sessionStorage.removeItem('adminToken');
+                }
+            }
+        }
+        
         function initServiceDropdown() {
             document.addEventListener('click', (e) => {
                 const container = document.querySelector('.multi-select-container');
@@ -1147,7 +1523,7 @@
                 if (response.ok) {
                     const data = await response.json();
                     
-                    if (data.portfolio) {
+                    if (data.portfolio && data.portfolio.length > 0) {
                         portfolioItems = data.portfolio;
                         renderPortfolioItems();
                     }
