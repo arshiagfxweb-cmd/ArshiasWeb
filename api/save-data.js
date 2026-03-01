@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       
       const data = await collection.findOne({ _id: 'main' }) || {
         assetPackData: { showRibbon: true, ribbonText: 'COMING SOON', title: 'ALL-IN-ONE ASSET PACK', price: '', description: 'Complete GFX Asset Collection', features: ['Commercial License', '50+ Thumbnails', 'Stream Overlays', 'Transition Pack'], status: 'coming_soon' },
-        orders: [], portfolio: [],
+        orders: [], portfolio: [], reviews: [],
         servicePrices: { logo: 20, pfp: 15, banner: 30, banner_pfp: 40, poster: 30, thumbnails: 20, bundle: 45 }
       };
       
@@ -66,7 +66,6 @@ export default async function handler(req, res) {
               content: `<@1445224513901166696> 🚨 **ADMIN LOGIN DETECTED** 🚨\nDiscord User: \`${discordUser}\` has successfully authenticated into the Admin Panel.`
             })
           }).catch(err => console.error('Webhook Error:', err));
-          // ------------------------------------------
           
           return res.status(200).json({ success: true, token });
         } else {
@@ -101,6 +100,7 @@ export default async function handler(req, res) {
           assetPackData: body.assetPackData,
           orders: body.orders,
           portfolio: body.portfolio || [],
+          reviews: body.reviews || [], // <-- THIS WAS MISSING, NOW FIXED
           servicePrices: body.servicePrices,
           lastUpdated: new Date().toISOString()
         };
