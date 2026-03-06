@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARSHIA — GFX Designer</title>
-    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp ">
+    <script src="https://cdn.tailwindcss.com "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -327,7 +327,7 @@
     <div class="audio-controls" id="audioControls" style="display: none;">
         <button onclick="toggleMute()" class="mute-btn" id="muteBtn" title="Toggle Sound">
             <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
-            <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+            <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2-2l-2-2m2 2l2 2"/></svg>
         </button>
         <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider" oninput="updateVolume(this.value)">
         <span class="volume-label" id="volumeLabel">50%</span>
@@ -336,7 +336,7 @@
     <nav class="main-nav">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#hero" class="flex items-center gap-3 no-select">
-                <img src="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp" alt="ARSHIA" class="logo-img">
+                <img src="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp " alt="ARSHIA" class="logo-img">
                 <span class="font-display text-xl font-bold tracking-wider">ARSHIA</span>
             </a>
             
@@ -881,9 +881,6 @@
             checkAuth();
             loadReviews();
             
-            // Forces initial paint of the GSAP animation so images never get stuck unloaded
-            setTimeout(() => { filterWork('all', true); }, 100);
-            
             if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                 document.getElementById('audioControls').style.display = 'flex';
                 document.addEventListener('click', initAudioOnFirstInteraction, { once: true });
@@ -1061,6 +1058,8 @@
                     selectedServices = [];
                     updateSelectedServicesDisplay();
                     updateOrderTotal();
+                    btn.innerHTML = 'SUBMIT ORDER';
+                    return; 
                 } else {
                     showToast('Failed to send webhook. Please try again.');
                 }
@@ -1582,7 +1581,12 @@
             const categoryOrder = ['thumbnails', 'posters', 'banners', 'combos'];
             portfolioItems.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
             
+            const newElements = [];
+            const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+
             portfolioItems.forEach(item => {
+                if (document.querySelector(`.portfolio-item[data-id="${item.id}"]`)) return;
+
                 let aspectClass = 'thumbnail';
                 if (item.category === 'posters') aspectClass = 'poster';
                 else if (item.category === 'banners') aspectClass = 'banner';
@@ -1593,6 +1597,11 @@
                 div.dataset.category = item.category;
                 div.dataset.id = item.id;
                 div.dataset.custom = 'true';
+                
+                if (activeFilter !== 'all' && item.category !== activeFilter) {
+                    div.style.display = 'none';
+                }
+
                 div.innerHTML = `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" onerror="this.style.display='none'; this.parentElement.style.background='var(--card-black)'"><div class="portfolio-overlay"><div><span class="text-red-500 font-medium text-sm tracking-wider">${item.category.toUpperCase()}</span><h3 class="text-white font-semibold mt-1">${escapeHtml(item.title)}</h3></div></div>`;
                 
                 const targetCategoryIndex = categoryOrder.indexOf(item.category);
@@ -1612,7 +1621,16 @@
                 
                 div.addEventListener('mouseenter', function() { if (window.matchMedia('(hover: hover)').matches) { this.classList.add('hover-active'); playSound('hover'); } });
                 div.addEventListener('mouseleave', function() { this.classList.remove('hover-active'); });
+                
+                if (div.style.display !== 'none') {
+                    newElements.push(div);
+                }
             });
+
+            // Smoothly animate only the newly injected items without flashing the whole grid
+            if (newElements.length > 0 && typeof gsap !== 'undefined') {
+                gsap.fromTo(newElements, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, ease: "power2.out" });
+            }
         }
         
         function showToast(m) {
