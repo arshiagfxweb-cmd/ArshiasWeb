@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARSHIA — GFX Designer</title>
     <link rel="icon" type="image/webp" href="https://i.postimg.cc/kXhKzFZm/arshias-logo.webp ">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -19,15 +18,9 @@
             --card-black: #111111;
         }
         
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { 
-            scroll-behavior: smooth; 
-        }
+        html { scroll-behavior: smooth; }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -45,24 +38,12 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(50px); }
         }
-        
         .grid-bg-container {
-            position: fixed; 
-            top: -50px; 
-            left: 0; 
-            width: 100%; 
-            height: calc(100% + 50px);
-            z-index: -1; 
-            pointer-events: none; 
-            overflow: hidden;
+            position: fixed; top: -50px; left: 0; width: 100%; height: calc(100% + 50px);
+            z-index: -1; pointer-events: none; overflow: hidden;
         }
-        
         .grid-bg {
-            position: absolute; 
-            top: -50px; 
-            left: 0; 
-            width: 100%; 
-            height: 200%;
+            position: absolute; top: -50px; left: 0; width: 100%; height: 200%;
             background-image: linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -75,11 +56,9 @@
             50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.7); transform: scale(1.02); }
             100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
         }
-        
         .discord-btn-glow {
             animation: discordPulse 2.5s infinite ease-in-out;
         }
-        
         .discord-btn-glow:hover {
             animation: none;
             box-shadow: 0 0 40px rgba(88, 101, 242, 0.9);
@@ -92,86 +71,50 @@
             50% { transform: translate(30px, -30px) scale(1.2); opacity: 0.8; }
             100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
         }
-        
-        .ambient-orb { 
-            animation: floatOrb 10s infinite ease-in-out alternate; 
-        }
-        
-        .ambient-orb-2 { 
-            animation: floatOrb 12s infinite ease-in-out alternate-reverse; 
-        }
+        .ambient-orb { animation: floatOrb 10s infinite ease-in-out alternate; }
+        .ambient-orb-2 { animation: floatOrb 12s infinite ease-in-out alternate-reverse; }
 
         @media (pointer: coarse) {
             body { cursor: auto !important; }
             .cursor-dot, .cursor-outline { display: none !important; }
         }
         
-        .font-display { 
-            font-family: 'Space Grotesk', sans-serif; 
-        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
         
         /* Custom Cursor */
         .cursor-dot, .cursor-outline {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            transform: translate(-50%, -50%);
-            border-radius: 50%; 
-            z-index: 9999; 
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
         }
-        
-        .cursor-dot { 
-            width: 5px; 
-            height: 5px; 
-            background-color: var(--primary-red); 
-        }
-        
+        .cursor-dot { width: 5px; height: 5px; background-color: var(--primary-red); }
         .cursor-outline {
-            width: 30px; 
-            height: 30px; 
-            border: 2px solid rgba(220, 38, 38, 0.5);
+            width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5);
             transition: width 0.15s, height 0.15s, background-color 0.15s;
         }
-        
         .cursor-outline.hover {
-            width: 50px; 
-            height: 50px; 
-            background-color: rgba(220, 38, 38, 0.1); 
-            border-color: var(--primary-red);
+            width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red);
         }
-        
-        /* FIX: Class to stop CSS transitions from fighting GSAP animations */
+
         .no-transition {
             transition: none !important;
         }
         
         /* Portfolio Items */
         .portfolio-item {
-            position: relative; 
-            border-radius: 24px; 
-            overflow: hidden;
-            background: var(--card-black); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; border-radius: 24px; overflow: hidden;
+            background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d;
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-            cursor: pointer; 
-            will-change: transform;
+            cursor: pointer; will-change: transform;
         }
-        
         .portfolio-item.thumbnail { aspect-ratio: 16/9; }
         .portfolio-item.poster { aspect-ratio: 3/4; }
         .portfolio-item.banner { aspect-ratio: 21/9; }
         .portfolio-item.combo { aspect-ratio: 16/9; }
         
         .portfolio-item img {
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block;
-            transition: transform 0.6s ease; 
-            pointer-events: none; 
-            -webkit-user-drag: none;
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.6s ease; pointer-events: none; -webkit-user-drag: none;
             background-color: var(--card-black);
         }
         
@@ -179,258 +122,116 @@
             .portfolio-item.hover-active {
                 transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.05);
                 box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(220, 38, 38, 0.4);
-                border-color: rgba(220, 38, 38, 0.8); 
-                z-index: 10;
+                border-color: rgba(220, 38, 38, 0.8); z-index: 10;
             }
         }
+        @media (hover: none) { .portfolio-item:active { transform: scale(0.98); } }
         
-        @media (hover: none) { 
-            .portfolio-item:active { transform: scale(0.98); } 
-        }
-        
-        .portfolio-item.hover-active img { 
-            transform: scale(1.1); 
-        }
-        
+        .portfolio-item.hover-active img { transform: scale(1.1); }
         .portfolio-item::after {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 100%; 
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-            transition: left 0.7s ease; 
-            pointer-events: none; 
-            z-index: 5;
+            transition: left 0.7s ease; pointer-events: none; z-index: 5;
         }
-        
-        .portfolio-item.hover-active::after { 
-            left: 100%; 
-        }
+        .portfolio-item.hover-active::after { left: 100%; }
         
         .portfolio-overlay {
-            position: absolute; 
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
-            opacity: 0; 
-            transition: opacity 0.4s ease; 
-            display: flex; 
-            align-items: flex-end; 
-            padding: 24px;
-            z-index: 3; 
-            pointer-events: none;
+            opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 24px;
+            z-index: 3; pointer-events: none;
         }
-        
-        .portfolio-item.hover-active .portfolio-overlay { 
-            opacity: 1; 
-        }
-        
-        @media (hover: none) { 
-            .portfolio-overlay { 
-                opacity: 1; 
-                background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); 
-            } 
-        }
+        .portfolio-item.hover-active .portfolio-overlay { opacity: 1; }
+        @media (hover: none) { .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); } }
         
         /* Glass Cards */
         .glass-card {
-            background: rgba(17, 17, 17, 0.7); 
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 24px; 
-            position: relative;
-            overflow: hidden; 
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
-            display: flex; 
-            flex-direction: column;
+            background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column;
         }
-        
         .glass-card::before {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 100%; 
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.7s; 
-            z-index: 1; 
-            pointer-events: none;
+            transition: left 0.7s; z-index: 1; pointer-events: none;
         }
-        
-        .glass-card:hover::before { 
-            left: 100%; 
-        }
-        
+        .glass-card:hover::before { left: 100%; }
         @media (hover: hover) {
             .glass-card:hover {
-                transform: translateY(-8px) scale(1.02); 
-                border-color: rgba(220, 38, 38, 0.4);
+                transform: translateY(-8px) scale(1.02); border-color: rgba(220, 38, 38, 0.4);
                 box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(220, 38, 38, 0.25);
             }
         }
         
         /* Nav */
         .main-nav {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.85); 
-            backdrop-filter: blur(24px); 
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        
         @media (max-width: 768px) {
             .main-nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
             .main-nav .hidden.md\:flex { display: none; }
             .logo-img { height: 32px; }
             .font-display.text-xl { font-size: 1rem; }
         }
-        
-        .logo-img { 
-            height: 40px; 
-            width: auto; 
-            object-fit: contain; 
-            pointer-events: none; 
-        }
+        .logo-img { height: 40px; width: auto; object-fit: contain; pointer-events: none; }
         
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); 
-            color: white; 
-            padding: 1rem 2rem;
-            border-radius: 12px; 
-            font-weight: 600; 
-            transition: all 0.3s; 
-            position: relative; 
-            overflow: hidden;
-            cursor: pointer; 
-            border: none; 
-            touch-action: manipulation;
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red)); color: white; padding: 1rem 2rem;
+            border-radius: 12px; font-weight: 600; transition: all 0.3s; position: relative; overflow: hidden;
+            cursor: pointer; border: none; touch-action: manipulation;
         }
-        
         .btn-primary::before {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 100%; 
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); 
-            transition: left 0.5s;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s;
         }
-        
         .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.5); }
         .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;}
         
         .btn-secondary {
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            color: white; 
-            padding: 1rem 2rem;
-            border-radius: 12px; 
-            font-weight: 600; 
-            transition: all 0.3s; 
-            cursor: pointer; 
-            position: relative;
-            overflow: hidden; 
-            touch-action: manipulation;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem 2rem;
+            border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; position: relative;
+            overflow: hidden; touch-action: manipulation;
         }
-        
         .btn-secondary::before {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 100%; 
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); 
-            transition: left 0.5s;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s;
         }
-        
         .btn-secondary:hover::before { left: 100%; }
         .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); transform: translateY(-2px); }
         .btn-secondary:active { transform: translateY(0); }
         
+        .btn-danger {
+            background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: #ff6b6b; padding: 0.75rem 1.5rem;
+            border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer;
+        }
+        .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
+        
         /* Inputs & Form */
         .form-input {
-            background: rgba(17, 17, 17, 0.8); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 12px;
-            padding: 1rem 1.25rem; 
-            color: white; 
-            width: 100%; 
-            transition: all 0.3s; 
-            font-size: 16px;
+            background: rgba(17, 17, 17, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            padding: 1rem 1.25rem; color: white; width: 100%; transition: all 0.3s; font-size: 16px;
         }
+        .form-input:focus { outline: none; border-color: var(--primary-red); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
         
-        .form-input:focus { 
-            outline: none; 
-            border-color: var(--primary-red); 
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); 
-        }
-        
-        .currency-dropdown { 
-            background: rgba(17, 17, 17, 0.95); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 12px; 
-        }
+        .currency-dropdown { background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
         
         .filter-btn {
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            padding: 0.75rem 1.5rem;
-            border-radius: 100px; 
-            color: #888; 
-            transition: all 0.3s; 
-            cursor: pointer; 
-            touch-action: manipulation;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem;
+            border-radius: 100px; color: #888; transition: all 0.3s; cursor: pointer; touch-action: manipulation;
         }
-        
-        .filter-btn:hover, .filter-btn.active { 
-            border-color: var(--primary-red); 
-            color: var(--primary-red); 
-            background: rgba(220, 38, 38, 0.15); 
-            box-shadow: 0 0 15px rgba(220,38,38,0.2); 
-        }
-        
-        @media (max-width: 640px) { 
-            .filter-btn { padding: 0.5rem 1rem; font-size: 0.875rem; } 
-        }
+        .filter-btn:hover, .filter-btn.active { border-color: var(--primary-red); color: var(--primary-red); background: rgba(220, 38, 38, 0.15); box-shadow: 0 0 15px rgba(220,38,38,0.2); }
+        @media (max-width: 640px) { .filter-btn { padding: 0.5rem 1rem; font-size: 0.875rem; } }
         
         .custom-checkbox {
-            appearance: none; 
-            width: 20px; 
-            height: 20px; 
-            background: rgba(255,255,255,0.05); 
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 4px; 
-            cursor: pointer; 
-            position: relative; 
-            transition: all 0.3s; 
-            flex-shrink: 0;
+            appearance: none; width: 20px; height: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 4px; cursor: pointer; position: relative; transition: all 0.3s; flex-shrink: 0;
         }
-        
-        .custom-checkbox:checked { 
-            background: var(--primary-red); 
-            border-color: var(--primary-red); 
-        }
-        
-        .custom-checkbox:checked::after { 
-            content: '✓'; 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            color: white; 
-            font-size: 12px; 
-        }
+        .custom-checkbox:checked { background: var(--primary-red); border-color: var(--primary-red); }
+        .custom-checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 12px; }
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 10px; }
@@ -440,37 +241,17 @@
         
         /* Toast */
         .toast {
-            position: fixed; 
-            bottom: 100px; 
-            left: 50%; 
-            transform: translateX(-50%) translateY(100px); 
-            background: rgba(17, 17, 17, 0.95);
-            border: 1px solid var(--primary-red); 
-            padding: 1rem 2rem; 
-            border-radius: 12px; 
-            z-index: 3000; 
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            max-width: 90vw; 
-            text-align: center; 
-            box-shadow: 0 10px 30px rgba(220,38,38,0.2);
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(17, 17, 17, 0.95);
+            border: 1px solid var(--primary-red); padding: 1rem 2rem; border-radius: 12px; z-index: 3000; opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 90vw; text-align: center; box-shadow: 0 10px 30px rgba(220,38,38,0.2); pointer-events: none;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
-        /* Admin Panel Setup (Public Facing Shell) */
+        /* Admin Panel */
         .admin-panel {
-            position: fixed; 
-            top: 0; 
-            right: 0; 
-            width: 100%; 
-            max-width: 450px; 
-            height: 100vh;
-            background: rgba(5, 5, 5, 0.98); 
-            border-left: 1px solid rgba(255,255,255,0.1);
-            z-index: 2000; 
-            transform: translateX(100%); 
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
-            overflow-y: auto;
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 450px; height: 100vh;
+            background: rgba(5, 5, 5, 0.98); border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto;
             box-shadow: -20px 0 50px rgba(0,0,0,0.5);
         }
         @media (max-width: 640px) { .admin-panel { max-width: 100%; } }
@@ -1008,10 +789,10 @@
             <p class="text-xl text-gray-400 mb-12 reveal">Ready to elevate your brand? Get in touch.</p>
             
             <div class="flex justify-center gap-6 mb-12 reveal">
-                <a href="https://x.com/arshiapsd" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group shadow-lg">
+                <a href="https://x.com/arshiapsd " target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group shadow-lg">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
-                <a href="https://www.behance.net/arshiagfx" target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group shadow-lg">
+                <a href="https://www.behance.net/arshiagfx " target="_blank" rel="noopener noreferrer" class="glass-card w-16 h-16 flex items-center justify-center hover:border-red-600 transition-all group shadow-lg">
                     <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg>
                 </a>
             </div>
@@ -1021,17 +802,16 @@
             </div>
         </div>
     </section>
-    
+
     <div id="adminPanel" class="admin-panel">
         <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-10">
-            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PANEL</h3>
+            <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PORTAL</h3>
             <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white transition-colors focus:outline-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
         
         <div class="p-6 space-y-6">
-            
             <div id="adminDiscordWarning" class="hidden text-center bg-red-500/10 border border-red-500/30 p-5 rounded-xl shadow-lg mt-4">
                 <svg class="w-10 h-10 text-red-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 <h4 class="text-white font-bold mb-2">Authentication Required</h4>
@@ -1048,7 +828,6 @@
                 <button onclick="checkAdminPassword()" class="btn-primary w-full text-sm py-3 tracking-widest">AUTHENTICATE</button>
                 <p id="loginError" class="text-red-500 text-sm mt-3 hidden text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20">ACCESS DENIED</p>
             </div>
-            
         </div>
     </div>
     
@@ -1059,49 +838,55 @@
     <script>
         const CONFIG = { apiUrl: '/api/save-data' };
         
-        let isAdmin = false;
         let currentUserData = null; 
-        let orders = [];
         let portfolioItems = [];
-        let reviewsList = [];
         let audioContext;
         let currentCurrency = 'AUD';
         let isMuted = false;
         let volumeLevel = 0.5;
         let selectedServices = [];
-        let lastWebhookTime = 0;
-        const WEBHOOK_COOLDOWN = 30000;
         let isSubmitting = false;
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
         
-        let assetPackData = {
-            showRibbon: true, ribbonText: 'COMING SOON', title: 'ALL-IN-ONE ASSET PACK',
-            price: '', description: 'Complete GFX Asset Collection',
-            features: ['Commercial License', '50+ Thumbnails', 'Stream Overlays', 'Transition Pack'],
-            status: 'coming_soon'
-        };
-        
-        const serviceDefinitions = [
-            { id: 'logo', name: 'Logo', basePrice: 20 },
-            { id: 'pfp', name: 'PFP', basePrice: 15 },
-            { id: 'banner', name: 'Banner', basePrice: 30 },
-            { id: 'banner-pfp', name: 'Banner + PFP', basePrice: 40 },
-            { id: 'poster', name: 'Poster', basePrice: 30 },
-            { id: 'thumbnails', name: 'Thumbnails', basePrice: 20 },
-            { id: 'bundle', name: 'Complete Brand Bundle', basePrice: 45 }
-        ];
-        
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
+
+        // PRE-LOAD CACHE FOR INSTANT RENDER
+        function applyCache() {
+            try {
+                const cache = localStorage.getItem('arshia_data_cache');
+                if (cache) {
+                    const data = JSON.parse(cache);
+                    if (data.portfolio && data.portfolio.length > 0) {
+                        portfolioItems = data.portfolio;
+                        injectPortfolioItemsToDOM(true); // Silent injection
+                    }
+                    if (data.servicePrices) applyPricesToDOM(data.servicePrices);
+                    if (data.assetPackData) applyAssetPackToDOM(data.assetPackData);
+                }
+            } catch(e) {}
+        }
         
         document.addEventListener('DOMContentLoaded', () => {
             initCursor();
             initScrollReveal();
             initFormValidation();
-            initPortfolioHover();
             initServiceDropdown();
+            
+            // 1. INSTANTLY LOAD SAVED IMAGES BEFORE ANIMATIONS
+            applyCache();
+            
+            // 2. ATTACH HOVERS TO EVERYTHING (HARDCODED + CACHED)
+            attachHoverToAllItems();
+            
+            // 3. FIRE THE ANIMATION
+            setTimeout(() => { filterWork('all', true); }, 50);
+
             validateSession();
+            
+            // 4. FETCH THE DATABASE IN BACKGROUND
             loadDataFromDatabase();
+            
             checkAuth();
             loadReviews();
             
@@ -1113,7 +898,6 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
                 e.preventDefault(); 
                 toggleAdmin();
@@ -1218,7 +1002,7 @@
                 if (data.success) {
                     document.getElementById('reviewText').value = '';
                     if (data.flagged) {
-                        showToast('Review submitted. Pending admin approval due to system filters.');
+                        showToast('Review submitted. Pending admin approval.');
                     } else {
                         showToast('Review posted successfully!');
                         loadReviews();
@@ -1234,7 +1018,7 @@
         }
 
         /* * ==========================================
-         * FIXED ORDER WEBHOOK FUNCTION 
+         * DISCORD WEBHOOK ORDER SUBMIT
          * ==========================================
          */
         async function submitOrder(e) {
@@ -1318,6 +1102,7 @@
                 const shouldShow = cat === 'all' || item.dataset.category === cat;
                 if (shouldShow) {
                     item.style.display = 'block';
+                    void item.offsetWidth; // Forces the browser to paint it immediately
                     visibleItems.push(item);
                 } else {
                     item.style.display = 'none';
@@ -1343,21 +1128,6 @@
             }
         }
 
-        async function validateSession() {
-            const token = sessionStorage.getItem('adminToken');
-            if (token) {
-                try {
-                    const response = await fetch(CONFIG.apiUrl + '?token=' + encodeURIComponent(token));
-                    const data = await response.json();
-                    if (!data.authenticated) {
-                        sessionStorage.removeItem('adminToken');
-                    }
-                } catch (e) {
-                    sessionStorage.removeItem('adminToken');
-                }
-            }
-        }
-        
         function initServiceDropdown() {
             document.addEventListener('click', (e) => {
                 const container = document.querySelector('.multi-select-container');
@@ -1462,7 +1232,6 @@
             const total = selectedServices.reduce((sum, s) => sum + s.currentPrice, 0);
             
             const totalEl = document.getElementById('orderTotal');
-            const startVal = parseInt(totalEl.textContent) || 0;
             
             if (typeof gsap !== 'undefined') {
                 gsap.to(totalEl, {
@@ -1478,6 +1247,14 @@
             document.getElementById('totalPriceInput').value = total;
         }
         
+        function applyPricesToDOM(prices) {
+            for (const [key, value] of Object.entries(prices)) {
+                const el = document.querySelector(`.service-price[data-service="${key}"]`);
+                if (el) el.dataset.basePrice = value;
+            }
+            updateAllPrices();
+        }
+
         function updateAllPrices() {
             document.querySelectorAll('.service-price').forEach(el => {
                 const basePrice = parseInt(el.dataset.basePrice);
@@ -1500,10 +1277,10 @@
             updateSelectedServicesDisplay();
             updateOrderTotal();
         }
-        
-        function initPortfolioHover() {
-            const items = document.querySelectorAll('.portfolio-item');
-            items.forEach(item => {
+
+        function attachHoverToAllItems() {
+            document.querySelectorAll('.portfolio-item:not(.hover-attached)').forEach(item => {
+                item.classList.add('hover-attached');
                 item.addEventListener('mouseenter', function() {
                     if (window.matchMedia('(hover: hover)').matches) {
                         this.classList.add('hover-active');
@@ -1732,7 +1509,6 @@
                     showToast('Access Granted. Redirecting...');
                     if (data.token) sessionStorage.setItem('adminToken', data.token);
                     
-                    // REDIRECT TO NEW ADMIN PAGE
                     setTimeout(() => {
                         window.location.href = '/admin.html';
                     }, 500);
@@ -1749,78 +1525,84 @@
             btn.innerHTML = originalText;
         }
 
+        async function validateSession() {
+            const token = sessionStorage.getItem('adminToken');
+            if (token) {
+                try {
+                    const response = await fetch(CONFIG.apiUrl + '?token=' + encodeURIComponent(token));
+                    const data = await response.json();
+                    if (!data.authenticated) {
+                        sessionStorage.removeItem('adminToken');
+                    }
+                } catch (e) {
+                    sessionStorage.removeItem('adminToken');
+                }
+            }
+        }
+
         async function loadDataFromDatabase() {
             try {
                 const response = await fetch(CONFIG.apiUrl);
                 if (response.ok) {
                     const data = await response.json();
                     
+                    // Update cache for next reload
+                    localStorage.setItem('arshia_data_cache', JSON.stringify(data));
+                    
                     if (data.portfolio && data.portfolio.length > 0) {
                         portfolioItems = data.portfolio;
-                        renderPortfolioItems();
-                    } else {
-                        // If no custom items, just animate the hardcoded ones
-                        filterWork('all', true); 
+                        injectPortfolioItemsToDOM(false); // False = animate only newly found items
                     }
                     
-                    if (data.assetPackData) {
-                        const ribbon = document.getElementById('assetPackRibbon');
-                        if (ribbon) {
-                            if (data.assetPackData.showRibbon) { ribbon.style.display = 'block'; document.getElementById('ribbonText').textContent = data.assetPackData.ribbonText; } 
-                            else { ribbon.style.display = 'none'; }
-                        }
-                        
-                        const titleEl = document.getElementById('assetPackTitle');
-                        const priceEl = document.getElementById('assetPackPrice');
-                        const descEl = document.getElementById('assetPackDesc');
-                        const featuresList = document.getElementById('assetPackFeatures');
-                        const comingSoonText = document.getElementById('comingSoonText');
-                        const btn = document.getElementById('assetPackBtn');
-                        
-                        if (titleEl) titleEl.textContent = data.assetPackData.title;
-                        if (priceEl) priceEl.textContent = data.assetPackData.price ? '$' + data.assetPackData.price : 'TBA';
-                        if (descEl) descEl.textContent = data.assetPackData.description;
-                        
-                        if (featuresList && data.assetPackData.features) {
-                            featuresList.innerHTML = data.assetPackData.features.map(f => `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${escapeHtml(f)}</li>`).join('');
-                        }
-                        
-                        if (comingSoonText && btn) {
-                            if (data.assetPackData.status === 'coming_soon') {
-                                comingSoonText.style.display = 'block'; comingSoonText.textContent = 'COMING SOON';
-                                btn.disabled = true; btn.textContent = 'NOTIFY ME'; btn.className = 'w-full py-3 border border-gray-700 bg-black/50 rounded-lg text-gray-500 cursor-not-allowed mt-auto'; btn.onclick = null;
-                            } else {
-                                comingSoonText.style.display = 'none'; btn.disabled = false; btn.textContent = data.assetPackData.price ? `BUY NOW - $${data.assetPackData.price}` : 'BUY NOW';
-                                btn.className = 'w-full btn-primary mt-auto shadow-[0_5px_20px_rgba(220,38,38,0.3)]';
-                                btn.onclick = () => { toggleService('All-in-One Asset Pack', parseInt(data.assetPackData.price) || 0); document.getElementById('order').scrollIntoView(); };
-                            }
-                        }
-                    }
-                    
-                    if (data.servicePrices) {
-                        for (const [key, value] of Object.entries(data.servicePrices)) {
-                            const el = document.querySelector(`.service-price[data-service="${key}"]`);
-                            if (el) el.dataset.basePrice = value;
-                        }
-                        updateAllPrices();
-                    }
+                    if (data.servicePrices) applyPricesToDOM(data.servicePrices);
+                    if (data.assetPackData) applyAssetPackToDOM(data.assetPackData);
                 }
             } catch (e) { 
-                console.log('Database fetch failed');
-                filterWork('all', true); // Fallback to animate hardcoded items
+                console.log('Database fetch failed'); 
             }
         }
         
+        function applyAssetPackToDOM(packData) {
+            const ribbon = document.getElementById('assetPackRibbon');
+            if (ribbon) {
+                if (packData.showRibbon) { ribbon.style.display = 'block'; document.getElementById('ribbonText').textContent = packData.ribbonText; } 
+                else { ribbon.style.display = 'none'; }
+            }
+            
+            const titleEl = document.getElementById('assetPackTitle');
+            const priceEl = document.getElementById('assetPackPrice');
+            const descEl = document.getElementById('assetPackDesc');
+            const featuresList = document.getElementById('assetPackFeatures');
+            const comingSoonText = document.getElementById('comingSoonText');
+            const btn = document.getElementById('assetPackBtn');
+            
+            if (titleEl) titleEl.textContent = packData.title;
+            if (priceEl) priceEl.textContent = packData.price ? '$' + packData.price : 'TBA';
+            if (descEl) descEl.textContent = packData.description;
+            
+            if (featuresList && packData.features) {
+                featuresList.innerHTML = packData.features.map(f => `<li class="flex items-center gap-2"><span class="text-red-600">→</span> ${escapeHtml(f)}</li>`).join('');
+            }
+            
+            if (comingSoonText && btn) {
+                if (packData.status === 'coming_soon') {
+                    comingSoonText.style.display = 'block'; comingSoonText.textContent = 'COMING SOON';
+                    btn.disabled = true; btn.textContent = 'NOTIFY ME'; btn.className = 'w-full py-3 border border-gray-700 bg-black/50 rounded-lg text-gray-500 cursor-not-allowed mt-auto'; btn.onclick = null;
+                } else {
+                    comingSoonText.style.display = 'none'; btn.disabled = false; btn.textContent = packData.price ? `BUY NOW - $${packData.price}` : 'BUY NOW';
+                    btn.className = 'w-full btn-primary mt-auto shadow-[0_5px_20px_rgba(220,38,38,0.3)]';
+                    btn.onclick = () => { toggleService('All-in-One Asset Pack', parseInt(packData.price) || 0); document.getElementById('order').scrollIntoView(); };
+                }
+            }
+        }
+
         /* * ==========================================
          * FIXED DYNAMIC ITEM INJECTION (NO MORE DELAYS)
          * ==========================================
          */
-        function renderPortfolioItems() {
+        function injectPortfolioItemsToDOM(silent = false) {
             const grid = document.getElementById('portfolioGrid');
-            if (!grid || portfolioItems.length === 0) {
-                filterWork('all', true);
-                return;
-            }
+            if (!grid || portfolioItems.length === 0) return;
             
             const categoryOrder = ['thumbnails', 'posters', 'banners', 'combos'];
             portfolioItems.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
@@ -1837,13 +1619,12 @@
                 else if (item.category === 'combos') aspectClass = 'combo';
                 
                 const div = document.createElement('div');
-                div.className = `portfolio-item ${aspectClass} no-transition`;
+                div.className = `portfolio-item ${aspectClass} no-transition hover-attached`;
                 div.dataset.category = item.category;
                 div.dataset.id = item.id;
                 div.dataset.custom = 'true';
                 
-                // Keep hidden until GSAP animates it
-                div.style.opacity = '0';
+                if (!silent) div.style.opacity = '0'; // Only hide if we plan to animate
                 
                 if (activeFilter !== 'all' && item.category !== activeFilter) {
                     div.style.display = 'none';
@@ -1868,17 +1649,16 @@
                 
                 div.addEventListener('mouseenter', function() { if (window.matchMedia('(hover: hover)').matches) { this.classList.add('hover-active'); playSound('hover'); } });
                 div.addEventListener('mouseleave', function() { this.classList.remove('hover-active'); });
+                div.addEventListener('touchstart', function() { this.classList.add('hover-active'); }, {passive: true});
+                div.addEventListener('touchend', function() { setTimeout(() => this.classList.remove('hover-active'), 300); });
                 
-                if (div.style.display !== 'none') {
+                if (!silent && div.style.display !== 'none') {
                     newElements.push(div);
                 }
             });
 
-            // Force DOM calculation
-            void document.body.offsetHeight;
-
-            // Instantly trigger GSAP on the newly added items so they blend in perfectly
-            if (newElements.length > 0 && typeof gsap !== 'undefined') {
+            if (!silent && newElements.length > 0 && typeof gsap !== 'undefined') {
+                void document.body.offsetHeight; // Force DOM calculation
                 gsap.fromTo(newElements, 
                     { opacity: 0, scale: 0.9, y: 20 }, 
                     { 
@@ -1890,9 +1670,6 @@
                     }
                 );
             }
-            
-            // Ensure hardcoded items animate if they haven't yet
-            filterWork(activeFilter, true);
         }
         
         function showToast(m) {
