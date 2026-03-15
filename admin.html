@@ -393,8 +393,9 @@
             `).join('');
         }
 
+        // --- NEW: Approve a flagged review ---
         function approveReview(id) {
-            const r = reviewsList.find(x => x.id === id);
+            const r = reviewsList.find(x => String(x.id) === String(id));
             if (r) {
                 r.flagged = false;
                 renderAdminReviews();
@@ -417,7 +418,7 @@
         }
 
         function deleteReview(id) {
-            reviewsList = reviewsList.filter(r => r.id !== id);
+            reviewsList = reviewsList.filter(r => String(r.id) !== String(id));
             renderAdminReviews(); flagUnsavedChanges(); showToast('Review deleted');
         }
 
@@ -586,6 +587,36 @@
                 return false;
             }
         };
+
+        // --- NEW: Load data directly inside admin if needed to catch skipped array ---
+        async function loadDataFromDatabase() {
+            try {
+                const response = await fetch(CONFIG.apiUrl);
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    localStorage.setItem('arshia_data_cache', JSON.stringify(data));
+                    
+                    if (data.portfolio && data.portfolio.length > 0) {
+                        portfolioItems = data.portfolio;
+                        injectPortfolioItemsToDOM(false); 
+                    }
+                    if (data.reviews) {
+                        reviewsList = data.reviews;
+                        renderAdminReviews();
+                    }
+                    if (data.orders) {
+                        orders = data.orders;
+                        updateOrdersList();
+                    }
+                    
+                    if (data.servicePrices) applyPricesToDOM(data.servicePrices);
+                    if (data.assetPackData) applyAssetPackToDOM(data.assetPackData);
+                }
+            } catch (e) { 
+                console.log('Database fetch failed'); 
+            }
+        }
     </script>
 </body>
 </html>

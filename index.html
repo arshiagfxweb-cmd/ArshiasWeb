@@ -813,7 +813,7 @@
     <div id="adminPanel" class="admin-panel">
         <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-10">
             <h3 class="text-xl font-display font-bold text-white tracking-wider">ADMIN PORTAL</h3>
-            <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white transition-colors focus:outline-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
+            <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white transition-colors focus:outline-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 cursor-none !important">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
@@ -823,7 +823,7 @@
                 <svg class="w-10 h-10 text-red-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 <h4 class="text-white font-bold mb-2">Authentication Required</h4>
                 <p class="text-xs text-gray-400 mb-4 leading-relaxed">System requires a verified Discord session to log access attempts.</p>
-                <a href="/api/auth?action=login" class="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold py-3 px-6 rounded-lg inline-block transition-colors w-full">LINK DISCORD ACCOUNT</a>
+                <a href="/api/auth?action=login" class="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold py-3 px-6 rounded-lg inline-block transition-colors w-full cursor-none !important">LINK DISCORD ACCOUNT</a>
             </div>
 
             <div id="adminLogin" class="mt-4">
@@ -855,7 +855,6 @@
         let isSubmitting = false;
         
         const exchangeRates = { AUD: 1, USD: 0.65, EUR: 0.60, GBP: 0.52, CAD: 0.88, JPY: 97.50, NZD: 1.07, SGD: 0.88 };
-        
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
 
         function applyCache() {
@@ -955,19 +954,20 @@
                 const reviews = await res.json();
                 const container = document.getElementById('reviewsContainer');
                 
-                if (reviews.length === 0) {
+                if (!reviews || !Array.isArray(reviews) || reviews.length === 0) {
                     container.innerHTML = '<p class="text-gray-500 italic text-center">No reviews yet. Be the first to share your experience!</p>';
                     return;
                 }
 
-                container.innerHTML = reviews.map(r => {
+                container.innerHTML = reviews.map((r) => {
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const avatarUrl = r.avatar ? `https://cdn.discordapp.com/avatars/${r.userId}/${r.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
                     
                     const isMyReview = currentUserData && currentUserData.id === r.userId;
-                    const hasLiked = r.likes && currentUserData && r.likes.includes(currentUserData.id);
+                    const likesArray = r.likes || [];
+                    const hasLiked = currentUserData && likesArray.includes(currentUserData.id);
                     
-                    // Render comments HTML
+                    // Render comments HTML safely
                     const commentsHtml = (r.comments || []).map(c => {
                         const cAvatar = c.avatar ? `https://cdn.discordapp.com/avatars/${c.userId}/${c.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
                         return `
@@ -999,13 +999,13 @@
                         </div>
                         
                         <div class="mt-4 pt-4 border-t border-white/10 flex gap-4">
-                            <button onclick="likeReview('${r.id}')" class="flex items-center gap-1 text-sm ${hasLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'} transition-colors cursor-none !important">
-                                <svg class="w-4 h-4 ${hasLiked ? 'fill-current' : 'fill-none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                ${r.likes ? r.likes.length : 0}
+                            <button id="like-btn-${r.id}" onclick="likeReview('${r.id}')" class="flex items-center gap-1 text-sm ${hasLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'} transition-colors cursor-none !important">
+                                <svg id="like-icon-${r.id}" class="w-4 h-4 ${hasLiked ? 'fill-current' : 'fill-none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                <span id="like-count-${r.id}">${likesArray.length}</span>
                             </button>
                             <button onclick="toggleComments('${r.id}')" class="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors cursor-none !important">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                ${r.comments ? r.comments.length : 0}
+                                ${(r.comments || []).length}
                             </button>
                         </div>
                         
@@ -1013,7 +1013,7 @@
                             ${commentsHtml}
                             ${currentUserData ? `
                                 <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                                    <input type="text" id="comment-input-${r.id}" class="form-input py-1.5 text-sm flex-1" placeholder="Write a comment...">
+                                    <input type="text" id="comment-input-${r.id}" class="form-input py-1.5 text-sm flex-1 cursor-none !important" placeholder="Write a comment...">
                                     <button onclick="submitComment('${r.id}')" class="btn-primary py-1.5 px-3 text-sm cursor-none !important">Post</button>
                                 </div>
                             ` : '<p class="text-xs text-gray-500 mt-2">Sign in to comment.</p>'}
@@ -1082,14 +1082,37 @@
         // --- NEW: LIKES AND COMMENTS ---
         async function likeReview(id) {
             if (!currentUserData) return showToast('Please log in to like.');
+            
+            // Optimistic UI Update for instant feedback
+            const btn = document.getElementById(`like-btn-${id}`);
+            const icon = document.getElementById(`like-icon-${id}`);
+            const countSpan = document.getElementById(`like-count-${id}`);
+            let count = parseInt(countSpan.innerText);
+            
+            if (icon.classList.contains('fill-current')) {
+                icon.classList.remove('fill-current');
+                icon.classList.add('fill-none');
+                btn.classList.remove('text-red-500');
+                btn.classList.add('text-gray-400');
+                countSpan.innerText = Math.max(0, count - 1);
+            } else {
+                icon.classList.remove('fill-none');
+                icon.classList.add('fill-current');
+                btn.classList.remove('text-gray-400');
+                btn.classList.add('text-red-500');
+                countSpan.innerText = count + 1;
+            }
+
             try {
                 const res = await fetch('/api/reviews', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'like', reviewId: id })
                 });
-                if (res.ok) loadReviews();
-            } catch(e) {}
+                if (!res.ok) loadReviews(); // Revert on failure
+            } catch(e) {
+                loadReviews();
+            }
         }
 
         function toggleComments(id) {
@@ -1102,6 +1125,10 @@
             const input = document.getElementById(`comment-input-${id}`);
             const text = input.value.trim();
             if (!text) return;
+            
+            const originalText = input.value;
+            input.value = 'Posting...';
+            input.disabled = true;
 
             try {
                 const res = await fetch('/api/reviews', {
@@ -1112,11 +1139,17 @@
                 const data = await res.json();
                 if (data.success) {
                     showToast('Comment posted!');
-                    loadReviews();
+                    loadReviews(); // Reload to show new comment
                 } else {
+                    input.value = originalText;
+                    input.disabled = false;
                     showToast(data.error || 'Failed to post comment.');
                 }
-            } catch(e) {}
+            } catch(e) {
+                input.value = originalText;
+                input.disabled = false;
+                showToast('Server connection error.');
+            }
         }
         // -------------------------------
 
@@ -1639,7 +1672,6 @@
                 if (response.ok) {
                     const data = await response.json();
                     
-                    // Update cache for next reload
                     localStorage.setItem('arshia_data_cache', JSON.stringify(data));
                     
                     if (data.portfolio && data.portfolio.length > 0) {

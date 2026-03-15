@@ -14,6 +14,12 @@ export default async function handler(req, res) {
     const db = client.db('arshia_gfx');
     const collection = db.collection('site_data');
 
+    if (req.method === 'POST' || req.method === 'DELETE') {
+        if (typeof req.body === 'string') {
+            try { req.body = JSON.parse(req.body); } catch(e) {}
+        }
+    }
+
     if (req.method === 'GET') {
       const data = await collection.findOne({ _id: 'main' });
       const reviews = data?.reviews || [];
@@ -37,7 +43,7 @@ export default async function handler(req, res) {
       const data = await collection.findOne({ _id: 'main' });
       if (!data || !data.reviews) return res.status(404).json({ error: 'No reviews found' });
 
-      const review = data.reviews.find(r => r.id === reviewId);
+      const review = data.reviews.find(r => String(r.id) === String(reviewId));
       if (!review) return res.status(404).json({ error: 'Review not found' });
       
       if (review.userId !== user.id) return res.status(403).json({ error: 'Not authorized to delete this review' });
@@ -58,12 +64,13 @@ export default async function handler(req, res) {
 
       const { action, reviewId, rating, text } = req.body;
 
-      // ACTION: LIKE A REVIEW
       if (action === 'like') {
         if (!reviewId) return res.status(400).json({ error: 'Missing review ID' });
         
         const data = await collection.findOne({ _id: 'main' });
-        const reviewIndex = data.reviews.findIndex(r => r.id === reviewId);
+        if (!data || !data.reviews) return res.status(404).json({ error: 'Database empty' });
+        
+        const reviewIndex = data.reviews.findIndex(r => String(r.id) === String(reviewId));
         if (reviewIndex === -1) return res.status(404).json({ error: 'Review not found' });
         
         const review = data.reviews[reviewIndex];
@@ -79,7 +86,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, likes });
       }
 
-      // ACTION: COMMENT ON A REVIEW
       if (action === 'comment') {
         if (!reviewId || !text || text.length > 500) return res.status(400).json({ error: 'Invalid comment' });
         
@@ -89,11 +95,13 @@ export default async function handler(req, res) {
         }
 
         const data = await collection.findOne({ _id: 'main' });
-        const reviewIndex = data.reviews.findIndex(r => r.id === reviewId);
+        if (!data || !data.reviews) return res.status(404).json({ error: 'Database empty' });
+
+        const reviewIndex = data.reviews.findIndex(r => String(r.id) === String(reviewId));
         if (reviewIndex === -1) return res.status(404).json({ error: 'Review not found' });
 
         const newComment = {
-          id: Date.now().toString(),
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 7),
           userId: user.id, username: user.username, avatar: user.avatar,
           text: text, date: new Date().toISOString()
         };
@@ -102,14 +110,14 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, comment: newComment });
       }
 
-      // ACTION: CREATE NEW REVIEW
+      // CREATE NEW REVIEW
       if (!rating || !text || text.length > 2000) return res.status(400).json({ error: 'Invalid review format' });
 
       const lowerText = text.toLowerCase();
       const isFlagged = badWords.some(word => lowerText.includes(word));
 
       const newReview = {
-        id: Date.now().toString(),
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
         userId: user.id, username: user.username, avatar: user.avatar,
         rating: Number(rating), text: text, date: new Date().toISOString(), flagged: isFlagged,
         likes: [], comments: []

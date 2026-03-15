@@ -45,7 +45,10 @@ export default async function handler(req, res) {
     }
     
     if (req.method === 'POST') {
-      const body = req.body;
+      let body = req.body;
+      if (typeof body === 'string') {
+          try { body = JSON.parse(body); } catch(e) {}
+      }
       
       if (body.action === 'login') {
         if (body.password === ADMIN_PASSWORD) {
