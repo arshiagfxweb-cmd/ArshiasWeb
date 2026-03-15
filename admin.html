@@ -10,17 +10,37 @@
     
     <style>
         :root { --primary-red: #DC2626; --void-black: #050505; --card-black: #111111; }
+        
+        /* FORCE CUSTOM CURSOR EVERYWHERE */
+        body, a, button, input, select, textarea, .glass-card, .order-item, .toggle-slider, .toggle-switch {
+            cursor: none !important;
+        }
+
+        /* Custom Cursor styling (added to match index.html) */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
+        .cursor-dot { width: 5px; height: 5px; background-color: var(--primary-red); }
+        .cursor-outline {
+            width: 30px; height: 30px; border: 2px solid rgba(220, 38, 38, 0.5);
+            transition: width 0.15s, height 0.15s, background-color 0.15s;
+        }
+        .cursor-outline.hover {
+            width: 50px; height: 50px; background-color: rgba(220, 38, 38, 0.1); border-color: var(--primary-red);
+        }
+
         body { font-family: 'Inter', sans-serif; background-color: var(--void-black); color: white; margin: 0; padding: 0; }
         .font-display { font-family: 'Space Grotesk', sans-serif; }
         
         .glass-card { background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 24px; position: relative; }
         .form-input { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 14px; color: white; width: 100%; transition: all 0.3s; font-size: 14px; }
         .form-input:focus { outline: none; border-color: var(--primary-red); }
-        .btn-primary { background: var(--primary-red); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: pointer; border: none; text-align: center; }
+        .btn-primary { background: var(--primary-red); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: none !important; border: none; text-align: center; }
         .btn-primary:hover { background: #b91c1c; box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4); }
-        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: pointer; text-align: center; }
+        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: none !important; text-align: center; }
         .btn-secondary:hover { border-color: var(--primary-red); background: rgba(220, 38, 38, 0.1); }
-        .btn-danger { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: #ff6b6b; padding: 8px 16px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
+        .btn-danger { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.5); color: #ff6b6b; padding: 8px 16px; border-radius: 8px; font-weight: 600; transition: all 0.3s; cursor: none !important; }
         .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
         
         .orders-list { max-height: 400px; overflow-y: auto; }
@@ -31,7 +51,7 @@
         
         .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .toggle-slider { position: absolute; cursor: none !important; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
         .toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .toggle-slider { background-color: #DC2626; }
         input:checked + .toggle-slider:before { transform: translateX(20px); }
@@ -50,6 +70,9 @@
     </style>
 </head>
 <body class="bg-[#050505] min-h-screen">
+    
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <div id="loadingOverlay">
         <div class="spinner mb-4"></div>
@@ -220,6 +243,40 @@
         let unsavedChanges = false;
 
         window.onload = verifyAuth;
+
+        // --- Custom Cursor Logic for Admin ---
+        function initCursor() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            
+            const dot = document.querySelector('.cursor-dot');
+            const outline = document.querySelector('.cursor-outline');
+            if (!dot || !outline) return;
+            
+            let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; 
+                mouseY = e.clientY;
+                dot.style.left = mouseX + 'px'; 
+                dot.style.top = mouseY + 'px';
+            });
+            
+            function animate() {
+                outlineX += (mouseX - outlineX) * 0.15;
+                outlineY += (mouseY - outlineY) * 0.15;
+                outline.style.left = outlineX + 'px'; 
+                outline.style.top = outlineY + 'px';
+                requestAnimationFrame(animate);
+            }
+            animate();
+            
+            document.querySelectorAll('a, button, .glass-card, input, select, textarea').forEach(el => {
+                el.addEventListener('mouseenter', () => { outline.classList.add('hover'); });
+                el.addEventListener('mouseleave', () => outline.classList.remove('hover'));
+            });
+        }
+        document.addEventListener('DOMContentLoaded', initCursor);
+        // -------------------------------------
 
         async function verifyAuth() {
             const token = sessionStorage.getItem('adminToken');
@@ -503,6 +560,20 @@
             sessionStorage.removeItem('adminToken');
             window.location.href = '/';
         }
+        
+        // Disable right-click and inspecting for security
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.onkeydown = function(e) {
+            if (
+                e.keyCode === 123 || 
+                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) ||
+                (e.ctrlKey && e.keyCode === 85)
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        };
     </script>
 </body>
 </html>

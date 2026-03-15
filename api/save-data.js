@@ -63,7 +63,7 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              content: `<@1445224513901166696> 🚨 **ADMIN LOGIN DETECTED** 🚨\nDiscord User: \`${discordUser}\` has successfully authenticated into the Admin Panel.`
+              content: `<@954920707781967933> 🚨 **ADMIN LOGIN DETECTED** 🚨\nDiscord User: \`${discordUser}\` has successfully authenticated into the Admin Panel.`
             })
           }).catch(err => console.error('Webhook Error:', err));
           

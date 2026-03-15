@@ -6,7 +6,7 @@ const client = new MongoClient(uri);
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const REVIEW_WEBHOOK_URL = "https://discord.com/api/webhooks/1477448069610995885/TmI4TUl7e8rR19KAFRqI95U4i58Sn5GaKTbo7yIu1EZe36MfhhRQqMr0KE5VLRI0vSTO";
-const badWords = ['scam', 'terrible', 'awful', 'trash', 'garbage', 'fake', 'worst', 'stole', 'bad'];
+const badWords = ['scam', 'terrible', 'awful', 'trash', 'garbage', 'fake', 'worst', 'stole', 'bad', 'horrible', 'begs', 'slop', 'shit', 'fuck', 'nigger', 'nigga', 'bitch', 'cunt', 'asshole', 'dick', 'pussy', 'slut', 'whore', 'bastard', 'retard', 'faggot'];
 
 export default async function handler(req, res) {
   try {
