@@ -377,7 +377,18 @@
                 container.innerHTML = '<p class="text-gray-500 text-sm italic text-center py-4">No reviews found.</p>';
                 return;
             }
-            container.innerHTML = reviewsList.map(r => `
+            container.innerHTML = reviewsList.map(r => {
+                const commentsHtml = (r.comments || []).map(c => `
+                    <div class="bg-black/30 p-2 rounded mt-2 flex justify-between items-start border border-white/5">
+                        <div class="flex-1 pr-2">
+                            <span class="text-[10px] text-white font-bold">${escapeHtml(c.username)}:</span>
+                            <span class="text-[10px] text-gray-400">${escapeHtml(c.text)}</span>
+                        </div>
+                        <button onclick="deleteAdminComment('${r.id}', '${c.id}')" class="text-[10px] text-red-500 hover:text-white px-2 py-0.5 bg-red-500/10 rounded cursor-none !important">Del</button>
+                    </div>
+                `).join('');
+
+                return `
                 <div class="order-item ${r.flagged ? 'border-red-500 bg-red-900/20' : ''}">
                     ${r.flagged ? '<div class="text-[10px] text-red-500 font-bold mb-1">FLAGGED (HIDDEN)</div>' : '<div class="text-[10px] text-green-500 font-bold mb-1">PUBLIC</div>'}
                     <div class="flex justify-between items-start mb-1">
@@ -385,15 +396,32 @@
                         <span class="text-xs text-yellow-500">${'★'.repeat(r.rating)}</span>
                     </div>
                     <p class="text-[11px] text-gray-400 mb-2 italic truncate">"${escapeHtml(r.text)}"</p>
-                    <div class="flex gap-2 mt-2">
+                    
+                    <div class="mt-2 border-t border-white/10 pt-2">
+                        <p class="text-[10px] text-gray-500 font-bold mb-1">COMMENTS (${r.comments ? r.comments.length : 0})</p>
+                        ${commentsHtml}
+                    </div>
+
+                    <div class="flex gap-2 mt-3 pt-2 border-t border-white/10">
                         ${r.flagged ? `<button onclick="approveReview('${r.id}')" class="bg-green-600/20 text-green-500 border border-green-500/50 hover:bg-green-600/40 w-full text-[10px] py-1 rounded transition-colors cursor-none !important">APPROVE</button>` : ''}
                         <button onclick="deleteReview('${r.id}')" class="btn-danger w-full text-[10px] py-1">DELETE</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
-        // --- NEW: Approve a flagged review ---
+        // --- ADMIN DELETE COMMENT ---
+        function deleteAdminComment(reviewId, commentId) {
+            const review = reviewsList.find(r => String(r.id) === String(reviewId));
+            if (review && review.comments) {
+                review.comments = review.comments.filter(c => String(c.id) !== String(commentId));
+                renderAdminReviews();
+                flagUnsavedChanges();
+                showToast('Comment removed (Save to apply)');
+            }
+        }
+
         function approveReview(id) {
             const r = reviewsList.find(x => String(x.id) === String(id));
             if (r) {
@@ -588,7 +616,6 @@
             }
         };
 
-        // --- NEW: Load data directly inside admin if needed to catch skipped array ---
         async function loadDataFromDatabase() {
             try {
                 const response = await fetch(CONFIG.apiUrl);

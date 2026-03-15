@@ -937,6 +937,7 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     if(urlParams.get('login') === 'success') {
                         window.history.replaceState({}, document.title, window.location.pathname);
+                        // Reload reviews so the delete button shows up correctly after login
                         loadReviews();
                     }
                 }
@@ -970,13 +971,17 @@
                     // Render comments HTML safely
                     const commentsHtml = (r.comments || []).map(c => {
                         const cAvatar = c.avatar ? `https://cdn.discordapp.com/avatars/${c.userId}/${c.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
+                        // Add isMyComment logic
+                        const isMyComment = currentUserData && currentUserData.id === c.userId;
+                        
                         return `
-                        <div class="flex gap-3 mb-2 bg-white/5 p-2 rounded-lg">
+                        <div class="flex gap-3 mb-2 bg-white/5 p-2 rounded-lg relative group">
                             <img src="${cAvatar}" class="w-6 h-6 rounded-full border border-[#5865F2]/30">
-                            <div>
+                            <div class="flex-1 pr-6">
                                 <span class="text-white text-xs font-bold">${escapeHtml(c.username)}</span>
                                 <p class="text-gray-400 text-xs">${escapeHtml(c.text)}</p>
                             </div>
+                            ${isMyComment ? `<button onclick="deleteMyComment('${r.id}', '${c.id}')" class="text-[10px] text-red-500 hover:text-red-400 absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-none !important" title="Delete Comment">✕</button>` : ''}
                         </div>`;
                     }).join('');
                     
@@ -1083,7 +1088,6 @@
         async function likeReview(id) {
             if (!currentUserData) return showToast('Please log in to like.');
             
-            // Optimistic UI Update for instant feedback
             const btn = document.getElementById(`like-btn-${id}`);
             const icon = document.getElementById(`like-icon-${id}`);
             const countSpan = document.getElementById(`like-count-${id}`);
@@ -1109,7 +1113,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'like', reviewId: id })
                 });
-                if (!res.ok) loadReviews(); // Revert on failure
+                if (!res.ok) loadReviews();
             } catch(e) {
                 loadReviews();
             }
@@ -1139,7 +1143,7 @@
                 const data = await res.json();
                 if (data.success) {
                     showToast('Comment posted!');
-                    loadReviews(); // Reload to show new comment
+                    loadReviews(); 
                 } else {
                     input.value = originalText;
                     input.disabled = false;
@@ -1148,6 +1152,26 @@
             } catch(e) {
                 input.value = originalText;
                 input.disabled = false;
+                showToast('Server connection error.');
+            }
+        }
+        
+        async function deleteMyComment(reviewId, commentId) {
+            if (!confirm("Are you sure you want to delete your comment?")) return;
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'delete_comment', reviewId, commentId })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    showToast('Comment deleted successfully');
+                    loadReviews();
+                } else {
+                    showToast(data.error || 'Failed to delete comment');
+                }
+            } catch(e) {
                 showToast('Server connection error.');
             }
         }
@@ -1672,6 +1696,7 @@
                 if (response.ok) {
                     const data = await response.json();
                     
+                    // Update cache for next reload
                     localStorage.setItem('arshia_data_cache', JSON.stringify(data));
                     
                     if (data.portfolio && data.portfolio.length > 0) {

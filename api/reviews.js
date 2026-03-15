@@ -62,7 +62,7 @@ export default async function handler(req, res) {
         user = jwt.verify(tokenMatch[1], JWT_SECRET);
       } catch (e) { return res.status(401).json({ error: 'Invalid session' }); }
 
-      const { action, reviewId, rating, text } = req.body;
+      const { action, reviewId, rating, text, commentId } = req.body;
 
       if (action === 'like') {
         if (!reviewId) return res.status(400).json({ error: 'Missing review ID' });
@@ -108,6 +108,29 @@ export default async function handler(req, res) {
 
         await collection.updateOne({ _id: 'main' }, { $push: { [`reviews.${reviewIndex}.comments`]: newComment } });
         return res.status(200).json({ success: true, comment: newComment });
+      }
+
+      // ---- NEW: DELETE COMMENT ----
+      if (action === 'delete_comment') {
+        if (!reviewId || !commentId) return res.status(400).json({ error: 'Missing IDs' });
+
+        const data = await collection.findOne({ _id: 'main' });
+        if (!data || !data.reviews) return res.status(404).json({ error: 'Database empty' });
+
+        const reviewIndex = data.reviews.findIndex(r => String(r.id) === String(reviewId));
+        if (reviewIndex === -1) return res.status(404).json({ error: 'Review not found' });
+
+        const review = data.reviews[reviewIndex];
+        const comment = (review.comments || []).find(c => String(c.id) === String(commentId));
+        if (!comment) return res.status(404).json({ error: 'Comment not found' });
+
+        if (comment.userId !== user.id) return res.status(403).json({ error: 'Not authorized to delete this comment' });
+
+        await collection.updateOne(
+            { _id: 'main' },
+            { $pull: { [`reviews.${reviewIndex}.comments`]: { id: commentId } } }
+        );
+        return res.status(200).json({ success: true });
       }
 
       // CREATE NEW REVIEW
