@@ -16,7 +16,7 @@
             cursor: none !important;
         }
 
-        /* Custom Cursor styling (added to match index.html) */
+        /* Custom Cursor styling */
         .cursor-dot, .cursor-outline {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
             border-radius: 50%; z-index: 9999; pointer-events: none;
@@ -70,7 +70,6 @@
     </style>
 </head>
 <body class="bg-[#050505] min-h-screen">
-    
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
@@ -561,14 +560,14 @@
             window.location.href = '/';
         }
         
-        // Disable right-click and inspecting for security
+        // Security: Disable right-click and F12/Ctrl+U
         document.addEventListener('contextmenu', event => event.preventDefault());
 
         document.onkeydown = function(e) {
             if (
                 e.keyCode === 123 || 
                 (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) ||
-                (e.ctrlKey && e.keyCode === 85)
+                (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 117))
             ) {
                 e.preventDefault();
                 return false;
