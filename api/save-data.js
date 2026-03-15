@@ -100,7 +100,7 @@ export default async function handler(req, res) {
           assetPackData: body.assetPackData,
           orders: body.orders,
           portfolio: body.portfolio || [],
-          reviews: body.reviews || [], // <-- THIS WAS MISSING, NOW FIXED
+          reviews: body.reviews || [], 
           servicePrices: body.servicePrices,
           lastUpdated: new Date().toISOString()
         };

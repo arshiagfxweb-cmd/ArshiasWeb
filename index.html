@@ -104,15 +104,15 @@
             transition: none !important;
         }
         
-        /* Portfolio Items (UPDATED FOR MASONRY LAYOUT) */
+        /* Portfolio Items */
         .portfolio-item {
             position: relative; border-radius: 24px; overflow: hidden;
             background: var(--card-black); border: 1px solid rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d;
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease;
             cursor: none !important; will-change: transform;
-            margin-bottom: 24px; /* Space between items vertically */
-            break-inside: avoid; /* Prevents an image from being split across columns */
+            margin-bottom: 24px;
+            break-inside: avoid;
         }
         .portfolio-item.thumbnail { aspect-ratio: 16/9; }
         .portfolio-item.poster { aspect-ratio: 3/4; }
@@ -317,7 +317,6 @@
             #hero h1 { font-size: 4rem !important; }
             #hero p { font-size: 1rem !important; }
             .btn-primary, .btn-secondary { padding: 0.875rem 1.5rem; font-size: 0.875rem; }
-            /* Mobile column fallback */
             #portfolioGrid { columns: 1 !important; }
         }
         @media (max-width: 640px) {
@@ -389,7 +388,7 @@
                         <img id="userAvatar" src="" class="w-10 h-10 rounded-full border-2 border-[#5865F2] hover:scale-105 transition-transform shadow-[0_0_15px_rgba(88,101,242,0.4)]">
                         <div id="userMenu" class="absolute top-12 right-0 bg-neutral-900 border border-white/10 rounded-xl p-2 hidden min-w-[150px] shadow-2xl">
                             <div class="px-3 py-2 text-sm text-gray-400 border-b border-white/10 mb-1 truncate" id="userNameDisplay">Username</div>
-                            <button onclick="logoutDiscord()" class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded-lg transition-colors">Logout</button>
+                            <button onclick="logoutDiscord()" class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-white/5 rounded-lg transition-colors cursor-none !important">Logout</button>
                         </div>
                     </div>
                 </div>
@@ -859,7 +858,6 @@
         
         const CATEGORY_ORDER = ['thumbnails', 'posters', 'banners', 'combos'];
 
-        // PRE-LOAD CACHE FOR INSTANT RENDER
         function applyCache() {
             try {
                 const cache = localStorage.getItem('arshia_data_cache');
@@ -867,7 +865,7 @@
                     const data = JSON.parse(cache);
                     if (data.portfolio && data.portfolio.length > 0) {
                         portfolioItems = data.portfolio;
-                        injectPortfolioItemsToDOM(true); // Silent injection
+                        injectPortfolioItemsToDOM(true); 
                     }
                     if (data.servicePrices) applyPricesToDOM(data.servicePrices);
                     if (data.assetPackData) applyAssetPackToDOM(data.assetPackData);
@@ -881,18 +879,12 @@
             initFormValidation();
             initServiceDropdown();
             
-            // 1. INSTANTLY LOAD SAVED IMAGES BEFORE ANIMATIONS
             applyCache();
-            
-            // 2. ATTACH HOVERS TO EVERYTHING (HARDCODED + CACHED)
             attachHoverToAllItems();
             
-            // 3. FIRE THE ANIMATION
             setTimeout(() => { filterWork('all', true); }, 50);
 
             validateSession();
-            
-            // 4. FETCH THE DATABASE IN BACKGROUND
             loadDataFromDatabase();
             
             checkAuth();
@@ -946,6 +938,8 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     if(urlParams.get('login') === 'success') {
                         window.history.replaceState({}, document.title, window.location.pathname);
+                        // Reload reviews so the delete button shows up correctly after login
+                        loadReviews();
                     }
                 }
             } catch (e) { console.error("Auth check failed"); }
@@ -970,9 +964,16 @@
                 container.innerHTML = reviews.map(r => {
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const avatarUrl = r.avatar ? `https://cdn.discordapp.com/avatars/${r.userId}/${r.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
+                    
+                    // --- NEW: Add Delete button if it's the user's own review ---
+                    const isMyReview = currentUserData && currentUserData.id === r.userId;
+                    
                     return `
                     <div class="glass-card p-8 border border-white/5 hover:border-red-500/30 transition-all duration-300">
-                        <div class="text-yellow-500 text-2xl mb-4 drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]">${stars}</div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="text-yellow-500 text-2xl drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]">${stars}</div>
+                            ${isMyReview ? `<button onclick="deleteMyReview('${r.id}')" class="text-xs text-red-500 hover:text-white bg-red-500/10 hover:bg-red-500/30 border border-red-500/30 px-3 py-1 rounded transition-colors cursor-none !important">Delete</button>` : ''}
+                        </div>
                         <p class="text-gray-300 italic mb-6 leading-relaxed">"${escapeHtml(r.text)}"</p>
                         <div class="flex items-center gap-4">
                             <img src="${avatarUrl}" class="w-12 h-12 rounded-full border-2 border-[#5865F2]/50 shadow-[0_0_10px_rgba(88,101,242,0.2)]">
@@ -1025,10 +1026,27 @@
             btn.innerHTML = 'Submit Review';
         }
 
-        /* * ==========================================
-         * DISCORD WEBHOOK ORDER SUBMIT
-         * ==========================================
-         */
+        // --- NEW: Client-side function to handle deleting own review ---
+        async function deleteMyReview(id) {
+            if (!confirm("Are you sure you want to delete your review?")) return;
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reviewId: id })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    showToast('Review deleted successfully');
+                    loadReviews();
+                } else {
+                    showToast(data.error || 'Failed to delete review');
+                }
+            } catch(e) {
+                showToast('Server connection error.');
+            }
+        }
+
         async function submitOrder(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -1075,7 +1093,7 @@
                     updateSelectedServicesDisplay();
                     updateOrderTotal();
                     btn.innerHTML = 'SUBMIT ORDER';
-                    return; // Button stays locked until user picks a new service
+                    return; 
                 } else {
                     showToast('Failed to send webhook. Please try again.');
                 }
@@ -1087,10 +1105,6 @@
             btn.innerHTML = originalText;
         }
 
-        /* * ==========================================
-         * FIXED GSAP FILTER FUNCTION
-         * ==========================================
-         */
         function filterWork(cat, silent = false) {
             if (!silent) playSound('click');
             
@@ -1104,20 +1118,18 @@
             if (typeof gsap !== 'undefined') gsap.killTweensOf(items);
             
             items.forEach(item => {
-                // Prevent CSS transition from fighting GSAP
                 item.classList.add('no-transition'); 
                 
                 const shouldShow = cat === 'all' || item.dataset.category === cat;
                 if (shouldShow) {
                     item.style.display = 'block';
-                    void item.offsetWidth; // Forces the browser to paint it immediately
+                    void item.offsetWidth; 
                     visibleItems.push(item);
                 } else {
                     item.style.display = 'none';
                 }
             });
             
-            // Force browser to recalculate DOM before animating
             void document.body.offsetHeight; 
             
             if (visibleItems.length > 0 && typeof gsap !== 'undefined') {
@@ -1559,7 +1571,7 @@
                     
                     if (data.portfolio && data.portfolio.length > 0) {
                         portfolioItems = data.portfolio;
-                        injectPortfolioItemsToDOM(false); // False = animate only newly found items
+                        injectPortfolioItemsToDOM(false); 
                     }
                     
                     if (data.servicePrices) applyPricesToDOM(data.servicePrices);
@@ -1604,10 +1616,6 @@
             }
         }
 
-        /* * ==========================================
-         * FIXED DYNAMIC ITEM INJECTION (NO MORE DELAYS)
-         * ==========================================
-         */
         function injectPortfolioItemsToDOM(silent = false) {
             const grid = document.getElementById('portfolioGrid');
             if (!grid || portfolioItems.length === 0) return;
@@ -1632,7 +1640,7 @@
                 div.dataset.id = item.id;
                 div.dataset.custom = 'true';
                 
-                if (!silent) div.style.opacity = '0'; // Only hide if we plan to animate
+                if (!silent) div.style.opacity = '0'; 
                 
                 if (activeFilter !== 'all' && item.category !== activeFilter) {
                     div.style.display = 'none';
@@ -1666,7 +1674,7 @@
             });
 
             if (!silent && newElements.length > 0 && typeof gsap !== 'undefined') {
-                void document.body.offsetHeight; // Force DOM calculation
+                void document.body.offsetHeight; 
                 gsap.fromTo(newElements, 
                     { opacity: 0, scale: 0.9, y: 20 }, 
                     { 

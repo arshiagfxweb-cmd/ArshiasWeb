@@ -21,6 +21,33 @@ export default async function handler(req, res) {
       return res.status(200).json(publicReviews);
     }
 
+    // ---- NEW SECURE DELETE ENDPOINT ----
+    if (req.method === 'DELETE') {
+      const cookie = req.headers.cookie || '';
+      const tokenMatch = cookie.match(/auth_token=([^;]+)/);
+      if (!tokenMatch) return res.status(401).json({ error: 'Must be logged in to delete' });
+
+      let user;
+      try {
+        user = jwt.verify(tokenMatch[1], JWT_SECRET);
+      } catch (e) { return res.status(401).json({ error: 'Invalid session' }); }
+
+      const { reviewId } = req.body;
+      if (!reviewId) return res.status(400).json({ error: 'Missing review ID' });
+
+      const data = await collection.findOne({ _id: 'main' });
+      if (!data || !data.reviews) return res.status(404).json({ error: 'No reviews found' });
+
+      const review = data.reviews.find(r => r.id === reviewId);
+      if (!review) return res.status(404).json({ error: 'Review not found' });
+      
+      // Strict Security Check: Ensure the person deleting is the original author
+      if (review.userId !== user.id) return res.status(403).json({ error: 'Not authorized to delete this review' });
+
+      await collection.updateOne({ _id: 'main' }, { $pull: { reviews: { id: reviewId } } });
+      return res.status(200).json({ success: true });
+    }
+
     if (req.method === 'POST') {
       const cookie = req.headers.cookie || '';
       const tokenMatch = cookie.match(/auth_token=([^;]+)/);
