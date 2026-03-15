@@ -21,7 +21,6 @@ export default async function handler(req, res) {
       return res.status(200).json(publicReviews);
     }
 
-    // ---- NEW SECURE DELETE ENDPOINT ----
     if (req.method === 'DELETE') {
       const cookie = req.headers.cookie || '';
       const tokenMatch = cookie.match(/auth_token=([^;]+)/);
@@ -41,7 +40,6 @@ export default async function handler(req, res) {
       const review = data.reviews.find(r => r.id === reviewId);
       if (!review) return res.status(404).json({ error: 'Review not found' });
       
-      // Strict Security Check: Ensure the person deleting is the original author
       if (review.userId !== user.id) return res.status(403).json({ error: 'Not authorized to delete this review' });
 
       await collection.updateOne({ _id: 'main' }, { $pull: { reviews: { id: reviewId } } });
@@ -51,15 +49,61 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const cookie = req.headers.cookie || '';
       const tokenMatch = cookie.match(/auth_token=([^;]+)/);
-      if (!tokenMatch) return res.status(401).json({ error: 'Must be logged in to review' });
+      if (!tokenMatch) return res.status(401).json({ error: 'Must be logged in to interact' });
 
       let user;
       try {
         user = jwt.verify(tokenMatch[1], JWT_SECRET);
       } catch (e) { return res.status(401).json({ error: 'Invalid session' }); }
 
-      const { rating, text } = req.body;
-      if (!rating || !text) return res.status(400).json({ error: 'Missing rating or text' });
+      const { action, reviewId, rating, text } = req.body;
+
+      // ACTION: LIKE A REVIEW
+      if (action === 'like') {
+        if (!reviewId) return res.status(400).json({ error: 'Missing review ID' });
+        
+        const data = await collection.findOne({ _id: 'main' });
+        const reviewIndex = data.reviews.findIndex(r => r.id === reviewId);
+        if (reviewIndex === -1) return res.status(404).json({ error: 'Review not found' });
+        
+        const review = data.reviews[reviewIndex];
+        let likes = review.likes || [];
+        
+        if (likes.includes(user.id)) {
+          likes = likes.filter(id => id !== user.id);
+        } else {
+          likes.push(user.id);
+        }
+
+        await collection.updateOne({ _id: 'main' }, { $set: { [`reviews.${reviewIndex}.likes`]: likes } });
+        return res.status(200).json({ success: true, likes });
+      }
+
+      // ACTION: COMMENT ON A REVIEW
+      if (action === 'comment') {
+        if (!reviewId || !text || text.length > 500) return res.status(400).json({ error: 'Invalid comment' });
+        
+        const lowerText = text.toLowerCase();
+        if (badWords.some(word => lowerText.includes(word))) {
+            return res.status(400).json({ error: 'Comment contains flagged words' });
+        }
+
+        const data = await collection.findOne({ _id: 'main' });
+        const reviewIndex = data.reviews.findIndex(r => r.id === reviewId);
+        if (reviewIndex === -1) return res.status(404).json({ error: 'Review not found' });
+
+        const newComment = {
+          id: Date.now().toString(),
+          userId: user.id, username: user.username, avatar: user.avatar,
+          text: text, date: new Date().toISOString()
+        };
+
+        await collection.updateOne({ _id: 'main' }, { $push: { [`reviews.${reviewIndex}.comments`]: newComment } });
+        return res.status(200).json({ success: true, comment: newComment });
+      }
+
+      // ACTION: CREATE NEW REVIEW
+      if (!rating || !text || text.length > 2000) return res.status(400).json({ error: 'Invalid review format' });
 
       const lowerText = text.toLowerCase();
       const isFlagged = badWords.some(word => lowerText.includes(word));
@@ -67,7 +111,8 @@ export default async function handler(req, res) {
       const newReview = {
         id: Date.now().toString(),
         userId: user.id, username: user.username, avatar: user.avatar,
-        rating: Number(rating), text: text, date: new Date().toISOString(), flagged: isFlagged
+        rating: Number(rating), text: text, date: new Date().toISOString(), flagged: isFlagged,
+        likes: [], comments: []
       };
 
       await collection.updateOne({ _id: 'main' }, { $push: { reviews: newReview } }, { upsert: true });

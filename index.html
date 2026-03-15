@@ -938,7 +938,6 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     if(urlParams.get('login') === 'success') {
                         window.history.replaceState({}, document.title, window.location.pathname);
-                        // Reload reviews so the delete button shows up correctly after login
                         loadReviews();
                     }
                 }
@@ -965,8 +964,21 @@
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const avatarUrl = r.avatar ? `https://cdn.discordapp.com/avatars/${r.userId}/${r.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
                     
-                    // --- NEW: Add Delete button if it's the user's own review ---
                     const isMyReview = currentUserData && currentUserData.id === r.userId;
+                    const hasLiked = r.likes && currentUserData && r.likes.includes(currentUserData.id);
+                    
+                    // Render comments HTML
+                    const commentsHtml = (r.comments || []).map(c => {
+                        const cAvatar = c.avatar ? `https://cdn.discordapp.com/avatars/${c.userId}/${c.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png';
+                        return `
+                        <div class="flex gap-3 mb-2 bg-white/5 p-2 rounded-lg">
+                            <img src="${cAvatar}" class="w-6 h-6 rounded-full border border-[#5865F2]/30">
+                            <div>
+                                <span class="text-white text-xs font-bold">${escapeHtml(c.username)}</span>
+                                <p class="text-gray-400 text-xs">${escapeHtml(c.text)}</p>
+                            </div>
+                        </div>`;
+                    }).join('');
                     
                     return `
                     <div class="glass-card p-8 border border-white/5 hover:border-red-500/30 transition-all duration-300">
@@ -984,6 +996,27 @@
                                     Verified Client
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-white/10 flex gap-4">
+                            <button onclick="likeReview('${r.id}')" class="flex items-center gap-1 text-sm ${hasLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'} transition-colors cursor-none !important">
+                                <svg class="w-4 h-4 ${hasLiked ? 'fill-current' : 'fill-none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                ${r.likes ? r.likes.length : 0}
+                            </button>
+                            <button onclick="toggleComments('${r.id}')" class="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors cursor-none !important">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                ${r.comments ? r.comments.length : 0}
+                            </button>
+                        </div>
+                        
+                        <div id="comments-${r.id}" class="hidden mt-4 space-y-3 bg-black/40 p-4 rounded-xl border border-white/5">
+                            ${commentsHtml}
+                            ${currentUserData ? `
+                                <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
+                                    <input type="text" id="comment-input-${r.id}" class="form-input py-1.5 text-sm flex-1" placeholder="Write a comment...">
+                                    <button onclick="submitComment('${r.id}')" class="btn-primary py-1.5 px-3 text-sm cursor-none !important">Post</button>
+                                </div>
+                            ` : '<p class="text-xs text-gray-500 mt-2">Sign in to comment.</p>'}
                         </div>
                     </div>`;
                 }).join('');
@@ -1026,7 +1059,6 @@
             btn.innerHTML = 'Submit Review';
         }
 
-        // --- NEW: Client-side function to handle deleting own review ---
         async function deleteMyReview(id) {
             if (!confirm("Are you sure you want to delete your review?")) return;
             try {
@@ -1046,6 +1078,47 @@
                 showToast('Server connection error.');
             }
         }
+
+        // --- NEW: LIKES AND COMMENTS ---
+        async function likeReview(id) {
+            if (!currentUserData) return showToast('Please log in to like.');
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'like', reviewId: id })
+                });
+                if (res.ok) loadReviews();
+            } catch(e) {}
+        }
+
+        function toggleComments(id) {
+            const el = document.getElementById(`comments-${id}`);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        async function submitComment(id) {
+            if (!currentUserData) return showToast('Please log in to comment.');
+            const input = document.getElementById(`comment-input-${id}`);
+            const text = input.value.trim();
+            if (!text) return;
+
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'comment', reviewId: id, text })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Comment posted!');
+                    loadReviews();
+                } else {
+                    showToast(data.error || 'Failed to post comment.');
+                }
+            } catch(e) {}
+        }
+        // -------------------------------
 
         async function submitOrder(e) {
             e.preventDefault();
